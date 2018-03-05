@@ -12,7 +12,7 @@ use lnd_rust::{read_x509, create_grpc_client};
 fn main(){
     println!("lnd-rust main");
 
-    let certificate = read_x509("/home/twenty/work/ln-ico/simple-simnet/bitcoin/rpc/rpc.cert").unwrap();
+    let certificate = read_x509("/home/twenty/work/ln-ico/simple-simnet/bitcoin-bitcoind/rpc/rpc.cert").unwrap();
     use std::net::{SocketAddr, IpAddr, Ipv4Addr};
     let socket_addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), 10009);
 
