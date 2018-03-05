@@ -28,4 +28,9 @@ fn main(){
     let req = lnd_rust::rpc::GetInfoRequest::new();
     let resp = client.get_info(grpc::RequestOptions::new(), req);
     println!("{:?}", resp.wait());
+
+    let wallet_req = lnd_rust::rpc::WalletBalanceRequest::new();
+    let wallet_resp = client.wallet_balance(grpc::RequestOptions::new(), wallet_req);
+    let w = wallet_resp.wait().unwrap().1;
+    println!("{:?}\n", w);
 }

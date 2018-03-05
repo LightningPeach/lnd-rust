@@ -8004,6 +8004,7 @@ pub struct GetInfoResponse {
     pub testnet: bool,
     pub chains: ::protobuf::RepeatedField<::std::string::String>,
     pub uris: ::protobuf::RepeatedField<::std::string::String>,
+    pub best_header_timestamp: i64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -8332,6 +8333,29 @@ impl GetInfoResponse {
     fn mut_uris_for_reflect(&mut self) -> &mut ::protobuf::RepeatedField<::std::string::String> {
         &mut self.uris
     }
+
+    // int64 best_header_timestamp = 13;
+
+    pub fn clear_best_header_timestamp(&mut self) {
+        self.best_header_timestamp = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_best_header_timestamp(&mut self, v: i64) {
+        self.best_header_timestamp = v;
+    }
+
+    pub fn get_best_header_timestamp(&self) -> i64 {
+        self.best_header_timestamp
+    }
+
+    fn get_best_header_timestamp_for_reflect(&self) -> &i64 {
+        &self.best_header_timestamp
+    }
+
+    fn mut_best_header_timestamp_for_reflect(&mut self) -> &mut i64 {
+        &mut self.best_header_timestamp
+    }
 }
 
 impl ::protobuf::Message for GetInfoResponse {
@@ -8400,6 +8424,13 @@ impl ::protobuf::Message for GetInfoResponse {
                 12 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.uris)?;
                 },
+                13 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int64()?;
+                    self.best_header_timestamp = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -8445,6 +8476,9 @@ impl ::protobuf::Message for GetInfoResponse {
         for value in &self.uris {
             my_size += ::protobuf::rt::string_size(12, &value);
         };
+        if self.best_header_timestamp != 0 {
+            my_size += ::protobuf::rt::value_size(13, self.best_header_timestamp, ::protobuf::wire_format::WireTypeVarint);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -8484,6 +8518,9 @@ impl ::protobuf::Message for GetInfoResponse {
         for v in &self.uris {
             os.write_string(12, &v)?;
         };
+        if self.best_header_timestamp != 0 {
+            os.write_int64(13, self.best_header_timestamp)?;
+        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -8583,6 +8620,11 @@ impl ::protobuf::MessageStatic for GetInfoResponse {
                     GetInfoResponse::get_uris_for_reflect,
                     GetInfoResponse::mut_uris_for_reflect,
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
+                    "best_header_timestamp",
+                    GetInfoResponse::get_best_header_timestamp_for_reflect,
+                    GetInfoResponse::mut_best_header_timestamp_for_reflect,
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<GetInfoResponse>(
                     "GetInfoResponse",
                     fields,
@@ -8606,6 +8648,7 @@ impl ::protobuf::Clear for GetInfoResponse {
         self.clear_testnet();
         self.clear_chains();
         self.clear_uris();
+        self.clear_best_header_timestamp();
         self.unknown_fields.clear();
     }
 }
@@ -24842,6 +24885,703 @@ impl ::protobuf::reflect::ProtobufValue for PolicyUpdateResponse {
     }
 }
 
+#[derive(PartialEq,Clone,Default)]
+pub struct GetSPVProofRequest {
+    // message fields
+    pub tx_hash: ::std::vec::Vec<u8>,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+// see codegen.rs for the explanation why impl Sync explicitly
+unsafe impl ::std::marker::Sync for GetSPVProofRequest {}
+
+impl GetSPVProofRequest {
+    pub fn new() -> GetSPVProofRequest {
+        ::std::default::Default::default()
+    }
+
+    pub fn default_instance() -> &'static GetSPVProofRequest {
+        static mut instance: ::protobuf::lazy::Lazy<GetSPVProofRequest> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const GetSPVProofRequest,
+        };
+        unsafe {
+            instance.get(GetSPVProofRequest::new)
+        }
+    }
+
+    // bytes tx_hash = 1;
+
+    pub fn clear_tx_hash(&mut self) {
+        self.tx_hash.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_tx_hash(&mut self, v: ::std::vec::Vec<u8>) {
+        self.tx_hash = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_tx_hash(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.tx_hash
+    }
+
+    // Take field
+    pub fn take_tx_hash(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.tx_hash, ::std::vec::Vec::new())
+    }
+
+    pub fn get_tx_hash(&self) -> &[u8] {
+        &self.tx_hash
+    }
+
+    fn get_tx_hash_for_reflect(&self) -> &::std::vec::Vec<u8> {
+        &self.tx_hash
+    }
+
+    fn mut_tx_hash_for_reflect(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.tx_hash
+    }
+}
+
+impl ::protobuf::Message for GetSPVProofRequest {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.tx_hash)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.tx_hash.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.tx_hash);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if !self.tx_hash.is_empty() {
+            os.write_bytes(1, &self.tx_hash)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        ::protobuf::MessageStatic::descriptor_static(None::<Self>)
+    }
+}
+
+impl ::protobuf::MessageStatic for GetSPVProofRequest {
+    fn new() -> GetSPVProofRequest {
+        GetSPVProofRequest::new()
+    }
+
+    fn descriptor_static(_: ::std::option::Option<GetSPVProofRequest>) -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                    "tx_hash",
+                    GetSPVProofRequest::get_tx_hash_for_reflect,
+                    GetSPVProofRequest::mut_tx_hash_for_reflect,
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<GetSPVProofRequest>(
+                    "GetSPVProofRequest",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+}
+
+impl ::protobuf::Clear for GetSPVProofRequest {
+    fn clear(&mut self) {
+        self.clear_tx_hash();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for GetSPVProofRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for GetSPVProofRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct GetSPVProofResponse {
+    // message fields
+    pub serialized_full_spv_proof: ::std::vec::Vec<u8>,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+// see codegen.rs for the explanation why impl Sync explicitly
+unsafe impl ::std::marker::Sync for GetSPVProofResponse {}
+
+impl GetSPVProofResponse {
+    pub fn new() -> GetSPVProofResponse {
+        ::std::default::Default::default()
+    }
+
+    pub fn default_instance() -> &'static GetSPVProofResponse {
+        static mut instance: ::protobuf::lazy::Lazy<GetSPVProofResponse> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const GetSPVProofResponse,
+        };
+        unsafe {
+            instance.get(GetSPVProofResponse::new)
+        }
+    }
+
+    // bytes serialized_full_spv_proof = 1;
+
+    pub fn clear_serialized_full_spv_proof(&mut self) {
+        self.serialized_full_spv_proof.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_serialized_full_spv_proof(&mut self, v: ::std::vec::Vec<u8>) {
+        self.serialized_full_spv_proof = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_serialized_full_spv_proof(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.serialized_full_spv_proof
+    }
+
+    // Take field
+    pub fn take_serialized_full_spv_proof(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.serialized_full_spv_proof, ::std::vec::Vec::new())
+    }
+
+    pub fn get_serialized_full_spv_proof(&self) -> &[u8] {
+        &self.serialized_full_spv_proof
+    }
+
+    fn get_serialized_full_spv_proof_for_reflect(&self) -> &::std::vec::Vec<u8> {
+        &self.serialized_full_spv_proof
+    }
+
+    fn mut_serialized_full_spv_proof_for_reflect(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.serialized_full_spv_proof
+    }
+}
+
+impl ::protobuf::Message for GetSPVProofResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.serialized_full_spv_proof)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.serialized_full_spv_proof.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.serialized_full_spv_proof);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if !self.serialized_full_spv_proof.is_empty() {
+            os.write_bytes(1, &self.serialized_full_spv_proof)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        ::protobuf::MessageStatic::descriptor_static(None::<Self>)
+    }
+}
+
+impl ::protobuf::MessageStatic for GetSPVProofResponse {
+    fn new() -> GetSPVProofResponse {
+        GetSPVProofResponse::new()
+    }
+
+    fn descriptor_static(_: ::std::option::Option<GetSPVProofResponse>) -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                    "serialized_full_spv_proof",
+                    GetSPVProofResponse::get_serialized_full_spv_proof_for_reflect,
+                    GetSPVProofResponse::mut_serialized_full_spv_proof_for_reflect,
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<GetSPVProofResponse>(
+                    "GetSPVProofResponse",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+}
+
+impl ::protobuf::Clear for GetSPVProofResponse {
+    fn clear(&mut self) {
+        self.clear_serialized_full_spv_proof();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for GetSPVProofResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for GetSPVProofResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct VerifySPVProofRequest {
+    // message fields
+    pub serialized_full_spv_proof: ::std::vec::Vec<u8>,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+// see codegen.rs for the explanation why impl Sync explicitly
+unsafe impl ::std::marker::Sync for VerifySPVProofRequest {}
+
+impl VerifySPVProofRequest {
+    pub fn new() -> VerifySPVProofRequest {
+        ::std::default::Default::default()
+    }
+
+    pub fn default_instance() -> &'static VerifySPVProofRequest {
+        static mut instance: ::protobuf::lazy::Lazy<VerifySPVProofRequest> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const VerifySPVProofRequest,
+        };
+        unsafe {
+            instance.get(VerifySPVProofRequest::new)
+        }
+    }
+
+    // bytes serialized_full_spv_proof = 1;
+
+    pub fn clear_serialized_full_spv_proof(&mut self) {
+        self.serialized_full_spv_proof.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_serialized_full_spv_proof(&mut self, v: ::std::vec::Vec<u8>) {
+        self.serialized_full_spv_proof = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_serialized_full_spv_proof(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.serialized_full_spv_proof
+    }
+
+    // Take field
+    pub fn take_serialized_full_spv_proof(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.serialized_full_spv_proof, ::std::vec::Vec::new())
+    }
+
+    pub fn get_serialized_full_spv_proof(&self) -> &[u8] {
+        &self.serialized_full_spv_proof
+    }
+
+    fn get_serialized_full_spv_proof_for_reflect(&self) -> &::std::vec::Vec<u8> {
+        &self.serialized_full_spv_proof
+    }
+
+    fn mut_serialized_full_spv_proof_for_reflect(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.serialized_full_spv_proof
+    }
+}
+
+impl ::protobuf::Message for VerifySPVProofRequest {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.serialized_full_spv_proof)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.serialized_full_spv_proof.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.serialized_full_spv_proof);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if !self.serialized_full_spv_proof.is_empty() {
+            os.write_bytes(1, &self.serialized_full_spv_proof)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        ::protobuf::MessageStatic::descriptor_static(None::<Self>)
+    }
+}
+
+impl ::protobuf::MessageStatic for VerifySPVProofRequest {
+    fn new() -> VerifySPVProofRequest {
+        VerifySPVProofRequest::new()
+    }
+
+    fn descriptor_static(_: ::std::option::Option<VerifySPVProofRequest>) -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                    "serialized_full_spv_proof",
+                    VerifySPVProofRequest::get_serialized_full_spv_proof_for_reflect,
+                    VerifySPVProofRequest::mut_serialized_full_spv_proof_for_reflect,
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<VerifySPVProofRequest>(
+                    "VerifySPVProofRequest",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+}
+
+impl ::protobuf::Clear for VerifySPVProofRequest {
+    fn clear(&mut self) {
+        self.clear_serialized_full_spv_proof();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for VerifySPVProofRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for VerifySPVProofRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct VerifySPVProofResponse {
+    // message fields
+    pub verification_status: bool,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+// see codegen.rs for the explanation why impl Sync explicitly
+unsafe impl ::std::marker::Sync for VerifySPVProofResponse {}
+
+impl VerifySPVProofResponse {
+    pub fn new() -> VerifySPVProofResponse {
+        ::std::default::Default::default()
+    }
+
+    pub fn default_instance() -> &'static VerifySPVProofResponse {
+        static mut instance: ::protobuf::lazy::Lazy<VerifySPVProofResponse> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const VerifySPVProofResponse,
+        };
+        unsafe {
+            instance.get(VerifySPVProofResponse::new)
+        }
+    }
+
+    // bool verification_status = 1;
+
+    pub fn clear_verification_status(&mut self) {
+        self.verification_status = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_verification_status(&mut self, v: bool) {
+        self.verification_status = v;
+    }
+
+    pub fn get_verification_status(&self) -> bool {
+        self.verification_status
+    }
+
+    fn get_verification_status_for_reflect(&self) -> &bool {
+        &self.verification_status
+    }
+
+    fn mut_verification_status_for_reflect(&mut self) -> &mut bool {
+        &mut self.verification_status
+    }
+}
+
+impl ::protobuf::Message for VerifySPVProofResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.verification_status = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.verification_status != false {
+            my_size += 2;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.verification_status != false {
+            os.write_bool(1, self.verification_status)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        ::protobuf::MessageStatic::descriptor_static(None::<Self>)
+    }
+}
+
+impl ::protobuf::MessageStatic for VerifySPVProofResponse {
+    fn new() -> VerifySPVProofResponse {
+        VerifySPVProofResponse::new()
+    }
+
+    fn descriptor_static(_: ::std::option::Option<VerifySPVProofResponse>) -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                    "verification_status",
+                    VerifySPVProofResponse::get_verification_status_for_reflect,
+                    VerifySPVProofResponse::mut_verification_status_for_reflect,
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<VerifySPVProofResponse>(
+                    "VerifySPVProofResponse",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+}
+
+impl ::protobuf::Clear for VerifySPVProofResponse {
+    fn clear(&mut self) {
+        self.clear_verification_status();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for VerifySPVProofResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for VerifySPVProofResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
 static file_descriptor_proto_data: &'static [u8] = b"\
     \n\trpc.proto\x12\x05lnrpc\x1a\x1cgoogle/api/annotations.proto\"1\n\x13C\
     reateWalletRequest\x12\x1a\n\x08password\x18\x01\x20\x01(\x0cR\x08passwo\
@@ -24924,7 +25664,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     (\x03R\x08sat_recv\x12\x18\n\x07inbound\x18\x08\x20\x01(\x08R\x07inbound\
     \x12\x1c\n\tping_time\x18\t\x20\x01(\x03R\tping_time\"\x12\n\x10ListPeer\
     sRequest\"6\n\x11ListPeersResponse\x12!\n\x05peers\x18\x01\x20\x03(\x0b2\
-    \x0b.lnrpc.PeerR\x05peers\"\x10\n\x0eGetInfoRequest\"\x89\x03\n\x0fGetIn\
+    \x0b.lnrpc.PeerR\x05peers\"\x10\n\x0eGetInfoRequest\"\xbf\x03\n\x0fGetIn\
     foResponse\x12(\n\x0fidentity_pubkey\x18\x01\x20\x01(\tR\x0fidentity_pub\
     key\x12\x14\n\x05alias\x18\x02\x20\x01(\tR\x05alias\x122\n\x14num_pendin\
     g_channels\x18\x03\x20\x01(\rR\x14num_pending_channels\x120\n\x13num_act\
@@ -24934,67 +25674,68 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     k_hash\x12(\n\x0fsynced_to_chain\x18\t\x20\x01(\x08R\x0fsynced_to_chain\
     \x12\x18\n\x07testnet\x18\n\x20\x01(\x08R\x07testnet\x12\x16\n\x06chains\
     \x18\x0b\x20\x03(\tR\x06chains\x12\x12\n\x04uris\x18\x0c\x20\x03(\tR\x04\
-    uris\"z\n\x12ConfirmationUpdate\x12\x1b\n\tblock_sha\x18\x01\x20\x01(\
-    \x0cR\x08blockSha\x12!\n\x0cblock_height\x18\x02\x20\x01(\x05R\x0bblockH\
-    eight\x12$\n\x0enum_confs_left\x18\x03\x20\x01(\rR\x0cnumConfsLeft\"N\n\
-    \x11ChannelOpenUpdate\x129\n\rchannel_point\x18\x01\x20\x01(\x0b2\x13.ln\
-    rpc.ChannelPointR\rchannel_point\"R\n\x12ChannelCloseUpdate\x12\"\n\x0cc\
-    losing_txid\x18\x01\x20\x01(\x0cR\x0cclosing_txid\x12\x18\n\x07success\
-    \x18\x02\x20\x01(\x08R\x07success\"\xa8\x01\n\x13CloseChannelRequest\x12\
-    8\n\rchannel_point\x18\x01\x20\x01(\x0b2\x13.lnrpc.ChannelPointR\x0cchan\
-    nelPoint\x12\x14\n\x05force\x18\x02\x20\x01(\x08R\x05force\x12\x1f\n\x0b\
-    target_conf\x18\x03\x20\x01(\x05R\ntargetConf\x12\x20\n\x0csat_per_byte\
-    \x18\x04\x20\x01(\x03R\nsatPerByte\"\xd9\x01\n\x11CloseStatusUpdate\x12<\
-    \n\rclose_pending\x18\x01\x20\x01(\x0b2\x14.lnrpc.PendingUpdateH\0R\rclo\
-    se_pending\x12?\n\x0cconfirmation\x18\x02\x20\x01(\x0b2\x19.lnrpc.Confir\
-    mationUpdateH\0R\x0cconfirmation\x12;\n\nchan_close\x18\x03\x20\x01(\x0b\
-    2\x19.lnrpc.ChannelCloseUpdateH\0R\nchan_closeB\x08\n\x06update\"G\n\rPe\
-    ndingUpdate\x12\x12\n\x04txid\x18\x01\x20\x01(\x0cR\x04txid\x12\"\n\x0co\
-    utput_index\x18\x02\x20\x01(\rR\x0coutput_index\"\xb9\x02\n\x12OpenChann\
-    elRequest\x12\x20\n\x0bnode_pubkey\x18\x02\x20\x01(\x0cR\x0bnode_pubkey\
-    \x12.\n\x12node_pubkey_string\x18\x03\x20\x01(\tR\x12node_pubkey_string\
-    \x122\n\x14local_funding_amount\x18\x04\x20\x01(\x03R\x14local_funding_a\
-    mount\x12\x1a\n\x08push_sat\x18\x05\x20\x01(\x03R\x08push_sat\x12\x1f\n\
-    \x0btarget_conf\x18\x06\x20\x01(\x05R\ntargetConf\x12\x20\n\x0csat_per_b\
-    yte\x18\x07\x20\x01(\x03R\nsatPerByte\x12\x18\n\x07private\x18\x08\x20\
-    \x01(\x08R\x07private\x12$\n\rmin_htlc_msat\x18\t\x20\x01(\x03R\rmin_htl\
-    c_msat\"\xd3\x01\n\x10OpenStatusUpdate\x12:\n\x0cchan_pending\x18\x01\
-    \x20\x01(\x0b2\x14.lnrpc.PendingUpdateH\0R\x0cchan_pending\x12?\n\x0ccon\
-    firmation\x18\x02\x20\x01(\x0b2\x19.lnrpc.ConfirmationUpdateH\0R\x0cconf\
-    irmation\x128\n\tchan_open\x18\x03\x20\x01(\x0b2\x18.lnrpc.ChannelOpenUp\
-    dateH\0R\tchan_openB\x08\n\x06update\"\xcf\x01\n\x0bPendingHTLC\x12\x1a\
-    \n\x08incoming\x18\x01\x20\x01(\x08R\x08incoming\x12\x16\n\x06amount\x18\
-    \x02\x20\x01(\x03R\x06amount\x12\x1a\n\x08outpoint\x18\x03\x20\x01(\tR\
-    \x08outpoint\x12(\n\x0fmaturity_height\x18\x04\x20\x01(\rR\x0fmaturity_h\
-    eight\x120\n\x13blocks_til_maturity\x18\x05\x20\x01(\x05R\x13blocks_til_\
-    maturity\x12\x14\n\x05stage\x18\x06\x20\x01(\rR\x05stage\"\x18\n\x16Pend\
-    ingChannelsRequest\"\xca\n\n\x17PendingChannelsResponse\x120\n\x13total_\
-    limbo_balance\x18\x01\x20\x01(\x03R\x13total_limbo_balance\x12g\n\x15pen\
-    ding_open_channels\x18\x02\x20\x03(\x0b21.lnrpc.PendingChannelsResponse.\
-    PendingOpenChannelR\x15pending_open_channels\x12h\n\x18pending_closing_c\
-    hannels\x18\x03\x20\x03(\x0b2,.lnrpc.PendingChannelsResponse.ClosedChann\
-    elR\x18pending_closing_channels\x12y\n\x1epending_force_closing_channels\
-    \x18\x04\x20\x03(\x0b21.lnrpc.PendingChannelsResponse.ForceClosedChannel\
-    R\x1epending_force_closing_channels\x1a\xca\x01\n\x0ePendingChannel\x12(\
-    \n\x0fremote_node_pub\x18\x01\x20\x01(\tR\x0fremote_node_pub\x12$\n\rcha\
-    nnel_point\x18\x02\x20\x01(\tR\rchannel_point\x12\x1a\n\x08capacity\x18\
-    \x03\x20\x01(\x03R\x08capacity\x12$\n\rlocal_balance\x18\x04\x20\x01(\
-    \x03R\rlocal_balance\x12&\n\x0eremote_balance\x18\x05\x20\x01(\x03R\x0er\
-    emote_balance\x1a\xf5\x01\n\x12PendingOpenChannel\x12G\n\x07channel\x18\
-    \x01\x20\x01(\x0b2-.lnrpc.PendingChannelsResponse.PendingChannelR\x07cha\
-    nnel\x120\n\x13confirmation_height\x18\x02\x20\x01(\rR\x13confirmation_h\
-    eight\x12\x1e\n\ncommit_fee\x18\x04\x20\x01(\x03R\ncommit_fee\x12$\n\rco\
-    mmit_weight\x18\x05\x20\x01(\x03R\rcommit_weight\x12\x1e\n\nfee_per_kw\
-    \x18\x06\x20\x01(\x03R\nfee_per_kw\x1a|\n\rClosedChannel\x12G\n\x07chann\
-    el\x18\x01\x20\x01(\x0b2-.lnrpc.PendingChannelsResponse.PendingChannelR\
-    \x07channel\x12\"\n\x0cclosing_txid\x18\x02\x20\x01(\tR\x0cclosing_txid\
-    \x1a\xeb\x02\n\x12ForceClosedChannel\x12G\n\x07channel\x18\x01\x20\x01(\
-    \x0b2-.lnrpc.PendingChannelsResponse.PendingChannelR\x07channel\x12\"\n\
-    \x0cclosing_txid\x18\x02\x20\x01(\tR\x0cclosing_txid\x12$\n\rlimbo_balan\
-    ce\x18\x03\x20\x01(\x03R\rlimbo_balance\x12(\n\x0fmaturity_height\x18\
-    \x04\x20\x01(\rR\x0fmaturity_height\x120\n\x13blocks_til_maturity\x18\
-    \x05\x20\x01(\x05R\x13blocks_til_maturity\x12,\n\x11recovered_balance\
-    \x18\x06\x20\x01(\x03R\x11recovered_balance\x128\n\rpending_htlcs\x18\
+    uris\x124\n\x15best_header_timestamp\x18\r\x20\x01(\x03R\x15best_header_\
+    timestamp\"z\n\x12ConfirmationUpdate\x12\x1b\n\tblock_sha\x18\x01\x20\
+    \x01(\x0cR\x08blockSha\x12!\n\x0cblock_height\x18\x02\x20\x01(\x05R\x0bb\
+    lockHeight\x12$\n\x0enum_confs_left\x18\x03\x20\x01(\rR\x0cnumConfsLeft\
+    \"N\n\x11ChannelOpenUpdate\x129\n\rchannel_point\x18\x01\x20\x01(\x0b2\
+    \x13.lnrpc.ChannelPointR\rchannel_point\"R\n\x12ChannelCloseUpdate\x12\"\
+    \n\x0cclosing_txid\x18\x01\x20\x01(\x0cR\x0cclosing_txid\x12\x18\n\x07su\
+    ccess\x18\x02\x20\x01(\x08R\x07success\"\xa8\x01\n\x13CloseChannelReques\
+    t\x128\n\rchannel_point\x18\x01\x20\x01(\x0b2\x13.lnrpc.ChannelPointR\
+    \x0cchannelPoint\x12\x14\n\x05force\x18\x02\x20\x01(\x08R\x05force\x12\
+    \x1f\n\x0btarget_conf\x18\x03\x20\x01(\x05R\ntargetConf\x12\x20\n\x0csat\
+    _per_byte\x18\x04\x20\x01(\x03R\nsatPerByte\"\xd9\x01\n\x11CloseStatusUp\
+    date\x12<\n\rclose_pending\x18\x01\x20\x01(\x0b2\x14.lnrpc.PendingUpdate\
+    H\0R\rclose_pending\x12?\n\x0cconfirmation\x18\x02\x20\x01(\x0b2\x19.lnr\
+    pc.ConfirmationUpdateH\0R\x0cconfirmation\x12;\n\nchan_close\x18\x03\x20\
+    \x01(\x0b2\x19.lnrpc.ChannelCloseUpdateH\0R\nchan_closeB\x08\n\x06update\
+    \"G\n\rPendingUpdate\x12\x12\n\x04txid\x18\x01\x20\x01(\x0cR\x04txid\x12\
+    \"\n\x0coutput_index\x18\x02\x20\x01(\rR\x0coutput_index\"\xb9\x02\n\x12\
+    OpenChannelRequest\x12\x20\n\x0bnode_pubkey\x18\x02\x20\x01(\x0cR\x0bnod\
+    e_pubkey\x12.\n\x12node_pubkey_string\x18\x03\x20\x01(\tR\x12node_pubkey\
+    _string\x122\n\x14local_funding_amount\x18\x04\x20\x01(\x03R\x14local_fu\
+    nding_amount\x12\x1a\n\x08push_sat\x18\x05\x20\x01(\x03R\x08push_sat\x12\
+    \x1f\n\x0btarget_conf\x18\x06\x20\x01(\x05R\ntargetConf\x12\x20\n\x0csat\
+    _per_byte\x18\x07\x20\x01(\x03R\nsatPerByte\x12\x18\n\x07private\x18\x08\
+    \x20\x01(\x08R\x07private\x12$\n\rmin_htlc_msat\x18\t\x20\x01(\x03R\rmin\
+    _htlc_msat\"\xd3\x01\n\x10OpenStatusUpdate\x12:\n\x0cchan_pending\x18\
+    \x01\x20\x01(\x0b2\x14.lnrpc.PendingUpdateH\0R\x0cchan_pending\x12?\n\
+    \x0cconfirmation\x18\x02\x20\x01(\x0b2\x19.lnrpc.ConfirmationUpdateH\0R\
+    \x0cconfirmation\x128\n\tchan_open\x18\x03\x20\x01(\x0b2\x18.lnrpc.Chann\
+    elOpenUpdateH\0R\tchan_openB\x08\n\x06update\"\xcf\x01\n\x0bPendingHTLC\
+    \x12\x1a\n\x08incoming\x18\x01\x20\x01(\x08R\x08incoming\x12\x16\n\x06am\
+    ount\x18\x02\x20\x01(\x03R\x06amount\x12\x1a\n\x08outpoint\x18\x03\x20\
+    \x01(\tR\x08outpoint\x12(\n\x0fmaturity_height\x18\x04\x20\x01(\rR\x0fma\
+    turity_height\x120\n\x13blocks_til_maturity\x18\x05\x20\x01(\x05R\x13blo\
+    cks_til_maturity\x12\x14\n\x05stage\x18\x06\x20\x01(\rR\x05stage\"\x18\n\
+    \x16PendingChannelsRequest\"\xca\n\n\x17PendingChannelsResponse\x120\n\
+    \x13total_limbo_balance\x18\x01\x20\x01(\x03R\x13total_limbo_balance\x12\
+    g\n\x15pending_open_channels\x18\x02\x20\x03(\x0b21.lnrpc.PendingChannel\
+    sResponse.PendingOpenChannelR\x15pending_open_channels\x12h\n\x18pending\
+    _closing_channels\x18\x03\x20\x03(\x0b2,.lnrpc.PendingChannelsResponse.C\
+    losedChannelR\x18pending_closing_channels\x12y\n\x1epending_force_closin\
+    g_channels\x18\x04\x20\x03(\x0b21.lnrpc.PendingChannelsResponse.ForceClo\
+    sedChannelR\x1epending_force_closing_channels\x1a\xca\x01\n\x0ePendingCh\
+    annel\x12(\n\x0fremote_node_pub\x18\x01\x20\x01(\tR\x0fremote_node_pub\
+    \x12$\n\rchannel_point\x18\x02\x20\x01(\tR\rchannel_point\x12\x1a\n\x08c\
+    apacity\x18\x03\x20\x01(\x03R\x08capacity\x12$\n\rlocal_balance\x18\x04\
+    \x20\x01(\x03R\rlocal_balance\x12&\n\x0eremote_balance\x18\x05\x20\x01(\
+    \x03R\x0eremote_balance\x1a\xf5\x01\n\x12PendingOpenChannel\x12G\n\x07ch\
+    annel\x18\x01\x20\x01(\x0b2-.lnrpc.PendingChannelsResponse.PendingChanne\
+    lR\x07channel\x120\n\x13confirmation_height\x18\x02\x20\x01(\rR\x13confi\
+    rmation_height\x12\x1e\n\ncommit_fee\x18\x04\x20\x01(\x03R\ncommit_fee\
+    \x12$\n\rcommit_weight\x18\x05\x20\x01(\x03R\rcommit_weight\x12\x1e\n\nf\
+    ee_per_kw\x18\x06\x20\x01(\x03R\nfee_per_kw\x1a|\n\rClosedChannel\x12G\n\
+    \x07channel\x18\x01\x20\x01(\x0b2-.lnrpc.PendingChannelsResponse.Pending\
+    ChannelR\x07channel\x12\"\n\x0cclosing_txid\x18\x02\x20\x01(\tR\x0cclosi\
+    ng_txid\x1a\xeb\x02\n\x12ForceClosedChannel\x12G\n\x07channel\x18\x01\
+    \x20\x01(\x0b2-.lnrpc.PendingChannelsResponse.PendingChannelR\x07channel\
+    \x12\"\n\x0cclosing_txid\x18\x02\x20\x01(\tR\x0cclosing_txid\x12$\n\rlim\
+    bo_balance\x18\x03\x20\x01(\x03R\rlimbo_balance\x12(\n\x0fmaturity_heigh\
+    t\x18\x04\x20\x01(\rR\x0fmaturity_height\x120\n\x13blocks_til_maturity\
+    \x18\x05\x20\x01(\x05R\x13blocks_til_maturity\x12,\n\x11recovered_balanc\
+    e\x18\x06\x20\x01(\x03R\x11recovered_balance\x128\n\rpending_htlcs\x18\
     \x08\x20\x03(\x0b2\x12.lnrpc.PendingHTLCR\rpending_htlcs\"9\n\x14WalletB\
     alanceRequest\x12!\n\x0cwitness_only\x18\x01\x20\x01(\x08R\x0bwitnessOnl\
     y\"\x9d\x01\n\x15WalletBalanceResponse\x12$\n\rtotal_balance\x18\x01\x20\
@@ -25115,81 +25856,89 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x12$\n\rbase_fee_msat\x18\x03\x20\x01(\x03R\rbase_fee_msat\x12\x1a\n\
     \x08fee_rate\x18\x04\x20\x01(\x01R\x08fee_rate\x12(\n\x0ftime_lock_delta\
     \x18\x05\x20\x01(\rR\x0ftime_lock_deltaB\x07\n\x05scope\"\x16\n\x14Polic\
-    yUpdateResponse2\xdc\x01\n\x0eWalletUnlocker\x12d\n\x0cCreateWallet\x12\
-    \x1a.lnrpc.CreateWalletRequest\x1a\x1b.lnrpc.CreateWalletResponse\"\x1b\
-    \x82\xd3\xe4\x93\x02\x15\"\x10/v1/createwallet:\x01*\x12d\n\x0cUnlockWal\
-    let\x12\x1a.lnrpc.UnlockWalletRequest\x1a\x1b.lnrpc.UnlockWalletResponse\
-    \"\x1b\x82\xd3\xe4\x93\x02\x15\"\x10/v1/unlockwallet:\x01*2\xf3\x1a\n\tL\
-    ightning\x12j\n\rWalletBalance\x12\x1b.lnrpc.WalletBalanceRequest\x1a\
-    \x1c.lnrpc.WalletBalanceResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v\
-    1/balance/blockchain\x12k\n\x0eChannelBalance\x12\x1c.lnrpc.ChannelBalan\
-    ceRequest\x1a\x1d.lnrpc.ChannelBalanceResponse\"\x1c\x82\xd3\xe4\x93\x02\
-    \x16\x12\x14/v1/balance/channels\x12e\n\x0fGetTransactions\x12\x1d.lnrpc\
-    .GetTransactionsRequest\x1a\x19.lnrpc.TransactionDetails\"\x18\x82\xd3\
-    \xe4\x93\x02\x12\x12\x10/v1/transactions\x12[\n\tSendCoins\x12\x17.lnrpc\
-    .SendCoinsRequest\x1a\x18.lnrpc.SendCoinsResponse\"\x1b\x82\xd3\xe4\x93\
-    \x02\x15\"\x10/v1/transactions:\x01*\x12L\n\x15SubscribeTransactions\x12\
-    \x1d.lnrpc.GetTransactionsRequest\x1a\x12.lnrpc.Transaction0\x01\x12;\n\
-    \x08SendMany\x12\x16.lnrpc.SendManyRequest\x1a\x17.lnrpc.SendManyRespons\
-    e\x12A\n\nNewAddress\x12\x18.lnrpc.NewAddressRequest\x1a\x19.lnrpc.NewAd\
-    dressResponse\x12g\n\x11NewWitnessAddress\x12\x1f.lnrpc.NewWitnessAddres\
-    sRequest\x1a\x19.lnrpc.NewAddressResponse\"\x16\x82\xd3\xe4\x93\x02\x10\
-    \x12\x0e/v1/newaddress\x12D\n\x0bSignMessage\x12\x19.lnrpc.SignMessageRe\
-    quest\x1a\x1a.lnrpc.SignMessageResponse\x12J\n\rVerifyMessage\x12\x1b.ln\
-    rpc.VerifyMessageRequest\x1a\x1c.lnrpc.VerifyMessageResponse\x12Z\n\x0bC\
-    onnectPeer\x12\x19.lnrpc.ConnectPeerRequest\x1a\x1a.lnrpc.ConnectPeerRes\
-    ponse\"\x14\x82\xd3\xe4\x93\x02\x0e\"\t/v1/peers:\x01*\x12j\n\x0eDisconn\
-    ectPeer\x12\x1c.lnrpc.DisconnectPeerRequest\x1a\x1d.lnrpc.DisconnectPeer\
-    Response\"\x1b\x82\xd3\xe4\x93\x02\x15*\x13/v1/peers/{pub_key}\x12Q\n\tL\
-    istPeers\x12\x17.lnrpc.ListPeersRequest\x1a\x18.lnrpc.ListPeersResponse\
-    \"\x11\x82\xd3\xe4\x93\x02\x0b\x12\t/v1/peers\x12M\n\x07GetInfo\x12\x15.\
-    lnrpc.GetInfoRequest\x1a\x16.lnrpc.GetInfoResponse\"\x13\x82\xd3\xe4\x93\
-    \x02\r\x12\x0b/v1/getinfo\x12n\n\x0fPendingChannels\x12\x1d.lnrpc.Pendin\
-    gChannelsRequest\x1a\x1e.lnrpc.PendingChannelsResponse\"\x1c\x82\xd3\xe4\
-    \x93\x02\x16\x12\x14/v1/channels/pending\x12]\n\x0cListChannels\x12\x1a.\
-    lnrpc.ListChannelsRequest\x1a\x1b.lnrpc.ListChannelsResponse\"\x14\x82\
-    \xd3\xe4\x93\x02\x0e\x12\x0c/v1/channels\x12Z\n\x0fOpenChannelSync\x12\
-    \x19.lnrpc.OpenChannelRequest\x1a\x13.lnrpc.ChannelPoint\"\x17\x82\xd3\
-    \xe4\x93\x02\x11\"\x0c/v1/channels:\x01*\x12C\n\x0bOpenChannel\x12\x19.l\
-    nrpc.OpenChannelRequest\x1a\x17.lnrpc.OpenStatusUpdate0\x01\x12\x9a\x01\
-    \n\x0cCloseChannel\x12\x1a.lnrpc.CloseChannelRequest\x1a\x18.lnrpc.Close\
-    StatusUpdate\"R\x82\xd3\xe4\x93\x02L*J/v1/channels/{channel_point.fundin\
-    g_txid_str}/{channel_point.output_index}0\x01\x12:\n\x0bSendPayment\x12\
-    \x12.lnrpc.SendRequest\x1a\x13.lnrpc.SendResponse(\x010\x01\x12`\n\x0fSe\
-    ndPaymentSync\x12\x12.lnrpc.SendRequest\x1a\x13.lnrpc.SendResponse\"$\
-    \x82\xd3\xe4\x93\x02\x1e\"\x19/v1/channels/transactions:\x01*\x12P\n\nAd\
-    dInvoice\x12\x0e.lnrpc.Invoice\x1a\x19.lnrpc.AddInvoiceResponse\"\x17\
-    \x82\xd3\xe4\x93\x02\x11\"\x0c/v1/invoices:\x01*\x12[\n\x0cListInvoices\
-    \x12\x19.lnrpc.ListInvoiceRequest\x1a\x1a.lnrpc.ListInvoiceResponse\"\
-    \x14\x82\xd3\xe4\x93\x02\x0e\x12\x0c/v1/invoices\x12U\n\rLookupInvoice\
-    \x12\x12.lnrpc.PaymentHash\x1a\x0e.lnrpc.Invoice\"\x20\x82\xd3\xe4\x93\
-    \x02\x1a\x12\x18/v1/invoice/{r_hash_str}\x12a\n\x11SubscribeInvoices\x12\
-    \x1a.lnrpc.InvoiceSubscription\x1a\x0e.lnrpc.Invoice\"\x1e\x82\xd3\xe4\
-    \x93\x02\x18\x12\x16/v1/invoices/subscribe0\x01\x12P\n\x0cDecodePayReq\
-    \x12\x13.lnrpc.PayReqString\x1a\r.lnrpc.PayReq\"\x1c\x82\xd3\xe4\x93\x02\
-    \x16\x12\x14/v1/payreq/{pay_req}\x12]\n\x0cListPayments\x12\x1a.lnrpc.Li\
-    stPaymentsRequest\x1a\x1b.lnrpc.ListPaymentsResponse\"\x14\x82\xd3\xe4\
-    \x93\x02\x0e\x12\x0c/v1/payments\x12l\n\x11DeleteAllPayments\x12\x1f.lnr\
-    pc.DeleteAllPaymentsRequest\x1a\x20.lnrpc.DeleteAllPaymentsResponse\"\
-    \x14\x82\xd3\xe4\x93\x02\x0e*\x0c/v1/payments\x12S\n\rDescribeGraph\x12\
-    \x1a.lnrpc.ChannelGraphRequest\x1a\x13.lnrpc.ChannelGraph\"\x11\x82\xd3\
-    \xe4\x93\x02\x0b\x12\t/v1/graph\x12[\n\x0bGetChanInfo\x12\x16.lnrpc.Chan\
-    InfoRequest\x1a\x12.lnrpc.ChannelEdge\"\x20\x82\xd3\xe4\x93\x02\x1a\x12\
-    \x18/v1/graph/edge/{chan_id}\x12X\n\x0bGetNodeInfo\x12\x16.lnrpc.NodeInf\
-    oRequest\x1a\x0f.lnrpc.NodeInfo\"\x20\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1\
-    /graph/node/{pub_key}\x12n\n\x0bQueryRoutes\x12\x19.lnrpc.QueryRoutesReq\
-    uest\x1a\x1a.lnrpc.QueryRoutesResponse\"(\x82\xd3\xe4\x93\x02\"\x12\x20/\
-    v1/graph/routes/{pub_key}/{amt}\x12W\n\x0eGetNetworkInfo\x12\x19.lnrpc.N\
-    etworkInfoRequest\x1a\x12.lnrpc.NetworkInfo\"\x16\x82\xd3\xe4\x93\x02\
-    \x10\x12\x0e/v1/graph/info\x125\n\nStopDaemon\x12\x12.lnrpc.StopRequest\
-    \x1a\x13.lnrpc.StopResponse\x12W\n\x15SubscribeChannelGraph\x12\x20.lnrp\
-    c.GraphTopologySubscription\x1a\x1a.lnrpc.GraphTopologyUpdate0\x01\x12A\
-    \n\nDebugLevel\x12\x18.lnrpc.DebugLevelRequest\x1a\x19.lnrpc.DebugLevelR\
-    esponse\x12P\n\tFeeReport\x12\x17.lnrpc.FeeReportRequest\x1a\x18.lnrpc.F\
-    eeReportResponse\"\x10\x82\xd3\xe4\x93\x02\n\x12\x08/v1/fees\x12i\n\x13U\
-    pdateChannelPolicy\x12\x1a.lnrpc.PolicyUpdateRequest\x1a\x1b.lnrpc.Polic\
-    yUpdateResponse\"\x19\x82\xd3\xe4\x93\x02\x13\"\x0e/v1/chanpolicy:\x01*b\
-    \x06proto3\
+    yUpdateResponse\".\n\x12GetSPVProofRequest\x12\x18\n\x07tx_hash\x18\x01\
+    \x20\x01(\x0cR\x07tx_hash\"S\n\x13GetSPVProofResponse\x12<\n\x19serializ\
+    ed_full_spv_proof\x18\x01\x20\x01(\x0cR\x19serialized_full_spv_proof\"U\
+    \n\x15VerifySPVProofRequest\x12<\n\x19serialized_full_spv_proof\x18\x01\
+    \x20\x01(\x0cR\x19serialized_full_spv_proof\"J\n\x16VerifySPVProofRespon\
+    se\x120\n\x13verification_status\x18\x01\x20\x01(\x08R\x13verification_s\
+    tatus2\xdc\x01\n\x0eWalletUnlocker\x12d\n\x0cCreateWallet\x12\x1a.lnrpc.\
+    CreateWalletRequest\x1a\x1b.lnrpc.CreateWalletResponse\"\x1b\x82\xd3\xe4\
+    \x93\x02\x15\"\x10/v1/createwallet:\x01*\x12d\n\x0cUnlockWallet\x12\x1a.\
+    lnrpc.UnlockWalletRequest\x1a\x1b.lnrpc.UnlockWalletResponse\"\x1b\x82\
+    \xd3\xe4\x93\x02\x15\"\x10/v1/unlockwallet:\x01*2\x88\x1c\n\tLightning\
+    \x12j\n\rWalletBalance\x12\x1b.lnrpc.WalletBalanceRequest\x1a\x1c.lnrpc.\
+    WalletBalanceResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/balance/b\
+    lockchain\x12k\n\x0eChannelBalance\x12\x1c.lnrpc.ChannelBalanceRequest\
+    \x1a\x1d.lnrpc.ChannelBalanceResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\
+    \x14/v1/balance/channels\x12e\n\x0fGetTransactions\x12\x1d.lnrpc.GetTran\
+    sactionsRequest\x1a\x19.lnrpc.TransactionDetails\"\x18\x82\xd3\xe4\x93\
+    \x02\x12\x12\x10/v1/transactions\x12[\n\tSendCoins\x12\x17.lnrpc.SendCoi\
+    nsRequest\x1a\x18.lnrpc.SendCoinsResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\
+    \"\x10/v1/transactions:\x01*\x12L\n\x15SubscribeTransactions\x12\x1d.lnr\
+    pc.GetTransactionsRequest\x1a\x12.lnrpc.Transaction0\x01\x12;\n\x08SendM\
+    any\x12\x16.lnrpc.SendManyRequest\x1a\x17.lnrpc.SendManyResponse\x12A\n\
+    \nNewAddress\x12\x18.lnrpc.NewAddressRequest\x1a\x19.lnrpc.NewAddressRes\
+    ponse\x12g\n\x11NewWitnessAddress\x12\x1f.lnrpc.NewWitnessAddressRequest\
+    \x1a\x19.lnrpc.NewAddressResponse\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/\
+    v1/newaddress\x12D\n\x0bSignMessage\x12\x19.lnrpc.SignMessageRequest\x1a\
+    \x1a.lnrpc.SignMessageResponse\x12J\n\rVerifyMessage\x12\x1b.lnrpc.Verif\
+    yMessageRequest\x1a\x1c.lnrpc.VerifyMessageResponse\x12Z\n\x0bConnectPee\
+    r\x12\x19.lnrpc.ConnectPeerRequest\x1a\x1a.lnrpc.ConnectPeerResponse\"\
+    \x14\x82\xd3\xe4\x93\x02\x0e\"\t/v1/peers:\x01*\x12j\n\x0eDisconnectPeer\
+    \x12\x1c.lnrpc.DisconnectPeerRequest\x1a\x1d.lnrpc.DisconnectPeerRespons\
+    e\"\x1b\x82\xd3\xe4\x93\x02\x15*\x13/v1/peers/{pub_key}\x12Q\n\tListPeer\
+    s\x12\x17.lnrpc.ListPeersRequest\x1a\x18.lnrpc.ListPeersResponse\"\x11\
+    \x82\xd3\xe4\x93\x02\x0b\x12\t/v1/peers\x12M\n\x07GetInfo\x12\x15.lnrpc.\
+    GetInfoRequest\x1a\x16.lnrpc.GetInfoResponse\"\x13\x82\xd3\xe4\x93\x02\r\
+    \x12\x0b/v1/getinfo\x12n\n\x0fPendingChannels\x12\x1d.lnrpc.PendingChann\
+    elsRequest\x1a\x1e.lnrpc.PendingChannelsResponse\"\x1c\x82\xd3\xe4\x93\
+    \x02\x16\x12\x14/v1/channels/pending\x12]\n\x0cListChannels\x12\x1a.lnrp\
+    c.ListChannelsRequest\x1a\x1b.lnrpc.ListChannelsResponse\"\x14\x82\xd3\
+    \xe4\x93\x02\x0e\x12\x0c/v1/channels\x12Z\n\x0fOpenChannelSync\x12\x19.l\
+    nrpc.OpenChannelRequest\x1a\x13.lnrpc.ChannelPoint\"\x17\x82\xd3\xe4\x93\
+    \x02\x11\"\x0c/v1/channels:\x01*\x12C\n\x0bOpenChannel\x12\x19.lnrpc.Ope\
+    nChannelRequest\x1a\x17.lnrpc.OpenStatusUpdate0\x01\x12\x9a\x01\n\x0cClo\
+    seChannel\x12\x1a.lnrpc.CloseChannelRequest\x1a\x18.lnrpc.CloseStatusUpd\
+    ate\"R\x82\xd3\xe4\x93\x02L*J/v1/channels/{channel_point.funding_txid_st\
+    r}/{channel_point.output_index}0\x01\x12:\n\x0bSendPayment\x12\x12.lnrpc\
+    .SendRequest\x1a\x13.lnrpc.SendResponse(\x010\x01\x12`\n\x0fSendPaymentS\
+    ync\x12\x12.lnrpc.SendRequest\x1a\x13.lnrpc.SendResponse\"$\x82\xd3\xe4\
+    \x93\x02\x1e\"\x19/v1/channels/transactions:\x01*\x12P\n\nAddInvoice\x12\
+    \x0e.lnrpc.Invoice\x1a\x19.lnrpc.AddInvoiceResponse\"\x17\x82\xd3\xe4\
+    \x93\x02\x11\"\x0c/v1/invoices:\x01*\x12[\n\x0cListInvoices\x12\x19.lnrp\
+    c.ListInvoiceRequest\x1a\x1a.lnrpc.ListInvoiceResponse\"\x14\x82\xd3\xe4\
+    \x93\x02\x0e\x12\x0c/v1/invoices\x12U\n\rLookupInvoice\x12\x12.lnrpc.Pay\
+    mentHash\x1a\x0e.lnrpc.Invoice\"\x20\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/\
+    invoice/{r_hash_str}\x12a\n\x11SubscribeInvoices\x12\x1a.lnrpc.InvoiceSu\
+    bscription\x1a\x0e.lnrpc.Invoice\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v\
+    1/invoices/subscribe0\x01\x12P\n\x0cDecodePayReq\x12\x13.lnrpc.PayReqStr\
+    ing\x1a\r.lnrpc.PayReq\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/payreq/{\
+    pay_req}\x12]\n\x0cListPayments\x12\x1a.lnrpc.ListPaymentsRequest\x1a\
+    \x1b.lnrpc.ListPaymentsResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\x0c/v1\
+    /payments\x12l\n\x11DeleteAllPayments\x12\x1f.lnrpc.DeleteAllPaymentsReq\
+    uest\x1a\x20.lnrpc.DeleteAllPaymentsResponse\"\x14\x82\xd3\xe4\x93\x02\
+    \x0e*\x0c/v1/payments\x12S\n\rDescribeGraph\x12\x1a.lnrpc.ChannelGraphRe\
+    quest\x1a\x13.lnrpc.ChannelGraph\"\x11\x82\xd3\xe4\x93\x02\x0b\x12\t/v1/\
+    graph\x12[\n\x0bGetChanInfo\x12\x16.lnrpc.ChanInfoRequest\x1a\x12.lnrpc.\
+    ChannelEdge\"\x20\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/graph/edge/{chan_id\
+    }\x12X\n\x0bGetNodeInfo\x12\x16.lnrpc.NodeInfoRequest\x1a\x0f.lnrpc.Node\
+    Info\"\x20\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/graph/node/{pub_key}\x12n\
+    \n\x0bQueryRoutes\x12\x19.lnrpc.QueryRoutesRequest\x1a\x1a.lnrpc.QueryRo\
+    utesResponse\"(\x82\xd3\xe4\x93\x02\"\x12\x20/v1/graph/routes/{pub_key}/\
+    {amt}\x12W\n\x0eGetNetworkInfo\x12\x19.lnrpc.NetworkInfoRequest\x1a\x12.\
+    lnrpc.NetworkInfo\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/v1/graph/info\
+    \x125\n\nStopDaemon\x12\x12.lnrpc.StopRequest\x1a\x13.lnrpc.StopResponse\
+    \x12W\n\x15SubscribeChannelGraph\x12\x20.lnrpc.GraphTopologySubscription\
+    \x1a\x1a.lnrpc.GraphTopologyUpdate0\x01\x12A\n\nDebugLevel\x12\x18.lnrpc\
+    .DebugLevelRequest\x1a\x19.lnrpc.DebugLevelResponse\x12P\n\tFeeReport\
+    \x12\x17.lnrpc.FeeReportRequest\x1a\x18.lnrpc.FeeReportResponse\"\x10\
+    \x82\xd3\xe4\x93\x02\n\x12\x08/v1/fees\x12i\n\x13UpdateChannelPolicy\x12\
+    \x1a.lnrpc.PolicyUpdateRequest\x1a\x1b.lnrpc.PolicyUpdateResponse\"\x19\
+    \x82\xd3\xe4\x93\x02\x13\"\x0e/v1/chanpolicy:\x01*\x12D\n\x0bGetSPVProof\
+    \x12\x19.lnrpc.GetSPVProofRequest\x1a\x1a.lnrpc.GetSPVProofResponse\x12M\
+    \n\x0eVerifySPVProof\x12\x1c.lnrpc.VerifySPVProofRequest\x1a\x1d.lnrpc.V\
+    erifySPVProofResponseb\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

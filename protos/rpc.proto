@@ -451,6 +451,9 @@ service Lightning {
             body: "*"
         };
     }
+
+    rpc GetSPVProof (GetSPVProofRequest) returns (GetSPVProofResponse);
+    rpc VerifySPVProof (VerifySPVProofRequest) returns (VerifySPVProofResponse);
 }
 
 message Transaction {
@@ -801,6 +804,9 @@ message GetInfoResponse {
 
     /// The URIs of the current node.
     repeated string uris = 12 [json_name = "uris"];
+
+    /// Timestamp of the block best known to the wallet
+    int64 best_header_timestamp = 13 [ json_name = "best_header_timestamp" ];
 }
 
 message ConfirmationUpdate {
@@ -1426,4 +1432,25 @@ message PolicyUpdateRequest {
     uint32 time_lock_delta = 5 [json_name = "time_lock_delta"];
 }
 message PolicyUpdateResponse {
+}
+
+message GetSPVProofRequest {
+    bytes tx_hash = 1 [json_name = "tx_hash"];
+}
+
+message GetSPVProofResponse {
+    bytes serialized_full_spv_proof = 1 [json_name = "serialized_full_spv_proof"];
+    // bytes serialized_merkle_block = 1 [json_name = "serialized_merkle_block"];
+    // bytes serialized_block_header_list = 2 [json_name = "serialized_block_header_list"];
+    // bytes serialized_msg_tx = 3 [json_name = "serialized_msg_tx"];
+    // bytes disasm_multi_sig_script = 4 [json_name = "disasm_multi_sig_script"];
+}
+
+message VerifySPVProofRequest {
+    bytes serialized_full_spv_proof = 1 [json_name = "serialized_full_spv_proof"];
+    // bytes serialized_merkle_block = 1 [json_name = "serialized_merkle_block"];
+}
+
+message VerifySPVProofResponse {
+    bool verification_status = 1 [json_name = "verification_status"];
 }

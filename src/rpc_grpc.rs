@@ -193,6 +193,10 @@ pub trait Lightning {
     fn fee_report(&self, o: ::grpc::RequestOptions, p: super::rpc::FeeReportRequest) -> ::grpc::SingleResponse<super::rpc::FeeReportResponse>;
 
     fn update_channel_policy(&self, o: ::grpc::RequestOptions, p: super::rpc::PolicyUpdateRequest) -> ::grpc::SingleResponse<super::rpc::PolicyUpdateResponse>;
+
+    fn get_spv_proof(&self, o: ::grpc::RequestOptions, p: super::rpc::GetSPVProofRequest) -> ::grpc::SingleResponse<super::rpc::GetSPVProofResponse>;
+
+    fn verify_spv_proof(&self, o: ::grpc::RequestOptions, p: super::rpc::VerifySPVProofRequest) -> ::grpc::SingleResponse<super::rpc::VerifySPVProofResponse>;
 }
 
 // client
@@ -237,6 +241,8 @@ pub struct LightningClient {
     method_DebugLevel: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::DebugLevelRequest, super::rpc::DebugLevelResponse>>,
     method_FeeReport: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::FeeReportRequest, super::rpc::FeeReportResponse>>,
     method_UpdateChannelPolicy: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::PolicyUpdateRequest, super::rpc::PolicyUpdateResponse>>,
+    method_GetSPVProof: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::GetSPVProofRequest, super::rpc::GetSPVProofResponse>>,
+    method_VerifySPVProof: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::VerifySPVProofRequest, super::rpc::VerifySPVProofResponse>>,
 }
 
 impl LightningClient {
@@ -471,6 +477,18 @@ impl LightningClient {
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
             }),
+            method_GetSPVProof: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/GetSPVProof".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_VerifySPVProof: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/VerifySPVProof".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
         }
     }
 
@@ -637,6 +655,14 @@ impl Lightning for LightningClient {
 
     fn update_channel_policy(&self, o: ::grpc::RequestOptions, p: super::rpc::PolicyUpdateRequest) -> ::grpc::SingleResponse<super::rpc::PolicyUpdateResponse> {
         self.grpc_client.call_unary(o, p, self.method_UpdateChannelPolicy.clone())
+    }
+
+    fn get_spv_proof(&self, o: ::grpc::RequestOptions, p: super::rpc::GetSPVProofRequest) -> ::grpc::SingleResponse<super::rpc::GetSPVProofResponse> {
+        self.grpc_client.call_unary(o, p, self.method_GetSPVProof.clone())
+    }
+
+    fn verify_spv_proof(&self, o: ::grpc::RequestOptions, p: super::rpc::VerifySPVProofRequest) -> ::grpc::SingleResponse<super::rpc::VerifySPVProofResponse> {
+        self.grpc_client.call_unary(o, p, self.method_VerifySPVProof.clone())
     }
 }
 
@@ -1104,6 +1130,30 @@ impl LightningServer {
                     {
                         let handler_copy = handler_arc.clone();
                         ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.update_channel_policy(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/GetSPVProof".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.get_spv_proof(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/VerifySPVProof".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.verify_spv_proof(o, p))
                     },
                 ),
             ],
