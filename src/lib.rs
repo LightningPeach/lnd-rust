@@ -22,39 +22,48 @@ use std::io::Result as IOResult;
 
 use std::net::SocketAddr;
 
-pub fn read_x509<P: AsRef<Path>>(x509_file: P) -> IOResult<tls_api::Certificate> {
-    use std::io::{Error, ErrorKind};
-
-    let output = Command::new("openssl")
-        .args(&["x509", "-outform", "der", "-in"])
-        .arg(x509_file.as_ref().as_os_str())
-        .output()?;
-
-    if !output.status.success() {
-        let error = String::from_utf8_lossy(&output.stderr);
-        return Err(Error::new(ErrorKind::InvalidInput, error.as_ref()));
-    }
-    Ok(tls_api::Certificate::from_der(output.stdout))
+pub struct TLSCertificate {
+    raw: tls_api::Certificate,
 }
 
-pub fn create_grpc_client(
-    socket_addr: &SocketAddr,
-    host: &str,
-    certificate: tls_api::Certificate,
-    conf: grpc::ClientConf
-) -> grpc::Client {
-    let tls_connector: tls_api_native_tls::TlsConnector = {
-        let mut tls_connector_builder = tls_api_native_tls::TlsConnector::builder()
-            .unwrap();
-        tls_connector_builder
-            .add_root_certificate(certificate)
-            .unwrap();
-        tls_connector_builder
-            .build()
-            .unwrap()
-    };
+impl TLSCertificate {
+    pub fn from_der_path<P: AsRef<Path>>(path: P) -> IOResult<Self> {
+        use std::io::{Error, ErrorKind};
 
-    let tls = httpbis::ClientTlsOption::Tls(host.to_owned(), Arc::new(tls_connector));
-    ::grpc::Client::new_expl(&socket_addr, host, tls, conf)
-        .unwrap()
+        let output = Command::new("openssl")
+            .args(&["x509", "-outform", "der", "-in"])
+            .arg(path.as_ref().as_os_str())
+            .output()?;
+
+        if !output.status.success() {
+            let error = String::from_utf8_lossy(&output.stderr);
+            return Err(Error::new(ErrorKind::InvalidInput, error.as_ref()));
+        }
+
+        Ok(TLSCertificate {
+            raw: tls_api::Certificate::from_der(output.stdout),
+        })
+    }
+
+    pub fn create_client(
+        self,
+        socket_addr: &SocketAddr,
+        host: &str,
+        conf: grpc::ClientConf
+    ) -> grpc::Client {
+        let connector: tls_api_native_tls::TlsConnector = {
+            let mut builder = tls_api_native_tls::TlsConnector::builder()
+                .unwrap();
+            builder
+                .add_root_certificate(self.raw)
+                .unwrap();
+            builder
+                .build()
+                .unwrap()
+        };
+
+        let tls = httpbis::ClientTlsOption::Tls(host.to_owned(), Arc::new(connector));
+        grpc::Client::new_expl(&socket_addr, host, tls, conf)
+            .unwrap()
+    }
 }
