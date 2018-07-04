@@ -22,31 +22,49 @@
 // interface
 
 pub trait WalletUnlocker {
-    fn create_wallet(&self, o: ::grpc::RequestOptions, p: super::rpc::CreateWalletRequest) -> ::grpc::SingleResponse<super::rpc::CreateWalletResponse>;
+    fn gen_seed(&self, o: ::grpc::RequestOptions, p: super::rpc::GenSeedRequest) -> ::grpc::SingleResponse<super::rpc::GenSeedResponse>;
+
+    fn init_wallet(&self, o: ::grpc::RequestOptions, p: super::rpc::InitWalletRequest) -> ::grpc::SingleResponse<super::rpc::InitWalletResponse>;
 
     fn unlock_wallet(&self, o: ::grpc::RequestOptions, p: super::rpc::UnlockWalletRequest) -> ::grpc::SingleResponse<super::rpc::UnlockWalletResponse>;
+
+    fn change_password(&self, o: ::grpc::RequestOptions, p: super::rpc::ChangePasswordRequest) -> ::grpc::SingleResponse<super::rpc::ChangePasswordResponse>;
 }
 
 // client
 
 pub struct WalletUnlockerClient {
     grpc_client: ::grpc::Client,
-    method_CreateWallet: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::CreateWalletRequest, super::rpc::CreateWalletResponse>>,
+    method_GenSeed: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::GenSeedRequest, super::rpc::GenSeedResponse>>,
+    method_InitWallet: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::InitWalletRequest, super::rpc::InitWalletResponse>>,
     method_UnlockWallet: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::UnlockWalletRequest, super::rpc::UnlockWalletResponse>>,
+    method_ChangePassword: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ChangePasswordRequest, super::rpc::ChangePasswordResponse>>,
 }
 
 impl WalletUnlockerClient {
     pub fn with_client(grpc_client: ::grpc::Client) -> Self {
         WalletUnlockerClient {
             grpc_client: grpc_client,
-            method_CreateWallet: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
-                name: "/lnrpc.WalletUnlocker/CreateWallet".to_string(),
+            method_GenSeed: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.WalletUnlocker/GenSeed".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_InitWallet: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.WalletUnlocker/InitWallet".to_string(),
                 streaming: ::grpc::rt::GrpcStreaming::Unary,
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
             }),
             method_UnlockWallet: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
                 name: "/lnrpc.WalletUnlocker/UnlockWallet".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_ChangePassword: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.WalletUnlocker/ChangePassword".to_string(),
                 streaming: ::grpc::rt::GrpcStreaming::Unary,
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
@@ -67,12 +85,20 @@ impl WalletUnlockerClient {
 }
 
 impl WalletUnlocker for WalletUnlockerClient {
-    fn create_wallet(&self, o: ::grpc::RequestOptions, p: super::rpc::CreateWalletRequest) -> ::grpc::SingleResponse<super::rpc::CreateWalletResponse> {
-        self.grpc_client.call_unary(o, p, self.method_CreateWallet.clone())
+    fn gen_seed(&self, o: ::grpc::RequestOptions, p: super::rpc::GenSeedRequest) -> ::grpc::SingleResponse<super::rpc::GenSeedResponse> {
+        self.grpc_client.call_unary(o, p, self.method_GenSeed.clone())
+    }
+
+    fn init_wallet(&self, o: ::grpc::RequestOptions, p: super::rpc::InitWalletRequest) -> ::grpc::SingleResponse<super::rpc::InitWalletResponse> {
+        self.grpc_client.call_unary(o, p, self.method_InitWallet.clone())
     }
 
     fn unlock_wallet(&self, o: ::grpc::RequestOptions, p: super::rpc::UnlockWalletRequest) -> ::grpc::SingleResponse<super::rpc::UnlockWalletResponse> {
         self.grpc_client.call_unary(o, p, self.method_UnlockWallet.clone())
+    }
+
+    fn change_password(&self, o: ::grpc::RequestOptions, p: super::rpc::ChangePasswordRequest) -> ::grpc::SingleResponse<super::rpc::ChangePasswordResponse> {
+        self.grpc_client.call_unary(o, p, self.method_ChangePassword.clone())
     }
 }
 
@@ -88,14 +114,26 @@ impl WalletUnlockerServer {
             vec![
                 ::grpc::rt::ServerMethod::new(
                     ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
-                        name: "/lnrpc.WalletUnlocker/CreateWallet".to_string(),
+                        name: "/lnrpc.WalletUnlocker/GenSeed".to_string(),
                         streaming: ::grpc::rt::GrpcStreaming::Unary,
                         req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                         resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                     }),
                     {
                         let handler_copy = handler_arc.clone();
-                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.create_wallet(o, p))
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.gen_seed(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.WalletUnlocker/InitWallet".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.init_wallet(o, p))
                     },
                 ),
                 ::grpc::rt::ServerMethod::new(
@@ -108,6 +146,18 @@ impl WalletUnlockerServer {
                     {
                         let handler_copy = handler_arc.clone();
                         ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.unlock_wallet(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.WalletUnlocker/ChangePassword".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.change_password(o, p))
                     },
                 ),
             ],
@@ -150,6 +200,8 @@ pub trait Lightning {
 
     fn list_channels(&self, o: ::grpc::RequestOptions, p: super::rpc::ListChannelsRequest) -> ::grpc::SingleResponse<super::rpc::ListChannelsResponse>;
 
+    fn closed_channels(&self, o: ::grpc::RequestOptions, p: super::rpc::ClosedChannelsRequest) -> ::grpc::SingleResponse<super::rpc::ClosedChannelsResponse>;
+
     fn open_channel_sync(&self, o: ::grpc::RequestOptions, p: super::rpc::OpenChannelRequest) -> ::grpc::SingleResponse<super::rpc::ChannelPoint>;
 
     fn open_channel(&self, o: ::grpc::RequestOptions, p: super::rpc::OpenChannelRequest) -> ::grpc::StreamingResponse<super::rpc::OpenStatusUpdate>;
@@ -159,6 +211,10 @@ pub trait Lightning {
     fn send_payment(&self, o: ::grpc::RequestOptions, p: ::grpc::StreamingRequest<super::rpc::SendRequest>) -> ::grpc::StreamingResponse<super::rpc::SendResponse>;
 
     fn send_payment_sync(&self, o: ::grpc::RequestOptions, p: super::rpc::SendRequest) -> ::grpc::SingleResponse<super::rpc::SendResponse>;
+
+    fn send_to_route(&self, o: ::grpc::RequestOptions, p: ::grpc::StreamingRequest<super::rpc::SendToRouteRequest>) -> ::grpc::StreamingResponse<super::rpc::SendResponse>;
+
+    fn send_to_route_sync(&self, o: ::grpc::RequestOptions, p: super::rpc::SendToRouteRequest) -> ::grpc::SingleResponse<super::rpc::SendResponse>;
 
     fn add_invoice(&self, o: ::grpc::RequestOptions, p: super::rpc::Invoice) -> ::grpc::SingleResponse<super::rpc::AddInvoiceResponse>;
 
@@ -194,9 +250,7 @@ pub trait Lightning {
 
     fn update_channel_policy(&self, o: ::grpc::RequestOptions, p: super::rpc::PolicyUpdateRequest) -> ::grpc::SingleResponse<super::rpc::PolicyUpdateResponse>;
 
-    fn get_spv_proof(&self, o: ::grpc::RequestOptions, p: super::rpc::GetSPVProofRequest) -> ::grpc::SingleResponse<super::rpc::GetSPVProofResponse>;
-
-    fn verify_spv_proof(&self, o: ::grpc::RequestOptions, p: super::rpc::VerifySPVProofRequest) -> ::grpc::SingleResponse<super::rpc::VerifySPVProofResponse>;
+    fn forwarding_history(&self, o: ::grpc::RequestOptions, p: super::rpc::ForwardingHistoryRequest) -> ::grpc::SingleResponse<super::rpc::ForwardingHistoryResponse>;
 }
 
 // client
@@ -219,11 +273,14 @@ pub struct LightningClient {
     method_GetInfo: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::GetInfoRequest, super::rpc::GetInfoResponse>>,
     method_PendingChannels: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::PendingChannelsRequest, super::rpc::PendingChannelsResponse>>,
     method_ListChannels: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ListChannelsRequest, super::rpc::ListChannelsResponse>>,
+    method_ClosedChannels: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ClosedChannelsRequest, super::rpc::ClosedChannelsResponse>>,
     method_OpenChannelSync: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::OpenChannelRequest, super::rpc::ChannelPoint>>,
     method_OpenChannel: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::OpenChannelRequest, super::rpc::OpenStatusUpdate>>,
     method_CloseChannel: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::CloseChannelRequest, super::rpc::CloseStatusUpdate>>,
     method_SendPayment: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::SendRequest, super::rpc::SendResponse>>,
     method_SendPaymentSync: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::SendRequest, super::rpc::SendResponse>>,
+    method_SendToRoute: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::SendToRouteRequest, super::rpc::SendResponse>>,
+    method_SendToRouteSync: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::SendToRouteRequest, super::rpc::SendResponse>>,
     method_AddInvoice: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::Invoice, super::rpc::AddInvoiceResponse>>,
     method_ListInvoices: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ListInvoiceRequest, super::rpc::ListInvoiceResponse>>,
     method_LookupInvoice: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::PaymentHash, super::rpc::Invoice>>,
@@ -241,8 +298,7 @@ pub struct LightningClient {
     method_DebugLevel: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::DebugLevelRequest, super::rpc::DebugLevelResponse>>,
     method_FeeReport: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::FeeReportRequest, super::rpc::FeeReportResponse>>,
     method_UpdateChannelPolicy: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::PolicyUpdateRequest, super::rpc::PolicyUpdateResponse>>,
-    method_GetSPVProof: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::GetSPVProofRequest, super::rpc::GetSPVProofResponse>>,
-    method_VerifySPVProof: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::VerifySPVProofRequest, super::rpc::VerifySPVProofResponse>>,
+    method_ForwardingHistory: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ForwardingHistoryRequest, super::rpc::ForwardingHistoryResponse>>,
 }
 
 impl LightningClient {
@@ -345,6 +401,12 @@ impl LightningClient {
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
             }),
+            method_ClosedChannels: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/ClosedChannels".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
             method_OpenChannelSync: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
                 name: "/lnrpc.Lightning/OpenChannelSync".to_string(),
                 streaming: ::grpc::rt::GrpcStreaming::Unary,
@@ -371,6 +433,18 @@ impl LightningClient {
             }),
             method_SendPaymentSync: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
                 name: "/lnrpc.Lightning/SendPaymentSync".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_SendToRoute: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/SendToRoute".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Bidi,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_SendToRouteSync: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/SendToRouteSync".to_string(),
                 streaming: ::grpc::rt::GrpcStreaming::Unary,
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
@@ -477,14 +551,8 @@ impl LightningClient {
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
             }),
-            method_GetSPVProof: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
-                name: "/lnrpc.Lightning/GetSPVProof".to_string(),
-                streaming: ::grpc::rt::GrpcStreaming::Unary,
-                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
-                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
-            }),
-            method_VerifySPVProof: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
-                name: "/lnrpc.Lightning/VerifySPVProof".to_string(),
+            method_ForwardingHistory: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/ForwardingHistory".to_string(),
                 streaming: ::grpc::rt::GrpcStreaming::Unary,
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
@@ -569,6 +637,10 @@ impl Lightning for LightningClient {
         self.grpc_client.call_unary(o, p, self.method_ListChannels.clone())
     }
 
+    fn closed_channels(&self, o: ::grpc::RequestOptions, p: super::rpc::ClosedChannelsRequest) -> ::grpc::SingleResponse<super::rpc::ClosedChannelsResponse> {
+        self.grpc_client.call_unary(o, p, self.method_ClosedChannels.clone())
+    }
+
     fn open_channel_sync(&self, o: ::grpc::RequestOptions, p: super::rpc::OpenChannelRequest) -> ::grpc::SingleResponse<super::rpc::ChannelPoint> {
         self.grpc_client.call_unary(o, p, self.method_OpenChannelSync.clone())
     }
@@ -587,6 +659,14 @@ impl Lightning for LightningClient {
 
     fn send_payment_sync(&self, o: ::grpc::RequestOptions, p: super::rpc::SendRequest) -> ::grpc::SingleResponse<super::rpc::SendResponse> {
         self.grpc_client.call_unary(o, p, self.method_SendPaymentSync.clone())
+    }
+
+    fn send_to_route(&self, o: ::grpc::RequestOptions, p: ::grpc::StreamingRequest<super::rpc::SendToRouteRequest>) -> ::grpc::StreamingResponse<super::rpc::SendResponse> {
+        self.grpc_client.call_bidi(o, p, self.method_SendToRoute.clone())
+    }
+
+    fn send_to_route_sync(&self, o: ::grpc::RequestOptions, p: super::rpc::SendToRouteRequest) -> ::grpc::SingleResponse<super::rpc::SendResponse> {
+        self.grpc_client.call_unary(o, p, self.method_SendToRouteSync.clone())
     }
 
     fn add_invoice(&self, o: ::grpc::RequestOptions, p: super::rpc::Invoice) -> ::grpc::SingleResponse<super::rpc::AddInvoiceResponse> {
@@ -657,12 +737,8 @@ impl Lightning for LightningClient {
         self.grpc_client.call_unary(o, p, self.method_UpdateChannelPolicy.clone())
     }
 
-    fn get_spv_proof(&self, o: ::grpc::RequestOptions, p: super::rpc::GetSPVProofRequest) -> ::grpc::SingleResponse<super::rpc::GetSPVProofResponse> {
-        self.grpc_client.call_unary(o, p, self.method_GetSPVProof.clone())
-    }
-
-    fn verify_spv_proof(&self, o: ::grpc::RequestOptions, p: super::rpc::VerifySPVProofRequest) -> ::grpc::SingleResponse<super::rpc::VerifySPVProofResponse> {
-        self.grpc_client.call_unary(o, p, self.method_VerifySPVProof.clone())
+    fn forwarding_history(&self, o: ::grpc::RequestOptions, p: super::rpc::ForwardingHistoryRequest) -> ::grpc::SingleResponse<super::rpc::ForwardingHistoryResponse> {
+        self.grpc_client.call_unary(o, p, self.method_ForwardingHistory.clone())
     }
 }
 
@@ -870,6 +946,18 @@ impl LightningServer {
                 ),
                 ::grpc::rt::ServerMethod::new(
                     ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/ClosedChannels".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.closed_channels(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
                         name: "/lnrpc.Lightning/OpenChannelSync".to_string(),
                         streaming: ::grpc::rt::GrpcStreaming::Unary,
                         req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
@@ -926,6 +1014,30 @@ impl LightningServer {
                     {
                         let handler_copy = handler_arc.clone();
                         ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.send_payment_sync(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/SendToRoute".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Bidi,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerBidi::new(move |o, p| handler_copy.send_to_route(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/SendToRouteSync".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.send_to_route_sync(o, p))
                     },
                 ),
                 ::grpc::rt::ServerMethod::new(
@@ -1134,26 +1246,14 @@ impl LightningServer {
                 ),
                 ::grpc::rt::ServerMethod::new(
                     ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
-                        name: "/lnrpc.Lightning/GetSPVProof".to_string(),
+                        name: "/lnrpc.Lightning/ForwardingHistory".to_string(),
                         streaming: ::grpc::rt::GrpcStreaming::Unary,
                         req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                         resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                     }),
                     {
                         let handler_copy = handler_arc.clone();
-                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.get_spv_proof(o, p))
-                    },
-                ),
-                ::grpc::rt::ServerMethod::new(
-                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
-                        name: "/lnrpc.Lightning/VerifySPVProof".to_string(),
-                        streaming: ::grpc::rt::GrpcStreaming::Unary,
-                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
-                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
-                    }),
-                    {
-                        let handler_copy = handler_arc.clone();
-                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.verify_spv_proof(o, p))
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.forwarding_history(o, p))
                     },
                 ),
             ],
