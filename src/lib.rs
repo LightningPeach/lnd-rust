@@ -16,35 +16,45 @@ use std::process::Command;
 use tls_api::TlsConnector;
 use tls_api::TlsConnectorBuilder;
 
-pub fn read_x509(x509_file: &str) -> std::io::Result<tls_api::Certificate> {
+use std::convert::AsRef;
+use std::path::Path;
+use std::io::Result as IOResult;
+
+use std::net::SocketAddr;
+
+pub fn read_x509<P: AsRef<Path>>(x509_file: P) -> IOResult<tls_api::Certificate> {
     use std::io::{Error, ErrorKind};
 
     let output = Command::new("openssl")
-                     .args(&["x509", "-outform", "der", "-in", x509_file])
-                     .output()?;
+        .args(&["x509", "-outform", "der", "-in"])
+        .arg(x509_file.as_ref().as_os_str())
+        .output()?;
+
     if !output.status.success() {
-        return Err(Error::new(ErrorKind::InvalidInput, String::from_utf8_lossy(&output.stderr).as_ref()));
+        let error = String::from_utf8_lossy(&output.stderr);
+        return Err(Error::new(ErrorKind::InvalidInput, error.as_ref()));
     }
     Ok(tls_api::Certificate::from_der(output.stdout))
 }
 
-pub fn create_grpc_client(socket_addr: &std::net::SocketAddr, host: &str, certificate: tls_api::Certificate, conf: grpc::ClientConf) -> grpc::Client {
-    let mut tls_connector_builder = tls_api_native_tls::TlsConnector::builder()
-        .unwrap();
+pub fn create_grpc_client(
+    socket_addr: &SocketAddr,
+    host: &str,
+    certificate: tls_api::Certificate,
+    conf: grpc::ClientConf
+) -> grpc::Client {
+    let tls_connector: tls_api_native_tls::TlsConnector = {
+        let mut tls_connector_builder = tls_api_native_tls::TlsConnector::builder()
+            .unwrap();
+        tls_connector_builder
+            .add_root_certificate(certificate)
+            .unwrap();
+        tls_connector_builder
+            .build()
+            .unwrap()
+    };
 
-    tls_connector_builder
-        .add_root_certificate(certificate)
-        .unwrap();
-
-    let tls_connector = tls_connector_builder
-        .build()
-        .unwrap();
-
-    let grpc_client = ::grpc::Client::new_expl::<tls_api_native_tls::TlsConnector>(
-        &socket_addr,
-        host,
-        httpbis::ClientTlsOption::Tls(host.to_owned(), Arc::new(tls_connector)),
-        conf
-    ).unwrap();
-    grpc_client
+    let tls = httpbis::ClientTlsOption::Tls(host.to_owned(), Arc::new(tls_connector));
+    ::grpc::Client::new_expl(&socket_addr, host, tls, conf)
+        .unwrap()
 }
