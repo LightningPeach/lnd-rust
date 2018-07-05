@@ -2,6 +2,8 @@
 name = "lnd-rust"
 version = "0.1.0"
 authors = ["BitfuryLightning <lightning@bitfury.com>"]
+description = "Rust binding for The Lightning Network Daemon"
+license = "MIT"
 
 [dependencies]
 protobuf = "2.*"
