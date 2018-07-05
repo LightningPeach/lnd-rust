@@ -47,12 +47,15 @@ fn main() {
         lnd_rust::rpc_grpc::LightningClient::with_client(grpc_client)
     };
 
+    let metadata = |macaroon_data: &MacaroonData|
+        grpc::RequestOptions { metadata: macaroon_data.metadata(), };
+
     let req = lnd_rust::rpc::GetInfoRequest::new();
-    let resp = client.get_info(macaroon_data.metadata(), req);
+    let resp = client.get_info(metadata(&macaroon_data), req);
     println!("{:?}", resp.wait());
 
     let wallet_req = lnd_rust::rpc::WalletBalanceRequest::new();
-    let wallet_resp = client.wallet_balance(macaroon_data.metadata(), wallet_req);
+    let wallet_resp = client.wallet_balance(metadata(&macaroon_data), wallet_req);
     let w = wallet_resp.wait().unwrap().1;
     println!("{:?}\n", w);
 }

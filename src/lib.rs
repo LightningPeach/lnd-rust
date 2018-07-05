@@ -21,11 +21,14 @@ use std::convert::AsRef;
 use std::path::Path;
 use std::io::Result as IOResult;
 
+/// Represents bytes of the certificate
+/// could be used to create `grpc::Client`
 pub struct TLSCertificate {
     raw: tls_api::Certificate,
 }
 
 impl TLSCertificate {
+    /// Reads the certificate in the der format from a file at the path
     pub fn from_der_path<P: AsRef<Path>>(path: P) -> IOResult<Self> {
         use std::io::{Error, ErrorKind};
 
@@ -44,6 +47,7 @@ impl TLSCertificate {
         })
     }
 
+    /// Creates the `grpc::Client` using this certificate
     pub fn create_client(
         self,
         socket_addr: &SocketAddr,
@@ -67,11 +71,13 @@ impl TLSCertificate {
     }
 }
 
+/// Represents the bytes of the macaroon
 pub struct MacaroonData {
     raw: Vec<u8>,
 }
 
 impl MacaroonData {
+    /// Reads the macaroon data from a file at the path
     pub fn from_file_path<P: AsRef<Path>>(path: P) -> IOResult<Self> {
         use std::io::{Error, ErrorKind};
 
@@ -95,10 +101,11 @@ impl MacaroonData {
         }
     }
 
-    pub fn metadata(&self) -> grpc::RequestOptions {
+    /// Creates the `grpc::Metadata` instance that contain the provided macaroon
+    pub fn metadata(&self) -> grpc::Metadata {
         let macaroon = bytes::Bytes::from(self.raw.clone());
-        let mut options = grpc::RequestOptions::new();
-        options.metadata.add(grpc::MetadataKey::from("macaroon"), macaroon);
-        options
+        let mut metadata = grpc::Metadata::new();
+        metadata.add(grpc::MetadataKey::from("macaroon"), macaroon);
+        metadata
     }
 }
