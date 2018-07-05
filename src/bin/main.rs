@@ -11,9 +11,14 @@ use lnd_rust::TLSCertificate;
 use lnd_rust::MacaroonData;
 
 fn main() {
-    use std::net::{SocketAddr, IpAddr, Ipv4Addr};
+    use std::net::SocketAddr;
 
     println!("lnd-rust main");
+
+    if std::env::args().len() < 4 {
+        println!("Usage: cargo run -- %path_to_cert% %path_to_macaroon% %socket e.g. 127.0.0.1:100500%");
+        return
+    }
 
     let certificate = {
         let default_path = "/home/twenty/work/ln-ico/simple-simnet/bitcoin-bitcoind/rpc/rpc.cert";
@@ -24,12 +29,6 @@ fn main() {
             .unwrap()
     };
 
-    let client = {
-        let socket_addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), 10009);
-        let grpc_client = certificate.create_client(&socket_addr, "localhost", Default::default());
-        lnd_rust::rpc_grpc::LightningClient::with_client(grpc_client)
-    };
-
     let macaroon_data = {
         let default_path = "tools/data/lnd1/admin.macaroon";
         let macaroon_file_path = std::env::args()
@@ -37,6 +36,17 @@ fn main() {
             .unwrap_or(default_path.to_owned());
         MacaroonData::from_file_path(macaroon_file_path)
             .unwrap()
+    };
+
+    let client = {
+        let default = "127.0.0.1:10009";
+        let socket_addr_string = std::env::args()
+            .into_iter().skip(3).next()
+            .unwrap_or(default.to_owned());
+        let socket_addr: SocketAddr = socket_addr_string.parse().unwrap();
+        let host = socket_addr.ip().to_string();
+        let grpc_client = certificate.create_client(&socket_addr, host.as_str(), Default::default());
+        lnd_rust::rpc_grpc::LightningClient::with_client(grpc_client)
     };
 
     let req = lnd_rust::rpc::GetInfoRequest::new();

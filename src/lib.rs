@@ -11,7 +11,7 @@ pub mod rpc;
 pub mod rpc_grpc;
 
 use std::sync::Arc;
-
+use std::net::SocketAddr;
 use std::process::Command;
 
 use tls_api::TlsConnector;
@@ -20,8 +20,6 @@ use tls_api::TlsConnectorBuilder;
 use std::convert::AsRef;
 use std::path::Path;
 use std::io::Result as IOResult;
-
-use std::net::SocketAddr;
 
 pub struct TLSCertificate {
     raw: tls_api::Certificate,
@@ -33,7 +31,7 @@ impl TLSCertificate {
 
         let output = Command::new("openssl")
             .args(&["x509", "-outform", "der", "-in"])
-            .arg(path.as_ref().as_os_str())
+            .arg(path.as_ref())
             .output()?;
 
         if !output.status.success() {
