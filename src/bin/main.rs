@@ -21,19 +21,17 @@ fn main() {
     }
 
     let certificate = {
-        let default_path = "/home/twenty/work/ln-ico/simple-simnet/bitcoin-bitcoind/rpc/rpc.cert";
         let cert_filename = std::env::args()
             .into_iter().skip(1).next()
-            .unwrap_or(default_path.to_owned());
+            .unwrap();
         TLSCertificate::from_der_path(cert_filename)
             .unwrap()
     };
 
     let macaroon_data = {
-        let default_path = "tools/data/lnd1/admin.macaroon";
         let macaroon_file_path = std::env::args()
             .into_iter().skip(2).next()
-            .unwrap_or(default_path.to_owned());
+            .unwrap();
         MacaroonData::from_file_path(macaroon_file_path)
             .unwrap()
     };
