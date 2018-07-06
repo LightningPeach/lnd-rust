@@ -1,7 +1,7 @@
 [package]
 name = "lnd-rust"
-version = "0.1.0"
-authors = ["BitfuryLightning <lightning@bitfury.com>"]
+version = "0.1.1"
+authors = ["LightningPeach <lightning@bitfury.com>"]
 description = "Rust binding to the Lightning Network Daemon"
 readme = "README.md"
 license = "MIT"
