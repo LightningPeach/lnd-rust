@@ -4,11 +4,13 @@ The rust-lnd is the rust binding to the Lightning Network Daemon.
 
 ## Requirements
 
-Go and lnd is required to generate the additional code and build the package.
+Go and lnd are required to generate the additional code and build the package.
 
 ## Updating
 
 The file `protos/rpc.proto` should be synced with `https://github.com/lightningnetwork/lnd/blob/master/lnrpc/rpc.proto`.
+
+Tested with the Lightning Network Daemon version "0.4.2".
 
 ## Usage
 
