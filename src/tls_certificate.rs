@@ -34,26 +34,14 @@ impl TLSCertificate {
     }
 
     /// Creates the tls using this certificate
-    pub fn into_tls(
-        self,
-        host: &str,
-    ) -> tls_api::Result<ClientTlsOption<TlsConnector>> {
+    pub fn into_tls(self, host: &str) -> tls_api::Result<ClientTlsOption<TlsConnector>> {
         use self::ClientTlsOption::*;
-        use self::tls_api::TlsConnector as A;
         use self::tls_api::TlsConnectorBuilder;
 
-        let mut builder = TlsConnector::builder()?;
+        let mut builder = <TlsConnector as tls_api::TlsConnector>::builder()?;
         builder.add_root_certificate(self.raw)?;
         builder
             .build()
             .map(|connector| Tls(host.to_owned(), Arc::new(connector)))
-        /*let mut builder = <tls_api_native_tls::TlsConnector as tls_api::TlsConnector>::builder();
-        builder
-            .and_then(|builder| {
-                builder.add_root_certificate(self.raw)?.build()
-            })
-            .map(|connector|
-                httpbis::ClientTlsOption::Tls(host.to_owned(), Arc::new(connector))
-            )*/
     }
 }
