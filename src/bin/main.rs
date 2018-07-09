@@ -43,8 +43,13 @@ fn main() {
             .unwrap_or(default.to_owned());
         let socket_addr: SocketAddr = socket_addr_string.parse().unwrap();
         let host = socket_addr.ip().to_string();
-        let grpc_client = certificate.create_client(&socket_addr, host.as_str(), Default::default());
-        LightningClient::with_client(grpc_client)
+        let conf = Default::default();
+
+        let tls = certificate.into_tls(host.as_str())
+            .unwrap();
+        let c = grpc::Client::new_expl(&socket_addr, host.as_str(), tls, conf)
+            .unwrap();
+        LightningClient::with_client(c)
     };
 
     let metadata = |macaroon_data: &MacaroonData|

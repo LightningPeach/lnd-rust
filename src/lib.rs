@@ -11,7 +11,6 @@ pub mod rpc;
 pub mod rpc_grpc;
 
 use std::sync::Arc;
-use std::net::SocketAddr;
 use std::process::Command;
 
 use tls_api::TlsConnector;
@@ -47,27 +46,19 @@ impl TLSCertificate {
         })
     }
 
-    /// Creates the `grpc::Client` using this certificate
-    pub fn create_client(
+    /// Creates the tls using this certificate
+    pub fn into_tls(
         self,
-        socket_addr: &SocketAddr,
         host: &str,
-        conf: grpc::ClientConf
-    ) -> grpc::Client {
-        let connector: tls_api_native_tls::TlsConnector = {
-            let mut builder = tls_api_native_tls::TlsConnector::builder()
-                .unwrap();
-            builder
-                .add_root_certificate(self.raw)
-                .unwrap();
-            builder
-                .build()
-                .unwrap()
-        };
-
-        let tls = httpbis::ClientTlsOption::Tls(host.to_owned(), Arc::new(connector));
-        grpc::Client::new_expl(&socket_addr, host, tls, conf)
-            .unwrap()
+    ) -> tls_api::Result<httpbis::ClientTlsOption<tls_api_native_tls::TlsConnector>> {
+        tls_api_native_tls::TlsConnector::builder()
+            .and_then(|mut builder| {
+                builder.add_root_certificate(self.raw)?;
+                builder.build()
+            })
+            .map(|connector|
+                httpbis::ClientTlsOption::Tls(host.to_owned(), Arc::new(connector))
+            )
     }
 }
 
