@@ -29,7 +29,8 @@ let lightning_client = {
     let certificate = lnd_rust::TLSCertificate::from_der_path("path/to/file.crt").unwrap();
     let config = Default::default();
     let socket = "127.0.0.1:9000".parse().unwrap();
-    let grpc_client = certificate.create_client(&socket, "localhost", config);
+    let tls = certificate.into_tls("localhost").unwrap();
+    let grpc_client = grpc::Client::new_expl(&socket_addr, "localhost", tls, config).unwrap();
     lnd_rust::rpc_grpc::LightningClient::with_client(grpc_client)
 };
 ```
