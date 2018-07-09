@@ -3,8 +3,8 @@ extern crate lnd_rust;
 
 use lnd_rust::rpc_grpc::LightningClient;
 use lnd_rust::rpc_grpc::Lightning;
-use lnd_rust::TLSCertificate;
-use lnd_rust::MacaroonData;
+use lnd_rust::tls_certificate::TLSCertificate;
+use lnd_rust::macaroon_data::MacaroonData;
 
 use lnd_rust::rpc;
 
