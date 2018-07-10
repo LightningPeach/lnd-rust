@@ -1,6 +1,6 @@
-# rust-lnd
+# lnd-rust
 
-The rust-lnd is the rust binding to the Lightning Network Daemon.
+The lnd-rust is the rust binding to the Lightning Network Daemon.
 
 ## Requirements
 
@@ -18,7 +18,7 @@ First, add the following to `Cargo.toml`:
 
 ```toml
 [dependencies]
-rust-lnd = "0.1"
+lnd-rust = "0.1"
 grpc = "0.5.0"
 ```
 
