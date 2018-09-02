@@ -24,7 +24,7 @@ fn main() {
         let cert_filename = std::env::args()
             .into_iter().skip(1).next()
             .unwrap();
-        TLSCertificate::from_der_path(cert_filename)
+        TLSCertificate::from_path(cert_filename)
             .unwrap()
     };
 

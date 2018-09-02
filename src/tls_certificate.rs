@@ -14,8 +14,9 @@ pub struct TLSCertificate {
 }
 
 impl TLSCertificate {
-    /// Reads the certificate in the der format from a file at the path
-    pub fn from_der_path<P: AsRef<Path>>(path: P) -> Result<Self> {
+    /// Reads the certificate in the pem format (other formats might work too, not tested)
+    /// from a file at the path
+    pub fn from_path<P: AsRef<Path>>(path: P) -> Result<Self> {
         use std::io::{Error, ErrorKind};
 
         let output = Command::new("openssl")
