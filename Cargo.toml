@@ -1,10 +1,11 @@
 [package]
 name = "lnd-rust"
-version = "0.3.2"
+version = "0.3.3"
 authors = ["LightningPeach <contact@lightningpeach.com>"]
 description = "Rust binding to the Lightning Network Daemon"
 readme = "README.md"
 license = "MIT"
+repository = "https://github.com/LightningPeach/lnd-rust"
 
 [dependencies]
 protobuf = "2.*"
