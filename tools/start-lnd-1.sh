@@ -24,4 +24,5 @@ lnd \
     --bitcoind.rpchost=localhost:18443 \
     --bitcoind.rpcuser=user \
     --bitcoind.rpcpass=password \
-    --bitcoind.zmqpath=tcp://127.0.0.1:18501
+    --bitcoind.zmqpubrawblock=tcp://127.0.0.1:18501 \
+    --bitcoind.zmqpubrawtx=tcp://127.0.0.1:18501

@@ -1,6 +1,6 @@
 [package]
 name = "lnd-rust"
-version = "0.3.3"
+version = "0.3.4"
 authors = ["LightningPeach <contact@lightningpeach.com>"]
 description = "Rust binding to the Lightning Network Daemon"
 readme = "README.md"

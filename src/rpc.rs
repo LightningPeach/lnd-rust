@@ -4922,126 +4922,6 @@ impl ::protobuf::reflect::ProtobufValue for NewAddressRequest_AddressType {
 }
 
 #[derive(PartialEq,Clone,Default)]
-pub struct NewWitnessAddressRequest {
-    // special fields
-    unknown_fields: ::protobuf::UnknownFields,
-    cached_size: ::protobuf::CachedSize,
-}
-
-impl NewWitnessAddressRequest {
-    pub fn new() -> NewWitnessAddressRequest {
-        ::std::default::Default::default()
-    }
-}
-
-impl ::protobuf::Message for NewWitnessAddressRequest {
-    fn is_initialized(&self) -> bool {
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &::std::any::Any {
-        self as &::std::any::Any
-    }
-    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
-        self as &mut ::std::any::Any
-    }
-    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> NewWitnessAddressRequest {
-        NewWitnessAddressRequest::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
-            lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
-        };
-        unsafe {
-            descriptor.get(|| {
-                let fields = ::std::vec::Vec::new();
-                ::protobuf::reflect::MessageDescriptor::new::<NewWitnessAddressRequest>(
-                    "NewWitnessAddressRequest",
-                    fields,
-                    file_descriptor_proto()
-                )
-            })
-        }
-    }
-
-    fn default_instance() -> &'static NewWitnessAddressRequest {
-        static mut instance: ::protobuf::lazy::Lazy<NewWitnessAddressRequest> = ::protobuf::lazy::Lazy {
-            lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const NewWitnessAddressRequest,
-        };
-        unsafe {
-            instance.get(NewWitnessAddressRequest::new)
-        }
-    }
-}
-
-impl ::protobuf::Clear for NewWitnessAddressRequest {
-    fn clear(&mut self) {
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for NewWitnessAddressRequest {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for NewWitnessAddressRequest {
-    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
-        ::protobuf::reflect::ProtobufValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq,Clone,Default)]
 pub struct NewAddressResponse {
     // message fields
     pub address: ::std::string::String,
@@ -8494,6 +8374,7 @@ pub enum ChannelCloseSummary_ClosureType {
     REMOTE_FORCE_CLOSE = 2,
     BREACH_CLOSE = 3,
     FUNDING_CANCELED = 4,
+    ABANDONED = 5,
 }
 
 impl ::protobuf::ProtobufEnum for ChannelCloseSummary_ClosureType {
@@ -8508,6 +8389,7 @@ impl ::protobuf::ProtobufEnum for ChannelCloseSummary_ClosureType {
             2 => ::std::option::Option::Some(ChannelCloseSummary_ClosureType::REMOTE_FORCE_CLOSE),
             3 => ::std::option::Option::Some(ChannelCloseSummary_ClosureType::BREACH_CLOSE),
             4 => ::std::option::Option::Some(ChannelCloseSummary_ClosureType::FUNDING_CANCELED),
+            5 => ::std::option::Option::Some(ChannelCloseSummary_ClosureType::ABANDONED),
             _ => ::std::option::Option::None
         }
     }
@@ -8519,6 +8401,7 @@ impl ::protobuf::ProtobufEnum for ChannelCloseSummary_ClosureType {
             ChannelCloseSummary_ClosureType::REMOTE_FORCE_CLOSE,
             ChannelCloseSummary_ClosureType::BREACH_CLOSE,
             ChannelCloseSummary_ClosureType::FUNDING_CANCELED,
+            ChannelCloseSummary_ClosureType::ABANDONED,
         ];
         values
     }
@@ -8559,6 +8442,7 @@ pub struct ClosedChannelsRequest {
     pub remote_force: bool,
     pub breach: bool,
     pub funding_canceled: bool,
+    pub abandoned: bool,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -8643,6 +8527,21 @@ impl ClosedChannelsRequest {
     pub fn get_funding_canceled(&self) -> bool {
         self.funding_canceled
     }
+
+    // bool abandoned = 6;
+
+    pub fn clear_abandoned(&mut self) {
+        self.abandoned = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_abandoned(&mut self, v: bool) {
+        self.abandoned = v;
+    }
+
+    pub fn get_abandoned(&self) -> bool {
+        self.abandoned
+    }
 }
 
 impl ::protobuf::Message for ClosedChannelsRequest {
@@ -8689,6 +8588,13 @@ impl ::protobuf::Message for ClosedChannelsRequest {
                     let tmp = is.read_bool()?;
                     self.funding_canceled = tmp;
                 },
+                6 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.abandoned = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -8716,6 +8622,9 @@ impl ::protobuf::Message for ClosedChannelsRequest {
         if self.funding_canceled != false {
             my_size += 2;
         }
+        if self.abandoned != false {
+            my_size += 2;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -8736,6 +8645,9 @@ impl ::protobuf::Message for ClosedChannelsRequest {
         }
         if self.funding_canceled != false {
             os.write_bool(5, self.funding_canceled)?;
+        }
+        if self.abandoned != false {
+            os.write_bool(6, self.abandoned)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -8804,6 +8716,11 @@ impl ::protobuf::Message for ClosedChannelsRequest {
                     |m: &ClosedChannelsRequest| { &m.funding_canceled },
                     |m: &mut ClosedChannelsRequest| { &mut m.funding_canceled },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                    "abandoned",
+                    |m: &ClosedChannelsRequest| { &m.abandoned },
+                    |m: &mut ClosedChannelsRequest| { &mut m.abandoned },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<ClosedChannelsRequest>(
                     "ClosedChannelsRequest",
                     fields,
@@ -8831,6 +8748,7 @@ impl ::protobuf::Clear for ClosedChannelsRequest {
         self.clear_remote_force();
         self.clear_breach();
         self.clear_funding_canceled();
+        self.clear_abandoned();
         self.unknown_fields.clear();
     }
 }
@@ -9858,6 +9776,7 @@ pub struct GetInfoResponse {
     pub uris: ::protobuf::RepeatedField<::std::string::String>,
     pub best_header_timestamp: i64,
     pub version: ::std::string::String,
+    pub num_inactive_channels: u32,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -10126,6 +10045,21 @@ impl GetInfoResponse {
     pub fn get_version(&self) -> &str {
         &self.version
     }
+
+    // uint32 num_inactive_channels = 15;
+
+    pub fn clear_num_inactive_channels(&mut self) {
+        self.num_inactive_channels = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_num_inactive_channels(&mut self, v: u32) {
+        self.num_inactive_channels = v;
+    }
+
+    pub fn get_num_inactive_channels(&self) -> u32 {
+        self.num_inactive_channels
+    }
 }
 
 impl ::protobuf::Message for GetInfoResponse {
@@ -10204,6 +10138,13 @@ impl ::protobuf::Message for GetInfoResponse {
                 14 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.version)?;
                 },
+                15 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.num_inactive_channels = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -10255,6 +10196,9 @@ impl ::protobuf::Message for GetInfoResponse {
         if !self.version.is_empty() {
             my_size += ::protobuf::rt::string_size(14, &self.version);
         }
+        if self.num_inactive_channels != 0 {
+            my_size += ::protobuf::rt::value_size(15, self.num_inactive_channels, ::protobuf::wire_format::WireTypeVarint);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -10299,6 +10243,9 @@ impl ::protobuf::Message for GetInfoResponse {
         }
         if !self.version.is_empty() {
             os.write_string(14, &self.version)?;
+        }
+        if self.num_inactive_channels != 0 {
+            os.write_uint32(15, self.num_inactive_channels)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -10407,6 +10354,11 @@ impl ::protobuf::Message for GetInfoResponse {
                     |m: &GetInfoResponse| { &m.version },
                     |m: &mut GetInfoResponse| { &mut m.version },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                    "num_inactive_channels",
+                    |m: &GetInfoResponse| { &m.num_inactive_channels },
+                    |m: &mut GetInfoResponse| { &mut m.num_inactive_channels },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<GetInfoResponse>(
                     "GetInfoResponse",
                     fields,
@@ -10442,6 +10394,7 @@ impl ::protobuf::Clear for GetInfoResponse {
         self.clear_uris();
         self.clear_best_header_timestamp();
         self.clear_version();
+        self.clear_num_inactive_channels();
         self.unknown_fields.clear();
     }
 }
@@ -11922,6 +11875,8 @@ pub struct OpenChannelRequest {
     pub private: bool,
     pub min_htlc_msat: i64,
     pub remote_csv_delay: u32,
+    pub min_confs: i32,
+    pub spend_unconfirmed: bool,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -12088,6 +12043,36 @@ impl OpenChannelRequest {
     pub fn get_remote_csv_delay(&self) -> u32 {
         self.remote_csv_delay
     }
+
+    // int32 min_confs = 11;
+
+    pub fn clear_min_confs(&mut self) {
+        self.min_confs = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_min_confs(&mut self, v: i32) {
+        self.min_confs = v;
+    }
+
+    pub fn get_min_confs(&self) -> i32 {
+        self.min_confs
+    }
+
+    // bool spend_unconfirmed = 12;
+
+    pub fn clear_spend_unconfirmed(&mut self) {
+        self.spend_unconfirmed = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_spend_unconfirmed(&mut self, v: bool) {
+        self.spend_unconfirmed = v;
+    }
+
+    pub fn get_spend_unconfirmed(&self) -> bool {
+        self.spend_unconfirmed
+    }
 }
 
 impl ::protobuf::Message for OpenChannelRequest {
@@ -12154,6 +12139,20 @@ impl ::protobuf::Message for OpenChannelRequest {
                     let tmp = is.read_uint32()?;
                     self.remote_csv_delay = tmp;
                 },
+                11 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int32()?;
+                    self.min_confs = tmp;
+                },
+                12 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.spend_unconfirmed = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -12193,6 +12192,12 @@ impl ::protobuf::Message for OpenChannelRequest {
         if self.remote_csv_delay != 0 {
             my_size += ::protobuf::rt::value_size(10, self.remote_csv_delay, ::protobuf::wire_format::WireTypeVarint);
         }
+        if self.min_confs != 0 {
+            my_size += ::protobuf::rt::value_size(11, self.min_confs, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.spend_unconfirmed != false {
+            my_size += 2;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -12225,6 +12230,12 @@ impl ::protobuf::Message for OpenChannelRequest {
         }
         if self.remote_csv_delay != 0 {
             os.write_uint32(10, self.remote_csv_delay)?;
+        }
+        if self.min_confs != 0 {
+            os.write_int32(11, self.min_confs)?;
+        }
+        if self.spend_unconfirmed != false {
+            os.write_bool(12, self.spend_unconfirmed)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -12313,6 +12324,16 @@ impl ::protobuf::Message for OpenChannelRequest {
                     |m: &OpenChannelRequest| { &m.remote_csv_delay },
                     |m: &mut OpenChannelRequest| { &mut m.remote_csv_delay },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt32>(
+                    "min_confs",
+                    |m: &OpenChannelRequest| { &m.min_confs },
+                    |m: &mut OpenChannelRequest| { &mut m.min_confs },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                    "spend_unconfirmed",
+                    |m: &OpenChannelRequest| { &m.spend_unconfirmed },
+                    |m: &mut OpenChannelRequest| { &mut m.spend_unconfirmed },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<OpenChannelRequest>(
                     "OpenChannelRequest",
                     fields,
@@ -12344,6 +12365,8 @@ impl ::protobuf::Clear for OpenChannelRequest {
         self.clear_private();
         self.clear_min_htlc_msat();
         self.clear_remote_csv_delay();
+        self.clear_min_confs();
+        self.clear_spend_unconfirmed();
         self.unknown_fields.clear();
     }
 }
@@ -16164,6 +16187,7 @@ pub struct Hop {
     pub expiry: u32,
     pub amt_to_forward_msat: i64,
     pub fee_msat: i64,
+    pub pub_key: ::std::string::String,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -16278,6 +16302,32 @@ impl Hop {
     pub fn get_fee_msat(&self) -> i64 {
         self.fee_msat
     }
+
+    // string pub_key = 8;
+
+    pub fn clear_pub_key(&mut self) {
+        self.pub_key.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_pub_key(&mut self, v: ::std::string::String) {
+        self.pub_key = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_pub_key(&mut self) -> &mut ::std::string::String {
+        &mut self.pub_key
+    }
+
+    // Take field
+    pub fn take_pub_key(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.pub_key, ::std::string::String::new())
+    }
+
+    pub fn get_pub_key(&self) -> &str {
+        &self.pub_key
+    }
 }
 
 impl ::protobuf::Message for Hop {
@@ -16338,6 +16388,9 @@ impl ::protobuf::Message for Hop {
                     let tmp = is.read_int64()?;
                     self.fee_msat = tmp;
                 },
+                8 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.pub_key)?;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -16371,6 +16424,9 @@ impl ::protobuf::Message for Hop {
         if self.fee_msat != 0 {
             my_size += ::protobuf::rt::value_size(7, self.fee_msat, ::protobuf::wire_format::WireTypeVarint);
         }
+        if !self.pub_key.is_empty() {
+            my_size += ::protobuf::rt::string_size(8, &self.pub_key);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -16397,6 +16453,9 @@ impl ::protobuf::Message for Hop {
         }
         if self.fee_msat != 0 {
             os.write_int64(7, self.fee_msat)?;
+        }
+        if !self.pub_key.is_empty() {
+            os.write_string(8, &self.pub_key)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -16475,6 +16534,11 @@ impl ::protobuf::Message for Hop {
                     |m: &Hop| { &m.fee_msat },
                     |m: &mut Hop| { &mut m.fee_msat },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                    "pub_key",
+                    |m: &Hop| { &m.pub_key },
+                    |m: &mut Hop| { &mut m.pub_key },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<Hop>(
                     "Hop",
                     fields,
@@ -16504,6 +16568,7 @@ impl ::protobuf::Clear for Hop {
         self.clear_expiry();
         self.clear_amt_to_forward_msat();
         self.clear_fee_msat();
+        self.clear_pub_key();
         self.unknown_fields.clear();
     }
 }
@@ -17819,6 +17884,7 @@ pub struct RoutingPolicy {
     pub min_htlc: i64,
     pub fee_base_msat: i64,
     pub fee_rate_milli_msat: i64,
+    pub disabled: bool,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -17888,6 +17954,21 @@ impl RoutingPolicy {
     pub fn get_fee_rate_milli_msat(&self) -> i64 {
         self.fee_rate_milli_msat
     }
+
+    // bool disabled = 5;
+
+    pub fn clear_disabled(&mut self) {
+        self.disabled = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_disabled(&mut self, v: bool) {
+        self.disabled = v;
+    }
+
+    pub fn get_disabled(&self) -> bool {
+        self.disabled
+    }
 }
 
 impl ::protobuf::Message for RoutingPolicy {
@@ -17927,6 +18008,13 @@ impl ::protobuf::Message for RoutingPolicy {
                     let tmp = is.read_int64()?;
                     self.fee_rate_milli_msat = tmp;
                 },
+                5 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.disabled = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -17951,6 +18039,9 @@ impl ::protobuf::Message for RoutingPolicy {
         if self.fee_rate_milli_msat != 0 {
             my_size += ::protobuf::rt::value_size(4, self.fee_rate_milli_msat, ::protobuf::wire_format::WireTypeVarint);
         }
+        if self.disabled != false {
+            my_size += 2;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -17968,6 +18059,9 @@ impl ::protobuf::Message for RoutingPolicy {
         }
         if self.fee_rate_milli_msat != 0 {
             os.write_int64(4, self.fee_rate_milli_msat)?;
+        }
+        if self.disabled != false {
+            os.write_bool(5, self.disabled)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -18031,6 +18125,11 @@ impl ::protobuf::Message for RoutingPolicy {
                     |m: &RoutingPolicy| { &m.fee_rate_milli_msat },
                     |m: &mut RoutingPolicy| { &mut m.fee_rate_milli_msat },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                    "disabled",
+                    |m: &RoutingPolicy| { &m.disabled },
+                    |m: &mut RoutingPolicy| { &mut m.disabled },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<RoutingPolicy>(
                     "RoutingPolicy",
                     fields,
@@ -18057,6 +18156,7 @@ impl ::protobuf::Clear for RoutingPolicy {
         self.clear_min_htlc();
         self.clear_fee_base_msat();
         self.clear_fee_rate_milli_msat();
+        self.clear_disabled();
         self.unknown_fields.clear();
     }
 }
@@ -18541,6 +18641,8 @@ impl ::protobuf::reflect::ProtobufValue for ChannelEdge {
 
 #[derive(PartialEq,Clone,Default)]
 pub struct ChannelGraphRequest {
+    // message fields
+    pub include_unannounced: bool,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -18549,6 +18651,21 @@ pub struct ChannelGraphRequest {
 impl ChannelGraphRequest {
     pub fn new() -> ChannelGraphRequest {
         ::std::default::Default::default()
+    }
+
+    // bool include_unannounced = 1;
+
+    pub fn clear_include_unannounced(&mut self) {
+        self.include_unannounced = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_include_unannounced(&mut self, v: bool) {
+        self.include_unannounced = v;
+    }
+
+    pub fn get_include_unannounced(&self) -> bool {
+        self.include_unannounced
     }
 }
 
@@ -18561,6 +18678,13 @@ impl ::protobuf::Message for ChannelGraphRequest {
         while !is.eof()? {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.include_unannounced = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -18573,12 +18697,18 @@ impl ::protobuf::Message for ChannelGraphRequest {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
+        if self.include_unannounced != false {
+            my_size += 2;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.include_unannounced != false {
+            os.write_bool(1, self.include_unannounced)?;
+        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -18620,7 +18750,12 @@ impl ::protobuf::Message for ChannelGraphRequest {
         };
         unsafe {
             descriptor.get(|| {
-                let fields = ::std::vec::Vec::new();
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                    "include_unannounced",
+                    |m: &ChannelGraphRequest| { &m.include_unannounced },
+                    |m: &mut ChannelGraphRequest| { &mut m.include_unannounced },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<ChannelGraphRequest>(
                     "ChannelGraphRequest",
                     fields,
@@ -18643,6 +18778,7 @@ impl ::protobuf::Message for ChannelGraphRequest {
 
 impl ::protobuf::Clear for ChannelGraphRequest {
     fn clear(&mut self) {
+        self.clear_include_unannounced();
         self.unknown_fields.clear();
     }
 }
@@ -21669,6 +21805,11 @@ pub struct Invoice {
     pub cltv_expiry: u64,
     pub route_hints: ::protobuf::RepeatedField<RouteHint>,
     pub private: bool,
+    pub add_index: u64,
+    pub settle_index: u64,
+    pub amt_paid: i64,
+    pub amt_paid_sat: i64,
+    pub amt_paid_msat: i64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -21990,6 +22131,81 @@ impl Invoice {
     pub fn get_private(&self) -> bool {
         self.private
     }
+
+    // uint64 add_index = 16;
+
+    pub fn clear_add_index(&mut self) {
+        self.add_index = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_add_index(&mut self, v: u64) {
+        self.add_index = v;
+    }
+
+    pub fn get_add_index(&self) -> u64 {
+        self.add_index
+    }
+
+    // uint64 settle_index = 17;
+
+    pub fn clear_settle_index(&mut self) {
+        self.settle_index = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_settle_index(&mut self, v: u64) {
+        self.settle_index = v;
+    }
+
+    pub fn get_settle_index(&self) -> u64 {
+        self.settle_index
+    }
+
+    // int64 amt_paid = 18;
+
+    pub fn clear_amt_paid(&mut self) {
+        self.amt_paid = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_amt_paid(&mut self, v: i64) {
+        self.amt_paid = v;
+    }
+
+    pub fn get_amt_paid(&self) -> i64 {
+        self.amt_paid
+    }
+
+    // int64 amt_paid_sat = 19;
+
+    pub fn clear_amt_paid_sat(&mut self) {
+        self.amt_paid_sat = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_amt_paid_sat(&mut self, v: i64) {
+        self.amt_paid_sat = v;
+    }
+
+    pub fn get_amt_paid_sat(&self) -> i64 {
+        self.amt_paid_sat
+    }
+
+    // int64 amt_paid_msat = 20;
+
+    pub fn clear_amt_paid_msat(&mut self) {
+        self.amt_paid_msat = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_amt_paid_msat(&mut self, v: i64) {
+        self.amt_paid_msat = v;
+    }
+
+    pub fn get_amt_paid_msat(&self) -> i64 {
+        self.amt_paid_msat
+    }
 }
 
 impl ::protobuf::Message for Invoice {
@@ -22079,6 +22295,41 @@ impl ::protobuf::Message for Invoice {
                     let tmp = is.read_bool()?;
                     self.private = tmp;
                 },
+                16 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.add_index = tmp;
+                },
+                17 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.settle_index = tmp;
+                },
+                18 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int64()?;
+                    self.amt_paid = tmp;
+                },
+                19 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int64()?;
+                    self.amt_paid_sat = tmp;
+                },
+                20 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int64()?;
+                    self.amt_paid_msat = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -22137,6 +22388,21 @@ impl ::protobuf::Message for Invoice {
         if self.private != false {
             my_size += 2;
         }
+        if self.add_index != 0 {
+            my_size += ::protobuf::rt::value_size(16, self.add_index, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.settle_index != 0 {
+            my_size += ::protobuf::rt::value_size(17, self.settle_index, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.amt_paid != 0 {
+            my_size += ::protobuf::rt::value_size(18, self.amt_paid, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.amt_paid_sat != 0 {
+            my_size += ::protobuf::rt::value_size(19, self.amt_paid_sat, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.amt_paid_msat != 0 {
+            my_size += ::protobuf::rt::value_size(20, self.amt_paid_msat, ::protobuf::wire_format::WireTypeVarint);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -22189,6 +22455,21 @@ impl ::protobuf::Message for Invoice {
         };
         if self.private != false {
             os.write_bool(15, self.private)?;
+        }
+        if self.add_index != 0 {
+            os.write_uint64(16, self.add_index)?;
+        }
+        if self.settle_index != 0 {
+            os.write_uint64(17, self.settle_index)?;
+        }
+        if self.amt_paid != 0 {
+            os.write_int64(18, self.amt_paid)?;
+        }
+        if self.amt_paid_sat != 0 {
+            os.write_int64(19, self.amt_paid_sat)?;
+        }
+        if self.amt_paid_msat != 0 {
+            os.write_int64(20, self.amt_paid_msat)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -22307,6 +22588,31 @@ impl ::protobuf::Message for Invoice {
                     |m: &Invoice| { &m.private },
                     |m: &mut Invoice| { &mut m.private },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                    "add_index",
+                    |m: &Invoice| { &m.add_index },
+                    |m: &mut Invoice| { &mut m.add_index },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                    "settle_index",
+                    |m: &Invoice| { &m.settle_index },
+                    |m: &mut Invoice| { &mut m.settle_index },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
+                    "amt_paid",
+                    |m: &Invoice| { &m.amt_paid },
+                    |m: &mut Invoice| { &mut m.amt_paid },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
+                    "amt_paid_sat",
+                    |m: &Invoice| { &m.amt_paid_sat },
+                    |m: &mut Invoice| { &mut m.amt_paid_sat },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
+                    "amt_paid_msat",
+                    |m: &Invoice| { &m.amt_paid_msat },
+                    |m: &mut Invoice| { &mut m.amt_paid_msat },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<Invoice>(
                     "Invoice",
                     fields,
@@ -22344,6 +22650,11 @@ impl ::protobuf::Clear for Invoice {
         self.clear_cltv_expiry();
         self.clear_route_hints();
         self.clear_private();
+        self.clear_add_index();
+        self.clear_settle_index();
+        self.clear_amt_paid();
+        self.clear_amt_paid_sat();
+        self.clear_amt_paid_msat();
         self.unknown_fields.clear();
     }
 }
@@ -22365,6 +22676,7 @@ pub struct AddInvoiceResponse {
     // message fields
     pub r_hash: ::std::vec::Vec<u8>,
     pub payment_request: ::std::string::String,
+    pub add_index: u64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -22426,6 +22738,21 @@ impl AddInvoiceResponse {
     pub fn get_payment_request(&self) -> &str {
         &self.payment_request
     }
+
+    // uint64 add_index = 16;
+
+    pub fn clear_add_index(&mut self) {
+        self.add_index = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_add_index(&mut self, v: u64) {
+        self.add_index = v;
+    }
+
+    pub fn get_add_index(&self) -> u64 {
+        self.add_index
+    }
 }
 
 impl ::protobuf::Message for AddInvoiceResponse {
@@ -22442,6 +22769,13 @@ impl ::protobuf::Message for AddInvoiceResponse {
                 },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.payment_request)?;
+                },
+                16 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.add_index = tmp;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -22461,6 +22795,9 @@ impl ::protobuf::Message for AddInvoiceResponse {
         if !self.payment_request.is_empty() {
             my_size += ::protobuf::rt::string_size(2, &self.payment_request);
         }
+        if self.add_index != 0 {
+            my_size += ::protobuf::rt::value_size(16, self.add_index, ::protobuf::wire_format::WireTypeVarint);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -22472,6 +22809,9 @@ impl ::protobuf::Message for AddInvoiceResponse {
         }
         if !self.payment_request.is_empty() {
             os.write_string(2, &self.payment_request)?;
+        }
+        if self.add_index != 0 {
+            os.write_uint64(16, self.add_index)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -22525,6 +22865,11 @@ impl ::protobuf::Message for AddInvoiceResponse {
                     |m: &AddInvoiceResponse| { &m.payment_request },
                     |m: &mut AddInvoiceResponse| { &mut m.payment_request },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                    "add_index",
+                    |m: &AddInvoiceResponse| { &m.add_index },
+                    |m: &mut AddInvoiceResponse| { &mut m.add_index },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<AddInvoiceResponse>(
                     "AddInvoiceResponse",
                     fields,
@@ -22549,6 +22894,7 @@ impl ::protobuf::Clear for AddInvoiceResponse {
     fn clear(&mut self) {
         self.clear_r_hash();
         self.clear_payment_request();
+        self.clear_add_index();
         self.unknown_fields.clear();
     }
 }
@@ -22774,6 +23120,9 @@ impl ::protobuf::reflect::ProtobufValue for PaymentHash {
 pub struct ListInvoiceRequest {
     // message fields
     pub pending_only: bool,
+    pub index_offset: u64,
+    pub num_max_invoices: u64,
+    pub reversed: bool,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -22798,6 +23147,51 @@ impl ListInvoiceRequest {
     pub fn get_pending_only(&self) -> bool {
         self.pending_only
     }
+
+    // uint64 index_offset = 4;
+
+    pub fn clear_index_offset(&mut self) {
+        self.index_offset = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_index_offset(&mut self, v: u64) {
+        self.index_offset = v;
+    }
+
+    pub fn get_index_offset(&self) -> u64 {
+        self.index_offset
+    }
+
+    // uint64 num_max_invoices = 5;
+
+    pub fn clear_num_max_invoices(&mut self) {
+        self.num_max_invoices = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_num_max_invoices(&mut self, v: u64) {
+        self.num_max_invoices = v;
+    }
+
+    pub fn get_num_max_invoices(&self) -> u64 {
+        self.num_max_invoices
+    }
+
+    // bool reversed = 6;
+
+    pub fn clear_reversed(&mut self) {
+        self.reversed = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_reversed(&mut self, v: bool) {
+        self.reversed = v;
+    }
+
+    pub fn get_reversed(&self) -> bool {
+        self.reversed
+    }
 }
 
 impl ::protobuf::Message for ListInvoiceRequest {
@@ -22816,6 +23210,27 @@ impl ::protobuf::Message for ListInvoiceRequest {
                     let tmp = is.read_bool()?;
                     self.pending_only = tmp;
                 },
+                4 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.index_offset = tmp;
+                },
+                5 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.num_max_invoices = tmp;
+                },
+                6 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.reversed = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -22831,6 +23246,15 @@ impl ::protobuf::Message for ListInvoiceRequest {
         if self.pending_only != false {
             my_size += 2;
         }
+        if self.index_offset != 0 {
+            my_size += ::protobuf::rt::value_size(4, self.index_offset, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.num_max_invoices != 0 {
+            my_size += ::protobuf::rt::value_size(5, self.num_max_invoices, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.reversed != false {
+            my_size += 2;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -22839,6 +23263,15 @@ impl ::protobuf::Message for ListInvoiceRequest {
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
         if self.pending_only != false {
             os.write_bool(1, self.pending_only)?;
+        }
+        if self.index_offset != 0 {
+            os.write_uint64(4, self.index_offset)?;
+        }
+        if self.num_max_invoices != 0 {
+            os.write_uint64(5, self.num_max_invoices)?;
+        }
+        if self.reversed != false {
+            os.write_bool(6, self.reversed)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -22887,6 +23320,21 @@ impl ::protobuf::Message for ListInvoiceRequest {
                     |m: &ListInvoiceRequest| { &m.pending_only },
                     |m: &mut ListInvoiceRequest| { &mut m.pending_only },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                    "index_offset",
+                    |m: &ListInvoiceRequest| { &m.index_offset },
+                    |m: &mut ListInvoiceRequest| { &mut m.index_offset },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                    "num_max_invoices",
+                    |m: &ListInvoiceRequest| { &m.num_max_invoices },
+                    |m: &mut ListInvoiceRequest| { &mut m.num_max_invoices },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                    "reversed",
+                    |m: &ListInvoiceRequest| { &m.reversed },
+                    |m: &mut ListInvoiceRequest| { &mut m.reversed },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<ListInvoiceRequest>(
                     "ListInvoiceRequest",
                     fields,
@@ -22910,6 +23358,9 @@ impl ::protobuf::Message for ListInvoiceRequest {
 impl ::protobuf::Clear for ListInvoiceRequest {
     fn clear(&mut self) {
         self.clear_pending_only();
+        self.clear_index_offset();
+        self.clear_num_max_invoices();
+        self.clear_reversed();
         self.unknown_fields.clear();
     }
 }
@@ -22930,6 +23381,8 @@ impl ::protobuf::reflect::ProtobufValue for ListInvoiceRequest {
 pub struct ListInvoiceResponse {
     // message fields
     pub invoices: ::protobuf::RepeatedField<Invoice>,
+    pub last_index_offset: u64,
+    pub first_index_offset: u64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -22964,6 +23417,36 @@ impl ListInvoiceResponse {
     pub fn get_invoices(&self) -> &[Invoice] {
         &self.invoices
     }
+
+    // uint64 last_index_offset = 2;
+
+    pub fn clear_last_index_offset(&mut self) {
+        self.last_index_offset = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_last_index_offset(&mut self, v: u64) {
+        self.last_index_offset = v;
+    }
+
+    pub fn get_last_index_offset(&self) -> u64 {
+        self.last_index_offset
+    }
+
+    // uint64 first_index_offset = 3;
+
+    pub fn clear_first_index_offset(&mut self) {
+        self.first_index_offset = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_first_index_offset(&mut self, v: u64) {
+        self.first_index_offset = v;
+    }
+
+    pub fn get_first_index_offset(&self) -> u64 {
+        self.first_index_offset
+    }
 }
 
 impl ::protobuf::Message for ListInvoiceResponse {
@@ -22983,6 +23466,20 @@ impl ::protobuf::Message for ListInvoiceResponse {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.invoices)?;
                 },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.last_index_offset = tmp;
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.first_index_offset = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -22999,6 +23496,12 @@ impl ::protobuf::Message for ListInvoiceResponse {
             let len = value.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
+        if self.last_index_offset != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.last_index_offset, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.first_index_offset != 0 {
+            my_size += ::protobuf::rt::value_size(3, self.first_index_offset, ::protobuf::wire_format::WireTypeVarint);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -23010,6 +23513,12 @@ impl ::protobuf::Message for ListInvoiceResponse {
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
         };
+        if self.last_index_offset != 0 {
+            os.write_uint64(2, self.last_index_offset)?;
+        }
+        if self.first_index_offset != 0 {
+            os.write_uint64(3, self.first_index_offset)?;
+        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -23057,6 +23566,16 @@ impl ::protobuf::Message for ListInvoiceResponse {
                     |m: &ListInvoiceResponse| { &m.invoices },
                     |m: &mut ListInvoiceResponse| { &mut m.invoices },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                    "last_index_offset",
+                    |m: &ListInvoiceResponse| { &m.last_index_offset },
+                    |m: &mut ListInvoiceResponse| { &mut m.last_index_offset },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                    "first_index_offset",
+                    |m: &ListInvoiceResponse| { &m.first_index_offset },
+                    |m: &mut ListInvoiceResponse| { &mut m.first_index_offset },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<ListInvoiceResponse>(
                     "ListInvoiceResponse",
                     fields,
@@ -23080,6 +23599,8 @@ impl ::protobuf::Message for ListInvoiceResponse {
 impl ::protobuf::Clear for ListInvoiceResponse {
     fn clear(&mut self) {
         self.clear_invoices();
+        self.clear_last_index_offset();
+        self.clear_first_index_offset();
         self.unknown_fields.clear();
     }
 }
@@ -23098,6 +23619,9 @@ impl ::protobuf::reflect::ProtobufValue for ListInvoiceResponse {
 
 #[derive(PartialEq,Clone,Default)]
 pub struct InvoiceSubscription {
+    // message fields
+    pub add_index: u64,
+    pub settle_index: u64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -23106,6 +23630,36 @@ pub struct InvoiceSubscription {
 impl InvoiceSubscription {
     pub fn new() -> InvoiceSubscription {
         ::std::default::Default::default()
+    }
+
+    // uint64 add_index = 1;
+
+    pub fn clear_add_index(&mut self) {
+        self.add_index = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_add_index(&mut self, v: u64) {
+        self.add_index = v;
+    }
+
+    pub fn get_add_index(&self) -> u64 {
+        self.add_index
+    }
+
+    // uint64 settle_index = 2;
+
+    pub fn clear_settle_index(&mut self) {
+        self.settle_index = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_settle_index(&mut self, v: u64) {
+        self.settle_index = v;
+    }
+
+    pub fn get_settle_index(&self) -> u64 {
+        self.settle_index
     }
 }
 
@@ -23118,6 +23672,20 @@ impl ::protobuf::Message for InvoiceSubscription {
         while !is.eof()? {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.add_index = tmp;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.settle_index = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -23130,12 +23698,24 @@ impl ::protobuf::Message for InvoiceSubscription {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
+        if self.add_index != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.add_index, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.settle_index != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.settle_index, ::protobuf::wire_format::WireTypeVarint);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.add_index != 0 {
+            os.write_uint64(1, self.add_index)?;
+        }
+        if self.settle_index != 0 {
+            os.write_uint64(2, self.settle_index)?;
+        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -23177,7 +23757,17 @@ impl ::protobuf::Message for InvoiceSubscription {
         };
         unsafe {
             descriptor.get(|| {
-                let fields = ::std::vec::Vec::new();
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                    "add_index",
+                    |m: &InvoiceSubscription| { &m.add_index },
+                    |m: &mut InvoiceSubscription| { &mut m.add_index },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                    "settle_index",
+                    |m: &InvoiceSubscription| { &m.settle_index },
+                    |m: &mut InvoiceSubscription| { &mut m.settle_index },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<InvoiceSubscription>(
                     "InvoiceSubscription",
                     fields,
@@ -23200,6 +23790,8 @@ impl ::protobuf::Message for InvoiceSubscription {
 
 impl ::protobuf::Clear for InvoiceSubscription {
     fn clear(&mut self) {
+        self.clear_add_index();
+        self.clear_settle_index();
         self.unknown_fields.clear();
     }
 }
@@ -23225,6 +23817,8 @@ pub struct Payment {
     pub path: ::protobuf::RepeatedField<::std::string::String>,
     pub fee: i64,
     pub payment_preimage: ::std::string::String,
+    pub value_sat: i64,
+    pub value_msat: i64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -23356,6 +23950,36 @@ impl Payment {
     pub fn get_payment_preimage(&self) -> &str {
         &self.payment_preimage
     }
+
+    // int64 value_sat = 7;
+
+    pub fn clear_value_sat(&mut self) {
+        self.value_sat = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_value_sat(&mut self, v: i64) {
+        self.value_sat = v;
+    }
+
+    pub fn get_value_sat(&self) -> i64 {
+        self.value_sat
+    }
+
+    // int64 value_msat = 8;
+
+    pub fn clear_value_msat(&mut self) {
+        self.value_msat = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_value_msat(&mut self, v: i64) {
+        self.value_msat = v;
+    }
+
+    pub fn get_value_msat(&self) -> i64 {
+        self.value_msat
+    }
 }
 
 impl ::protobuf::Message for Payment {
@@ -23397,6 +24021,20 @@ impl ::protobuf::Message for Payment {
                 6 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.payment_preimage)?;
                 },
+                7 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int64()?;
+                    self.value_sat = tmp;
+                },
+                8 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_int64()?;
+                    self.value_msat = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -23427,6 +24065,12 @@ impl ::protobuf::Message for Payment {
         if !self.payment_preimage.is_empty() {
             my_size += ::protobuf::rt::string_size(6, &self.payment_preimage);
         }
+        if self.value_sat != 0 {
+            my_size += ::protobuf::rt::value_size(7, self.value_sat, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.value_msat != 0 {
+            my_size += ::protobuf::rt::value_size(8, self.value_msat, ::protobuf::wire_format::WireTypeVarint);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -23450,6 +24094,12 @@ impl ::protobuf::Message for Payment {
         }
         if !self.payment_preimage.is_empty() {
             os.write_string(6, &self.payment_preimage)?;
+        }
+        if self.value_sat != 0 {
+            os.write_int64(7, self.value_sat)?;
+        }
+        if self.value_msat != 0 {
+            os.write_int64(8, self.value_msat)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -23523,6 +24173,16 @@ impl ::protobuf::Message for Payment {
                     |m: &Payment| { &m.payment_preimage },
                     |m: &mut Payment| { &mut m.payment_preimage },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
+                    "value_sat",
+                    |m: &Payment| { &m.value_sat },
+                    |m: &mut Payment| { &mut m.value_sat },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
+                    "value_msat",
+                    |m: &Payment| { &m.value_msat },
+                    |m: &mut Payment| { &mut m.value_msat },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<Payment>(
                     "Payment",
                     fields,
@@ -23551,6 +24211,8 @@ impl ::protobuf::Clear for Payment {
         self.clear_path();
         self.clear_fee();
         self.clear_payment_preimage();
+        self.clear_value_sat();
+        self.clear_value_msat();
         self.unknown_fields.clear();
     }
 }
@@ -24092,6 +24754,304 @@ impl ::std::fmt::Debug for DeleteAllPaymentsResponse {
 }
 
 impl ::protobuf::reflect::ProtobufValue for DeleteAllPaymentsResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct AbandonChannelRequest {
+    // message fields
+    pub channel_point: ::protobuf::SingularPtrField<ChannelPoint>,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+impl AbandonChannelRequest {
+    pub fn new() -> AbandonChannelRequest {
+        ::std::default::Default::default()
+    }
+
+    // .lnrpc.ChannelPoint channel_point = 1;
+
+    pub fn clear_channel_point(&mut self) {
+        self.channel_point.clear();
+    }
+
+    pub fn has_channel_point(&self) -> bool {
+        self.channel_point.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_channel_point(&mut self, v: ChannelPoint) {
+        self.channel_point = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_channel_point(&mut self) -> &mut ChannelPoint {
+        if self.channel_point.is_none() {
+            self.channel_point.set_default();
+        }
+        self.channel_point.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_channel_point(&mut self) -> ChannelPoint {
+        self.channel_point.take().unwrap_or_else(|| ChannelPoint::new())
+    }
+
+    pub fn get_channel_point(&self) -> &ChannelPoint {
+        self.channel_point.as_ref().unwrap_or_else(|| ChannelPoint::default_instance())
+    }
+}
+
+impl ::protobuf::Message for AbandonChannelRequest {
+    fn is_initialized(&self) -> bool {
+        for v in &self.channel_point {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.channel_point)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if let Some(ref v) = self.channel_point.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if let Some(ref v) = self.channel_point.as_ref() {
+            os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> AbandonChannelRequest {
+        AbandonChannelRequest::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<ChannelPoint>>(
+                    "channel_point",
+                    |m: &AbandonChannelRequest| { &m.channel_point },
+                    |m: &mut AbandonChannelRequest| { &mut m.channel_point },
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<AbandonChannelRequest>(
+                    "AbandonChannelRequest",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static AbandonChannelRequest {
+        static mut instance: ::protobuf::lazy::Lazy<AbandonChannelRequest> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const AbandonChannelRequest,
+        };
+        unsafe {
+            instance.get(AbandonChannelRequest::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for AbandonChannelRequest {
+    fn clear(&mut self) {
+        self.clear_channel_point();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for AbandonChannelRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for AbandonChannelRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct AbandonChannelResponse {
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+impl AbandonChannelResponse {
+    pub fn new() -> AbandonChannelResponse {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for AbandonChannelResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> AbandonChannelResponse {
+        AbandonChannelResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let fields = ::std::vec::Vec::new();
+                ::protobuf::reflect::MessageDescriptor::new::<AbandonChannelResponse>(
+                    "AbandonChannelResponse",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static AbandonChannelResponse {
+        static mut instance: ::protobuf::lazy::Lazy<AbandonChannelResponse> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const AbandonChannelResponse,
+        };
+        unsafe {
+            instance.get(AbandonChannelResponse::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for AbandonChannelResponse {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for AbandonChannelResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for AbandonChannelResponse {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
     }
@@ -27141,383 +28101,405 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x04txid\"\x8d\x01\n\x11NewAddressRequest\x128\n\x04type\x18\x01\x20\x01\
     (\x0e2$.lnrpc.NewAddressRequest.AddressTypeR\x04type\">\n\x0bAddressType\
     \x12\x17\n\x13WITNESS_PUBKEY_HASH\x10\0\x12\x16\n\x12NESTED_PUBKEY_HASH\
-    \x10\x01\"\x1a\n\x18NewWitnessAddressRequest\".\n\x12NewAddressResponse\
-    \x12\x18\n\x07address\x18\x01\x20\x01(\tR\x07address\"&\n\x12SignMessage\
-    Request\x12\x10\n\x03msg\x18\x01\x20\x01(\x0cR\x03msg\"3\n\x13SignMessag\
-    eResponse\x12\x1c\n\tsignature\x18\x01\x20\x01(\tR\tsignature\"F\n\x14Ve\
-    rifyMessageRequest\x12\x10\n\x03msg\x18\x01\x20\x01(\x0cR\x03msg\x12\x1c\
-    \n\tsignature\x18\x02\x20\x01(\tR\tsignature\"E\n\x15VerifyMessageRespon\
-    se\x12\x14\n\x05valid\x18\x01\x20\x01(\x08R\x05valid\x12\x16\n\x06pubkey\
-    \x18\x02\x20\x01(\tR\x06pubkey\"U\n\x12ConnectPeerRequest\x12+\n\x04addr\
-    \x18\x01\x20\x01(\x0b2\x17.lnrpc.LightningAddressR\x04addr\x12\x12\n\x04\
-    perm\x18\x02\x20\x01(\x08R\x04perm\"\x15\n\x13ConnectPeerResponse\"1\n\
-    \x15DisconnectPeerRequest\x12\x18\n\x07pub_key\x18\x01\x20\x01(\tR\x07pu\
-    b_key\"\x18\n\x16DisconnectPeerResponse\"\x86\x01\n\x04HTLC\x12\x1a\n\
+    \x10\x01\".\n\x12NewAddressResponse\x12\x18\n\x07address\x18\x01\x20\x01\
+    (\tR\x07address\"&\n\x12SignMessageRequest\x12\x10\n\x03msg\x18\x01\x20\
+    \x01(\x0cR\x03msg\"3\n\x13SignMessageResponse\x12\x1c\n\tsignature\x18\
+    \x01\x20\x01(\tR\tsignature\"F\n\x14VerifyMessageRequest\x12\x10\n\x03ms\
+    g\x18\x01\x20\x01(\x0cR\x03msg\x12\x1c\n\tsignature\x18\x02\x20\x01(\tR\
+    \tsignature\"E\n\x15VerifyMessageResponse\x12\x14\n\x05valid\x18\x01\x20\
+    \x01(\x08R\x05valid\x12\x16\n\x06pubkey\x18\x02\x20\x01(\tR\x06pubkey\"U\
+    \n\x12ConnectPeerRequest\x12+\n\x04addr\x18\x01\x20\x01(\x0b2\x17.lnrpc.\
+    LightningAddressR\x04addr\x12\x12\n\x04perm\x18\x02\x20\x01(\x08R\x04per\
+    m\"\x15\n\x13ConnectPeerResponse\"1\n\x15DisconnectPeerRequest\x12\x18\n\
+    \x07pub_key\x18\x01\x20\x01(\tR\x07pub_key\"\x18\n\x16DisconnectPeerResp\
+    onse\"\x86\x01\n\x04HTLC\x12\x1a\n\x08incoming\x18\x01\x20\x01(\x08R\x08\
+    incoming\x12\x16\n\x06amount\x18\x02\x20\x01(\x03R\x06amount\x12\x1c\n\t\
+    hash_lock\x18\x03\x20\x01(\x0cR\thash_lock\x12,\n\x11expiration_height\
+    \x18\x04\x20\x01(\rR\x11expiration_height\"\xfe\x04\n\x07Channel\x12\x16\
+    \n\x06active\x18\x01\x20\x01(\x08R\x06active\x12$\n\rremote_pubkey\x18\
+    \x02\x20\x01(\tR\rremote_pubkey\x12$\n\rchannel_point\x18\x03\x20\x01(\t\
+    R\rchannel_point\x12\x18\n\x07chan_id\x18\x04\x20\x01(\x04R\x07chan_id\
+    \x12\x1a\n\x08capacity\x18\x05\x20\x01(\x03R\x08capacity\x12$\n\rlocal_b\
+    alance\x18\x06\x20\x01(\x03R\rlocal_balance\x12&\n\x0eremote_balance\x18\
+    \x07\x20\x01(\x03R\x0eremote_balance\x12\x1e\n\ncommit_fee\x18\x08\x20\
+    \x01(\x03R\ncommit_fee\x12$\n\rcommit_weight\x18\t\x20\x01(\x03R\rcommit\
+    _weight\x12\x1e\n\nfee_per_kw\x18\n\x20\x01(\x03R\nfee_per_kw\x12,\n\x11\
+    unsettled_balance\x18\x0b\x20\x01(\x03R\x11unsettled_balance\x120\n\x13t\
+    otal_satoshis_sent\x18\x0c\x20\x01(\x03R\x13total_satoshis_sent\x128\n\
+    \x17total_satoshis_received\x18\r\x20\x01(\x03R\x17total_satoshis_receiv\
+    ed\x12\x20\n\x0bnum_updates\x18\x0e\x20\x01(\x04R\x0bnum_updates\x121\n\
+    \rpending_htlcs\x18\x0f\x20\x03(\x0b2\x0b.lnrpc.HTLCR\rpending_htlcs\x12\
+    \x1c\n\tcsv_delay\x18\x10\x20\x01(\rR\tcsv_delay\x12\x18\n\x07private\
+    \x18\x11\x20\x01(\x08R\x07private\"\x9f\x01\n\x13ListChannelsRequest\x12\
+    \x1f\n\x0bactive_only\x18\x01\x20\x01(\x08R\nactiveOnly\x12#\n\rinactive\
+    _only\x18\x02\x20\x01(\x08R\x0cinactiveOnly\x12\x1f\n\x0bpublic_only\x18\
+    \x03\x20\x01(\x08R\npublicOnly\x12!\n\x0cprivate_only\x18\x04\x20\x01(\
+    \x08R\x0bprivateOnly\"B\n\x14ListChannelsResponse\x12*\n\x08channels\x18\
+    \x0b\x20\x03(\x0b2\x0e.lnrpc.ChannelR\x08channels\"\xb6\x04\n\x13Channel\
+    CloseSummary\x12$\n\rchannel_point\x18\x01\x20\x01(\tR\rchannel_point\
+    \x12\x18\n\x07chan_id\x18\x02\x20\x01(\x04R\x07chan_id\x12\x1e\n\nchain_\
+    hash\x18\x03\x20\x01(\tR\nchain_hash\x12(\n\x0fclosing_tx_hash\x18\x04\
+    \x20\x01(\tR\x0fclosing_tx_hash\x12$\n\rremote_pubkey\x18\x05\x20\x01(\t\
+    R\rremote_pubkey\x12\x1a\n\x08capacity\x18\x06\x20\x01(\x03R\x08capacity\
+    \x12\"\n\x0cclose_height\x18\x07\x20\x01(\rR\x0cclose_height\x12(\n\x0fs\
+    ettled_balance\x18\x08\x20\x01(\x03R\x0fsettled_balance\x120\n\x13time_l\
+    ocked_balance\x18\t\x20\x01(\x03R\x13time_locked_balance\x12F\n\nclose_t\
+    ype\x18\n\x20\x01(\x0e2&.lnrpc.ChannelCloseSummary.ClosureTypeR\nclose_t\
+    ype\"\x8a\x01\n\x0bClosureType\x12\x15\n\x11COOPERATIVE_CLOSE\x10\0\x12\
+    \x15\n\x11LOCAL_FORCE_CLOSE\x10\x01\x12\x16\n\x12REMOTE_FORCE_CLOSE\x10\
+    \x02\x12\x10\n\x0cBREACH_CLOSE\x10\x03\x12\x14\n\x10FUNDING_CANCELED\x10\
+    \x04\x12\r\n\tABANDONED\x10\x05\"\xde\x01\n\x15ClosedChannelsRequest\x12\
+    \x20\n\x0bcooperative\x18\x01\x20\x01(\x08R\x0bcooperative\x12\x1f\n\x0b\
+    local_force\x18\x02\x20\x01(\x08R\nlocalForce\x12!\n\x0cremote_force\x18\
+    \x03\x20\x01(\x08R\x0bremoteForce\x12\x16\n\x06breach\x18\x04\x20\x01(\
+    \x08R\x06breach\x12)\n\x10funding_canceled\x18\x05\x20\x01(\x08R\x0ffund\
+    ingCanceled\x12\x1c\n\tabandoned\x18\x06\x20\x01(\x08R\tabandoned\"P\n\
+    \x16ClosedChannelsResponse\x126\n\x08channels\x18\x01\x20\x03(\x0b2\x1a.\
+    lnrpc.ChannelCloseSummaryR\x08channels\"\xea\x01\n\x04Peer\x12\x18\n\x07\
+    pub_key\x18\x01\x20\x01(\tR\x07pub_key\x12\x18\n\x07address\x18\x03\x20\
+    \x01(\tR\x07address\x12\x1e\n\nbytes_sent\x18\x04\x20\x01(\x04R\nbytes_s\
+    ent\x12\x1e\n\nbytes_recv\x18\x05\x20\x01(\x04R\nbytes_recv\x12\x1a\n\
+    \x08sat_sent\x18\x06\x20\x01(\x03R\x08sat_sent\x12\x1a\n\x08sat_recv\x18\
+    \x07\x20\x01(\x03R\x08sat_recv\x12\x18\n\x07inbound\x18\x08\x20\x01(\x08\
+    R\x07inbound\x12\x1c\n\tping_time\x18\t\x20\x01(\x03R\tping_time\"\x12\n\
+    \x10ListPeersRequest\"6\n\x11ListPeersResponse\x12!\n\x05peers\x18\x01\
+    \x20\x03(\x0b2\x0b.lnrpc.PeerR\x05peers\"\x10\n\x0eGetInfoRequest\"\x8f\
+    \x04\n\x0fGetInfoResponse\x12(\n\x0fidentity_pubkey\x18\x01\x20\x01(\tR\
+    \x0fidentity_pubkey\x12\x14\n\x05alias\x18\x02\x20\x01(\tR\x05alias\x122\
+    \n\x14num_pending_channels\x18\x03\x20\x01(\rR\x14num_pending_channels\
+    \x120\n\x13num_active_channels\x18\x04\x20\x01(\rR\x13num_active_channel\
+    s\x12\x1c\n\tnum_peers\x18\x05\x20\x01(\rR\tnum_peers\x12\"\n\x0cblock_h\
+    eight\x18\x06\x20\x01(\rR\x0cblock_height\x12\x1e\n\nblock_hash\x18\x08\
+    \x20\x01(\tR\nblock_hash\x12(\n\x0fsynced_to_chain\x18\t\x20\x01(\x08R\
+    \x0fsynced_to_chain\x12\x18\n\x07testnet\x18\n\x20\x01(\x08R\x07testnet\
+    \x12\x16\n\x06chains\x18\x0b\x20\x03(\tR\x06chains\x12\x12\n\x04uris\x18\
+    \x0c\x20\x03(\tR\x04uris\x124\n\x15best_header_timestamp\x18\r\x20\x01(\
+    \x03R\x15best_header_timestamp\x12\x18\n\x07version\x18\x0e\x20\x01(\tR\
+    \x07version\x124\n\x15num_inactive_channels\x18\x0f\x20\x01(\rR\x15num_i\
+    nactive_channels\"z\n\x12ConfirmationUpdate\x12\x1b\n\tblock_sha\x18\x01\
+    \x20\x01(\x0cR\x08blockSha\x12!\n\x0cblock_height\x18\x02\x20\x01(\x05R\
+    \x0bblockHeight\x12$\n\x0enum_confs_left\x18\x03\x20\x01(\rR\x0cnumConfs\
+    Left\"N\n\x11ChannelOpenUpdate\x129\n\rchannel_point\x18\x01\x20\x01(\
+    \x0b2\x13.lnrpc.ChannelPointR\rchannel_point\"R\n\x12ChannelCloseUpdate\
+    \x12\"\n\x0cclosing_txid\x18\x01\x20\x01(\x0cR\x0cclosing_txid\x12\x18\n\
+    \x07success\x18\x02\x20\x01(\x08R\x07success\"\xa8\x01\n\x13CloseChannel\
+    Request\x128\n\rchannel_point\x18\x01\x20\x01(\x0b2\x13.lnrpc.ChannelPoi\
+    ntR\x0cchannelPoint\x12\x14\n\x05force\x18\x02\x20\x01(\x08R\x05force\
+    \x12\x1f\n\x0btarget_conf\x18\x03\x20\x01(\x05R\ntargetConf\x12\x20\n\
+    \x0csat_per_byte\x18\x04\x20\x01(\x03R\nsatPerByte\"\xd9\x01\n\x11CloseS\
+    tatusUpdate\x12<\n\rclose_pending\x18\x01\x20\x01(\x0b2\x14.lnrpc.Pendin\
+    gUpdateH\0R\rclose_pending\x12?\n\x0cconfirmation\x18\x02\x20\x01(\x0b2\
+    \x19.lnrpc.ConfirmationUpdateH\0R\x0cconfirmation\x12;\n\nchan_close\x18\
+    \x03\x20\x01(\x0b2\x19.lnrpc.ChannelCloseUpdateH\0R\nchan_closeB\x08\n\
+    \x06update\"G\n\rPendingUpdate\x12\x12\n\x04txid\x18\x01\x20\x01(\x0cR\
+    \x04txid\x12\"\n\x0coutput_index\x18\x02\x20\x01(\rR\x0coutput_index\"\
+    \xb1\x03\n\x12OpenChannelRequest\x12\x20\n\x0bnode_pubkey\x18\x02\x20\
+    \x01(\x0cR\x0bnode_pubkey\x12.\n\x12node_pubkey_string\x18\x03\x20\x01(\
+    \tR\x12node_pubkey_string\x122\n\x14local_funding_amount\x18\x04\x20\x01\
+    (\x03R\x14local_funding_amount\x12\x1a\n\x08push_sat\x18\x05\x20\x01(\
+    \x03R\x08push_sat\x12\x1f\n\x0btarget_conf\x18\x06\x20\x01(\x05R\ntarget\
+    Conf\x12\x20\n\x0csat_per_byte\x18\x07\x20\x01(\x03R\nsatPerByte\x12\x18\
+    \n\x07private\x18\x08\x20\x01(\x08R\x07private\x12$\n\rmin_htlc_msat\x18\
+    \t\x20\x01(\x03R\rmin_htlc_msat\x12*\n\x10remote_csv_delay\x18\n\x20\x01\
+    (\rR\x10remote_csv_delay\x12\x1c\n\tmin_confs\x18\x0b\x20\x01(\x05R\tmin\
+    _confs\x12,\n\x11spend_unconfirmed\x18\x0c\x20\x01(\x08R\x11spend_unconf\
+    irmed\"\xd3\x01\n\x10OpenStatusUpdate\x12:\n\x0cchan_pending\x18\x01\x20\
+    \x01(\x0b2\x14.lnrpc.PendingUpdateH\0R\x0cchan_pending\x12?\n\x0cconfirm\
+    ation\x18\x02\x20\x01(\x0b2\x19.lnrpc.ConfirmationUpdateH\0R\x0cconfirma\
+    tion\x128\n\tchan_open\x18\x03\x20\x01(\x0b2\x18.lnrpc.ChannelOpenUpdate\
+    H\0R\tchan_openB\x08\n\x06update\"\xcf\x01\n\x0bPendingHTLC\x12\x1a\n\
     \x08incoming\x18\x01\x20\x01(\x08R\x08incoming\x12\x16\n\x06amount\x18\
-    \x02\x20\x01(\x03R\x06amount\x12\x1c\n\thash_lock\x18\x03\x20\x01(\x0cR\
-    \thash_lock\x12,\n\x11expiration_height\x18\x04\x20\x01(\rR\x11expiratio\
-    n_height\"\xfe\x04\n\x07Channel\x12\x16\n\x06active\x18\x01\x20\x01(\x08\
-    R\x06active\x12$\n\rremote_pubkey\x18\x02\x20\x01(\tR\rremote_pubkey\x12\
-    $\n\rchannel_point\x18\x03\x20\x01(\tR\rchannel_point\x12\x18\n\x07chan_\
-    id\x18\x04\x20\x01(\x04R\x07chan_id\x12\x1a\n\x08capacity\x18\x05\x20\
-    \x01(\x03R\x08capacity\x12$\n\rlocal_balance\x18\x06\x20\x01(\x03R\rloca\
-    l_balance\x12&\n\x0eremote_balance\x18\x07\x20\x01(\x03R\x0eremote_balan\
-    ce\x12\x1e\n\ncommit_fee\x18\x08\x20\x01(\x03R\ncommit_fee\x12$\n\rcommi\
-    t_weight\x18\t\x20\x01(\x03R\rcommit_weight\x12\x1e\n\nfee_per_kw\x18\n\
-    \x20\x01(\x03R\nfee_per_kw\x12,\n\x11unsettled_balance\x18\x0b\x20\x01(\
-    \x03R\x11unsettled_balance\x120\n\x13total_satoshis_sent\x18\x0c\x20\x01\
-    (\x03R\x13total_satoshis_sent\x128\n\x17total_satoshis_received\x18\r\
-    \x20\x01(\x03R\x17total_satoshis_received\x12\x20\n\x0bnum_updates\x18\
-    \x0e\x20\x01(\x04R\x0bnum_updates\x121\n\rpending_htlcs\x18\x0f\x20\x03(\
-    \x0b2\x0b.lnrpc.HTLCR\rpending_htlcs\x12\x1c\n\tcsv_delay\x18\x10\x20\
-    \x01(\rR\tcsv_delay\x12\x18\n\x07private\x18\x11\x20\x01(\x08R\x07privat\
-    e\"\x9f\x01\n\x13ListChannelsRequest\x12\x1f\n\x0bactive_only\x18\x01\
-    \x20\x01(\x08R\nactiveOnly\x12#\n\rinactive_only\x18\x02\x20\x01(\x08R\
-    \x0cinactiveOnly\x12\x1f\n\x0bpublic_only\x18\x03\x20\x01(\x08R\npublicO\
-    nly\x12!\n\x0cprivate_only\x18\x04\x20\x01(\x08R\x0bprivateOnly\"B\n\x14\
-    ListChannelsResponse\x12*\n\x08channels\x18\x0b\x20\x03(\x0b2\x0e.lnrpc.\
-    ChannelR\x08channels\"\xa6\x04\n\x13ChannelCloseSummary\x12$\n\rchannel_\
-    point\x18\x01\x20\x01(\tR\rchannel_point\x12\x18\n\x07chan_id\x18\x02\
-    \x20\x01(\x04R\x07chan_id\x12\x1e\n\nchain_hash\x18\x03\x20\x01(\tR\ncha\
-    in_hash\x12(\n\x0fclosing_tx_hash\x18\x04\x20\x01(\tR\x0fclosing_tx_hash\
-    \x12$\n\rremote_pubkey\x18\x05\x20\x01(\tR\rremote_pubkey\x12\x1a\n\x08c\
-    apacity\x18\x06\x20\x01(\x03R\x08capacity\x12\"\n\x0cclose_height\x18\
-    \x07\x20\x01(\rR\x0cclose_height\x12(\n\x0fsettled_balance\x18\x08\x20\
-    \x01(\x03R\x0fsettled_balance\x120\n\x13time_locked_balance\x18\t\x20\
-    \x01(\x03R\x13time_locked_balance\x12F\n\nclose_type\x18\n\x20\x01(\x0e2\
-    &.lnrpc.ChannelCloseSummary.ClosureTypeR\nclose_type\"{\n\x0bClosureType\
-    \x12\x15\n\x11COOPERATIVE_CLOSE\x10\0\x12\x15\n\x11LOCAL_FORCE_CLOSE\x10\
-    \x01\x12\x16\n\x12REMOTE_FORCE_CLOSE\x10\x02\x12\x10\n\x0cBREACH_CLOSE\
-    \x10\x03\x12\x14\n\x10FUNDING_CANCELED\x10\x04\"\xc0\x01\n\x15ClosedChan\
-    nelsRequest\x12\x20\n\x0bcooperative\x18\x01\x20\x01(\x08R\x0bcooperativ\
-    e\x12\x1f\n\x0blocal_force\x18\x02\x20\x01(\x08R\nlocalForce\x12!\n\x0cr\
-    emote_force\x18\x03\x20\x01(\x08R\x0bremoteForce\x12\x16\n\x06breach\x18\
-    \x04\x20\x01(\x08R\x06breach\x12)\n\x10funding_canceled\x18\x05\x20\x01(\
-    \x08R\x0ffundingCanceled\"P\n\x16ClosedChannelsResponse\x126\n\x08channe\
-    ls\x18\x01\x20\x03(\x0b2\x1a.lnrpc.ChannelCloseSummaryR\x08channels\"\
-    \xea\x01\n\x04Peer\x12\x18\n\x07pub_key\x18\x01\x20\x01(\tR\x07pub_key\
-    \x12\x18\n\x07address\x18\x03\x20\x01(\tR\x07address\x12\x1e\n\nbytes_se\
-    nt\x18\x04\x20\x01(\x04R\nbytes_sent\x12\x1e\n\nbytes_recv\x18\x05\x20\
-    \x01(\x04R\nbytes_recv\x12\x1a\n\x08sat_sent\x18\x06\x20\x01(\x03R\x08sa\
-    t_sent\x12\x1a\n\x08sat_recv\x18\x07\x20\x01(\x03R\x08sat_recv\x12\x18\n\
-    \x07inbound\x18\x08\x20\x01(\x08R\x07inbound\x12\x1c\n\tping_time\x18\t\
-    \x20\x01(\x03R\tping_time\"\x12\n\x10ListPeersRequest\"6\n\x11ListPeersR\
-    esponse\x12!\n\x05peers\x18\x01\x20\x03(\x0b2\x0b.lnrpc.PeerR\x05peers\"\
-    \x10\n\x0eGetInfoRequest\"\xd9\x03\n\x0fGetInfoResponse\x12(\n\x0fidenti\
-    ty_pubkey\x18\x01\x20\x01(\tR\x0fidentity_pubkey\x12\x14\n\x05alias\x18\
-    \x02\x20\x01(\tR\x05alias\x122\n\x14num_pending_channels\x18\x03\x20\x01\
-    (\rR\x14num_pending_channels\x120\n\x13num_active_channels\x18\x04\x20\
-    \x01(\rR\x13num_active_channels\x12\x1c\n\tnum_peers\x18\x05\x20\x01(\rR\
-    \tnum_peers\x12\"\n\x0cblock_height\x18\x06\x20\x01(\rR\x0cblock_height\
-    \x12\x1e\n\nblock_hash\x18\x08\x20\x01(\tR\nblock_hash\x12(\n\x0fsynced_\
-    to_chain\x18\t\x20\x01(\x08R\x0fsynced_to_chain\x12\x18\n\x07testnet\x18\
-    \n\x20\x01(\x08R\x07testnet\x12\x16\n\x06chains\x18\x0b\x20\x03(\tR\x06c\
-    hains\x12\x12\n\x04uris\x18\x0c\x20\x03(\tR\x04uris\x124\n\x15best_heade\
-    r_timestamp\x18\r\x20\x01(\x03R\x15best_header_timestamp\x12\x18\n\x07ve\
-    rsion\x18\x0e\x20\x01(\tR\x07version\"z\n\x12ConfirmationUpdate\x12\x1b\
-    \n\tblock_sha\x18\x01\x20\x01(\x0cR\x08blockSha\x12!\n\x0cblock_height\
-    \x18\x02\x20\x01(\x05R\x0bblockHeight\x12$\n\x0enum_confs_left\x18\x03\
-    \x20\x01(\rR\x0cnumConfsLeft\"N\n\x11ChannelOpenUpdate\x129\n\rchannel_p\
-    oint\x18\x01\x20\x01(\x0b2\x13.lnrpc.ChannelPointR\rchannel_point\"R\n\
-    \x12ChannelCloseUpdate\x12\"\n\x0cclosing_txid\x18\x01\x20\x01(\x0cR\x0c\
-    closing_txid\x12\x18\n\x07success\x18\x02\x20\x01(\x08R\x07success\"\xa8\
-    \x01\n\x13CloseChannelRequest\x128\n\rchannel_point\x18\x01\x20\x01(\x0b\
-    2\x13.lnrpc.ChannelPointR\x0cchannelPoint\x12\x14\n\x05force\x18\x02\x20\
-    \x01(\x08R\x05force\x12\x1f\n\x0btarget_conf\x18\x03\x20\x01(\x05R\ntarg\
-    etConf\x12\x20\n\x0csat_per_byte\x18\x04\x20\x01(\x03R\nsatPerByte\"\xd9\
-    \x01\n\x11CloseStatusUpdate\x12<\n\rclose_pending\x18\x01\x20\x01(\x0b2\
-    \x14.lnrpc.PendingUpdateH\0R\rclose_pending\x12?\n\x0cconfirmation\x18\
-    \x02\x20\x01(\x0b2\x19.lnrpc.ConfirmationUpdateH\0R\x0cconfirmation\x12;\
-    \n\nchan_close\x18\x03\x20\x01(\x0b2\x19.lnrpc.ChannelCloseUpdateH\0R\nc\
-    han_closeB\x08\n\x06update\"G\n\rPendingUpdate\x12\x12\n\x04txid\x18\x01\
-    \x20\x01(\x0cR\x04txid\x12\"\n\x0coutput_index\x18\x02\x20\x01(\rR\x0cou\
-    tput_index\"\xe5\x02\n\x12OpenChannelRequest\x12\x20\n\x0bnode_pubkey\
-    \x18\x02\x20\x01(\x0cR\x0bnode_pubkey\x12.\n\x12node_pubkey_string\x18\
-    \x03\x20\x01(\tR\x12node_pubkey_string\x122\n\x14local_funding_amount\
-    \x18\x04\x20\x01(\x03R\x14local_funding_amount\x12\x1a\n\x08push_sat\x18\
-    \x05\x20\x01(\x03R\x08push_sat\x12\x1f\n\x0btarget_conf\x18\x06\x20\x01(\
-    \x05R\ntargetConf\x12\x20\n\x0csat_per_byte\x18\x07\x20\x01(\x03R\nsatPe\
-    rByte\x12\x18\n\x07private\x18\x08\x20\x01(\x08R\x07private\x12$\n\rmin_\
-    htlc_msat\x18\t\x20\x01(\x03R\rmin_htlc_msat\x12*\n\x10remote_csv_delay\
-    \x18\n\x20\x01(\rR\x10remote_csv_delay\"\xd3\x01\n\x10OpenStatusUpdate\
-    \x12:\n\x0cchan_pending\x18\x01\x20\x01(\x0b2\x14.lnrpc.PendingUpdateH\0\
-    R\x0cchan_pending\x12?\n\x0cconfirmation\x18\x02\x20\x01(\x0b2\x19.lnrpc\
-    .ConfirmationUpdateH\0R\x0cconfirmation\x128\n\tchan_open\x18\x03\x20\
-    \x01(\x0b2\x18.lnrpc.ChannelOpenUpdateH\0R\tchan_openB\x08\n\x06update\"\
-    \xcf\x01\n\x0bPendingHTLC\x12\x1a\n\x08incoming\x18\x01\x20\x01(\x08R\
-    \x08incoming\x12\x16\n\x06amount\x18\x02\x20\x01(\x03R\x06amount\x12\x1a\
-    \n\x08outpoint\x18\x03\x20\x01(\tR\x08outpoint\x12(\n\x0fmaturity_height\
-    \x18\x04\x20\x01(\rR\x0fmaturity_height\x120\n\x13blocks_til_maturity\
-    \x18\x05\x20\x01(\x05R\x13blocks_til_maturity\x12\x14\n\x05stage\x18\x06\
-    \x20\x01(\rR\x05stage\"\x18\n\x16PendingChannelsRequest\"\xbd\x0c\n\x17P\
-    endingChannelsResponse\x120\n\x13total_limbo_balance\x18\x01\x20\x01(\
-    \x03R\x13total_limbo_balance\x12g\n\x15pending_open_channels\x18\x02\x20\
-    \x03(\x0b21.lnrpc.PendingChannelsResponse.PendingOpenChannelR\x15pending\
-    _open_channels\x12h\n\x18pending_closing_channels\x18\x03\x20\x03(\x0b2,\
-    .lnrpc.PendingChannelsResponse.ClosedChannelR\x18pending_closing_channel\
-    s\x12y\n\x1epending_force_closing_channels\x18\x04\x20\x03(\x0b21.lnrpc.\
-    PendingChannelsResponse.ForceClosedChannelR\x1epending_force_closing_cha\
-    nnels\x12j\n\x16waiting_close_channels\x18\x05\x20\x03(\x0b22.lnrpc.Pend\
-    ingChannelsResponse.WaitingCloseChannelR\x16waiting_close_channels\x1a\
-    \xca\x01\n\x0ePendingChannel\x12(\n\x0fremote_node_pub\x18\x01\x20\x01(\
-    \tR\x0fremote_node_pub\x12$\n\rchannel_point\x18\x02\x20\x01(\tR\rchanne\
-    l_point\x12\x1a\n\x08capacity\x18\x03\x20\x01(\x03R\x08capacity\x12$\n\r\
-    local_balance\x18\x04\x20\x01(\x03R\rlocal_balance\x12&\n\x0eremote_bala\
-    nce\x18\x05\x20\x01(\x03R\x0eremote_balance\x1a\xf5\x01\n\x12PendingOpen\
-    Channel\x12G\n\x07channel\x18\x01\x20\x01(\x0b2-.lnrpc.PendingChannelsRe\
-    sponse.PendingChannelR\x07channel\x120\n\x13confirmation_height\x18\x02\
-    \x20\x01(\rR\x13confirmation_height\x12\x1e\n\ncommit_fee\x18\x04\x20\
-    \x01(\x03R\ncommit_fee\x12$\n\rcommit_weight\x18\x05\x20\x01(\x03R\rcomm\
-    it_weight\x12\x1e\n\nfee_per_kw\x18\x06\x20\x01(\x03R\nfee_per_kw\x1a\
-    \x84\x01\n\x13WaitingCloseChannel\x12G\n\x07channel\x18\x01\x20\x01(\x0b\
-    2-.lnrpc.PendingChannelsResponse.PendingChannelR\x07channel\x12$\n\rlimb\
-    o_balance\x18\x02\x20\x01(\x03R\rlimbo_balance\x1a|\n\rClosedChannel\x12\
-    G\n\x07channel\x18\x01\x20\x01(\x0b2-.lnrpc.PendingChannelsResponse.Pend\
-    ingChannelR\x07channel\x12\"\n\x0cclosing_txid\x18\x02\x20\x01(\tR\x0ccl\
-    osing_txid\x1a\xeb\x02\n\x12ForceClosedChannel\x12G\n\x07channel\x18\x01\
-    \x20\x01(\x0b2-.lnrpc.PendingChannelsResponse.PendingChannelR\x07channel\
-    \x12\"\n\x0cclosing_txid\x18\x02\x20\x01(\tR\x0cclosing_txid\x12$\n\rlim\
-    bo_balance\x18\x03\x20\x01(\x03R\rlimbo_balance\x12(\n\x0fmaturity_heigh\
-    t\x18\x04\x20\x01(\rR\x0fmaturity_height\x120\n\x13blocks_til_maturity\
-    \x18\x05\x20\x01(\x05R\x13blocks_til_maturity\x12,\n\x11recovered_balanc\
-    e\x18\x06\x20\x01(\x03R\x11recovered_balance\x128\n\rpending_htlcs\x18\
-    \x08\x20\x03(\x0b2\x12.lnrpc.PendingHTLCR\rpending_htlcs\"\x16\n\x14Wall\
-    etBalanceRequest\"\x9d\x01\n\x15WalletBalanceResponse\x12$\n\rtotal_bala\
-    nce\x18\x01\x20\x01(\x03R\rtotal_balance\x12,\n\x11confirmed_balance\x18\
-    \x02\x20\x01(\x03R\x11confirmed_balance\x120\n\x13unconfirmed_balance\
-    \x18\x03\x20\x01(\x03R\x13unconfirmed_balance\"\x17\n\x15ChannelBalanceR\
-    equest\"f\n\x16ChannelBalanceResponse\x12\x18\n\x07balance\x18\x01\x20\
-    \x01(\x03R\x07balance\x122\n\x14pending_open_balance\x18\x02\x20\x01(\
-    \x03R\x14pending_open_balance\"\xb6\x01\n\x12QueryRoutesRequest\x12\x17\
-    \n\x07pub_key\x18\x01\x20\x01(\tR\x06pubKey\x12\x10\n\x03amt\x18\x02\x20\
-    \x01(\x03R\x03amt\x12\x1d\n\nnum_routes\x18\x03\x20\x01(\x05R\tnumRoutes\
-    \x12(\n\x10final_cltv_delta\x18\x04\x20\x01(\x05R\x0efinalCltvDelta\x12,\
-    \n\tfee_limit\x18\x05\x20\x01(\x0b2\x0f.lnrpc.FeeLimitR\x08feeLimit\";\n\
-    \x13QueryRoutesResponse\x12$\n\x06routes\x18\x01\x20\x03(\x0b2\x0c.lnrpc\
-    .RouteR\x06routes\"\xed\x01\n\x03Hop\x12\x18\n\x07chan_id\x18\x01\x20\
-    \x01(\x04R\x07chan_id\x12$\n\rchan_capacity\x18\x02\x20\x01(\x03R\rchan_\
-    capacity\x12*\n\x0eamt_to_forward\x18\x03\x20\x01(\x03R\x0eamt_to_forwar\
-    dB\x02\x18\x01\x12\x14\n\x03fee\x18\x04\x20\x01(\x03R\x03feeB\x02\x18\
-    \x01\x12\x16\n\x06expiry\x18\x05\x20\x01(\rR\x06expiry\x120\n\x13amt_to_\
-    forward_msat\x18\x06\x20\x01(\x03R\x13amt_to_forward_msat\x12\x1a\n\x08f\
-    ee_msat\x18\x07\x20\x01(\x03R\x08fee_msat\"\xe9\x01\n\x05Route\x12(\n\
-    \x0ftotal_time_lock\x18\x01\x20\x01(\rR\x0ftotal_time_lock\x12\"\n\ntota\
-    l_fees\x18\x02\x20\x01(\x03R\ntotal_feesB\x02\x18\x01\x12\x20\n\ttotal_a\
-    mt\x18\x03\x20\x01(\x03R\ttotal_amtB\x02\x18\x01\x12\x1e\n\x04hops\x18\
-    \x04\x20\x03(\x0b2\n.lnrpc.HopR\x04hops\x12(\n\x0ftotal_fees_msat\x18\
-    \x05\x20\x01(\x03R\x0ftotal_fees_msat\x12&\n\x0etotal_amt_msat\x18\x06\
-    \x20\x01(\x03R\x0etotal_amt_msat\"*\n\x0fNodeInfoRequest\x12\x17\n\x07pu\
-    b_key\x18\x01\x20\x01(\tR\x06pubKey\"\x80\x01\n\x08NodeInfo\x12(\n\x04no\
-    de\x18\x01\x20\x01(\x0b2\x14.lnrpc.LightningNodeR\x04node\x12\"\n\x0cnum\
-    _channels\x18\x02\x20\x01(\rR\x0cnum_channels\x12&\n\x0etotal_capacity\
-    \x18\x03\x20\x01(\x03R\x0etotal_capacity\"\xa9\x01\n\rLightningNode\x12\
-    \x20\n\x0blast_update\x18\x01\x20\x01(\rR\x0blast_update\x12\x18\n\x07pu\
-    b_key\x18\x02\x20\x01(\tR\x07pub_key\x12\x14\n\x05alias\x18\x03\x20\x01(\
-    \tR\x05alias\x120\n\taddresses\x18\x04\x20\x03(\x0b2\x12.lnrpc.NodeAddre\
-    ssR\taddresses\x12\x14\n\x05color\x18\x05\x20\x01(\tR\x05color\";\n\x0bN\
-    odeAddress\x12\x18\n\x07network\x18\x01\x20\x01(\tR\x07network\x12\x12\n\
-    \x04addr\x18\x02\x20\x01(\tR\x04addr\"\xad\x01\n\rRoutingPolicy\x12(\n\
-    \x0ftime_lock_delta\x18\x01\x20\x01(\rR\x0ftime_lock_delta\x12\x1a\n\x08\
-    min_htlc\x18\x02\x20\x01(\x03R\x08min_htlc\x12$\n\rfee_base_msat\x18\x03\
-    \x20\x01(\x03R\rfee_base_msat\x120\n\x13fee_rate_milli_msat\x18\x04\x20\
-    \x01(\x03R\x13fee_rate_milli_msat\"\xbb\x02\n\x0bChannelEdge\x12\x1e\n\n\
-    channel_id\x18\x01\x20\x01(\x04R\nchannel_id\x12\x1e\n\nchan_point\x18\
-    \x02\x20\x01(\tR\nchan_point\x12\x20\n\x0blast_update\x18\x03\x20\x01(\r\
-    R\x0blast_update\x12\x1c\n\tnode1_pub\x18\x04\x20\x01(\tR\tnode1_pub\x12\
+    \x02\x20\x01(\x03R\x06amount\x12\x1a\n\x08outpoint\x18\x03\x20\x01(\tR\
+    \x08outpoint\x12(\n\x0fmaturity_height\x18\x04\x20\x01(\rR\x0fmaturity_h\
+    eight\x120\n\x13blocks_til_maturity\x18\x05\x20\x01(\x05R\x13blocks_til_\
+    maturity\x12\x14\n\x05stage\x18\x06\x20\x01(\rR\x05stage\"\x18\n\x16Pend\
+    ingChannelsRequest\"\xbd\x0c\n\x17PendingChannelsResponse\x120\n\x13tota\
+    l_limbo_balance\x18\x01\x20\x01(\x03R\x13total_limbo_balance\x12g\n\x15p\
+    ending_open_channels\x18\x02\x20\x03(\x0b21.lnrpc.PendingChannelsRespons\
+    e.PendingOpenChannelR\x15pending_open_channels\x12h\n\x18pending_closing\
+    _channels\x18\x03\x20\x03(\x0b2,.lnrpc.PendingChannelsResponse.ClosedCha\
+    nnelR\x18pending_closing_channels\x12y\n\x1epending_force_closing_channe\
+    ls\x18\x04\x20\x03(\x0b21.lnrpc.PendingChannelsResponse.ForceClosedChann\
+    elR\x1epending_force_closing_channels\x12j\n\x16waiting_close_channels\
+    \x18\x05\x20\x03(\x0b22.lnrpc.PendingChannelsResponse.WaitingCloseChanne\
+    lR\x16waiting_close_channels\x1a\xca\x01\n\x0ePendingChannel\x12(\n\x0fr\
+    emote_node_pub\x18\x01\x20\x01(\tR\x0fremote_node_pub\x12$\n\rchannel_po\
+    int\x18\x02\x20\x01(\tR\rchannel_point\x12\x1a\n\x08capacity\x18\x03\x20\
+    \x01(\x03R\x08capacity\x12$\n\rlocal_balance\x18\x04\x20\x01(\x03R\rloca\
+    l_balance\x12&\n\x0eremote_balance\x18\x05\x20\x01(\x03R\x0eremote_balan\
+    ce\x1a\xf5\x01\n\x12PendingOpenChannel\x12G\n\x07channel\x18\x01\x20\x01\
+    (\x0b2-.lnrpc.PendingChannelsResponse.PendingChannelR\x07channel\x120\n\
+    \x13confirmation_height\x18\x02\x20\x01(\rR\x13confirmation_height\x12\
+    \x1e\n\ncommit_fee\x18\x04\x20\x01(\x03R\ncommit_fee\x12$\n\rcommit_weig\
+    ht\x18\x05\x20\x01(\x03R\rcommit_weight\x12\x1e\n\nfee_per_kw\x18\x06\
+    \x20\x01(\x03R\nfee_per_kw\x1a\x84\x01\n\x13WaitingCloseChannel\x12G\n\
+    \x07channel\x18\x01\x20\x01(\x0b2-.lnrpc.PendingChannelsResponse.Pending\
+    ChannelR\x07channel\x12$\n\rlimbo_balance\x18\x02\x20\x01(\x03R\rlimbo_b\
+    alance\x1a|\n\rClosedChannel\x12G\n\x07channel\x18\x01\x20\x01(\x0b2-.ln\
+    rpc.PendingChannelsResponse.PendingChannelR\x07channel\x12\"\n\x0cclosin\
+    g_txid\x18\x02\x20\x01(\tR\x0cclosing_txid\x1a\xeb\x02\n\x12ForceClosedC\
+    hannel\x12G\n\x07channel\x18\x01\x20\x01(\x0b2-.lnrpc.PendingChannelsRes\
+    ponse.PendingChannelR\x07channel\x12\"\n\x0cclosing_txid\x18\x02\x20\x01\
+    (\tR\x0cclosing_txid\x12$\n\rlimbo_balance\x18\x03\x20\x01(\x03R\rlimbo_\
+    balance\x12(\n\x0fmaturity_height\x18\x04\x20\x01(\rR\x0fmaturity_height\
+    \x120\n\x13blocks_til_maturity\x18\x05\x20\x01(\x05R\x13blocks_til_matur\
+    ity\x12,\n\x11recovered_balance\x18\x06\x20\x01(\x03R\x11recovered_balan\
+    ce\x128\n\rpending_htlcs\x18\x08\x20\x03(\x0b2\x12.lnrpc.PendingHTLCR\rp\
+    ending_htlcs\"\x16\n\x14WalletBalanceRequest\"\x9d\x01\n\x15WalletBalanc\
+    eResponse\x12$\n\rtotal_balance\x18\x01\x20\x01(\x03R\rtotal_balance\x12\
+    ,\n\x11confirmed_balance\x18\x02\x20\x01(\x03R\x11confirmed_balance\x120\
+    \n\x13unconfirmed_balance\x18\x03\x20\x01(\x03R\x13unconfirmed_balance\"\
+    \x17\n\x15ChannelBalanceRequest\"f\n\x16ChannelBalanceResponse\x12\x18\n\
+    \x07balance\x18\x01\x20\x01(\x03R\x07balance\x122\n\x14pending_open_bala\
+    nce\x18\x02\x20\x01(\x03R\x14pending_open_balance\"\xb6\x01\n\x12QueryRo\
+    utesRequest\x12\x17\n\x07pub_key\x18\x01\x20\x01(\tR\x06pubKey\x12\x10\n\
+    \x03amt\x18\x02\x20\x01(\x03R\x03amt\x12\x1d\n\nnum_routes\x18\x03\x20\
+    \x01(\x05R\tnumRoutes\x12(\n\x10final_cltv_delta\x18\x04\x20\x01(\x05R\
+    \x0efinalCltvDelta\x12,\n\tfee_limit\x18\x05\x20\x01(\x0b2\x0f.lnrpc.Fee\
+    LimitR\x08feeLimit\";\n\x13QueryRoutesResponse\x12$\n\x06routes\x18\x01\
+    \x20\x03(\x0b2\x0c.lnrpc.RouteR\x06routes\"\x87\x02\n\x03Hop\x12\x18\n\
+    \x07chan_id\x18\x01\x20\x01(\x04R\x07chan_id\x12$\n\rchan_capacity\x18\
+    \x02\x20\x01(\x03R\rchan_capacity\x12*\n\x0eamt_to_forward\x18\x03\x20\
+    \x01(\x03R\x0eamt_to_forwardB\x02\x18\x01\x12\x14\n\x03fee\x18\x04\x20\
+    \x01(\x03R\x03feeB\x02\x18\x01\x12\x16\n\x06expiry\x18\x05\x20\x01(\rR\
+    \x06expiry\x120\n\x13amt_to_forward_msat\x18\x06\x20\x01(\x03R\x13amt_to\
+    _forward_msat\x12\x1a\n\x08fee_msat\x18\x07\x20\x01(\x03R\x08fee_msat\
+    \x12\x18\n\x07pub_key\x18\x08\x20\x01(\tR\x07pub_key\"\xe9\x01\n\x05Rout\
+    e\x12(\n\x0ftotal_time_lock\x18\x01\x20\x01(\rR\x0ftotal_time_lock\x12\"\
+    \n\ntotal_fees\x18\x02\x20\x01(\x03R\ntotal_feesB\x02\x18\x01\x12\x20\n\
+    \ttotal_amt\x18\x03\x20\x01(\x03R\ttotal_amtB\x02\x18\x01\x12\x1e\n\x04h\
+    ops\x18\x04\x20\x03(\x0b2\n.lnrpc.HopR\x04hops\x12(\n\x0ftotal_fees_msat\
+    \x18\x05\x20\x01(\x03R\x0ftotal_fees_msat\x12&\n\x0etotal_amt_msat\x18\
+    \x06\x20\x01(\x03R\x0etotal_amt_msat\"*\n\x0fNodeInfoRequest\x12\x17\n\
+    \x07pub_key\x18\x01\x20\x01(\tR\x06pubKey\"\x80\x01\n\x08NodeInfo\x12(\n\
+    \x04node\x18\x01\x20\x01(\x0b2\x14.lnrpc.LightningNodeR\x04node\x12\"\n\
+    \x0cnum_channels\x18\x02\x20\x01(\rR\x0cnum_channels\x12&\n\x0etotal_cap\
+    acity\x18\x03\x20\x01(\x03R\x0etotal_capacity\"\xa9\x01\n\rLightningNode\
+    \x12\x20\n\x0blast_update\x18\x01\x20\x01(\rR\x0blast_update\x12\x18\n\
+    \x07pub_key\x18\x02\x20\x01(\tR\x07pub_key\x12\x14\n\x05alias\x18\x03\
+    \x20\x01(\tR\x05alias\x120\n\taddresses\x18\x04\x20\x03(\x0b2\x12.lnrpc.\
+    NodeAddressR\taddresses\x12\x14\n\x05color\x18\x05\x20\x01(\tR\x05color\
+    \";\n\x0bNodeAddress\x12\x18\n\x07network\x18\x01\x20\x01(\tR\x07network\
+    \x12\x12\n\x04addr\x18\x02\x20\x01(\tR\x04addr\"\xc9\x01\n\rRoutingPolic\
+    y\x12(\n\x0ftime_lock_delta\x18\x01\x20\x01(\rR\x0ftime_lock_delta\x12\
+    \x1a\n\x08min_htlc\x18\x02\x20\x01(\x03R\x08min_htlc\x12$\n\rfee_base_ms\
+    at\x18\x03\x20\x01(\x03R\rfee_base_msat\x120\n\x13fee_rate_milli_msat\
+    \x18\x04\x20\x01(\x03R\x13fee_rate_milli_msat\x12\x1a\n\x08disabled\x18\
+    \x05\x20\x01(\x08R\x08disabled\"\xbb\x02\n\x0bChannelEdge\x12\x1e\n\ncha\
+    nnel_id\x18\x01\x20\x01(\x04R\nchannel_id\x12\x1e\n\nchan_point\x18\x02\
+    \x20\x01(\tR\nchan_point\x12\x20\n\x0blast_update\x18\x03\x20\x01(\rR\
+    \x0blast_update\x12\x1c\n\tnode1_pub\x18\x04\x20\x01(\tR\tnode1_pub\x12\
     \x1c\n\tnode2_pub\x18\x05\x20\x01(\tR\tnode2_pub\x12\x1a\n\x08capacity\
     \x18\x06\x20\x01(\x03R\x08capacity\x128\n\x0cnode1_policy\x18\x07\x20\
     \x01(\x0b2\x14.lnrpc.RoutingPolicyR\x0cnode1_policy\x128\n\x0cnode2_poli\
-    cy\x18\x08\x20\x01(\x0b2\x14.lnrpc.RoutingPolicyR\x0cnode2_policy\"\x15\
-    \n\x13ChannelGraphRequest\"d\n\x0cChannelGraph\x12*\n\x05nodes\x18\x01\
-    \x20\x03(\x0b2\x14.lnrpc.LightningNodeR\x05nodes\x12(\n\x05edges\x18\x02\
-    \x20\x03(\x0b2\x12.lnrpc.ChannelEdgeR\x05edges\"*\n\x0fChanInfoRequest\
-    \x12\x17\n\x07chan_id\x18\x01\x20\x01(\x04R\x06chanId\"\x14\n\x12Network\
-    InfoRequest\"\x83\x03\n\x0bNetworkInfo\x12&\n\x0egraph_diameter\x18\x01\
-    \x20\x01(\rR\x0egraph_diameter\x12&\n\x0eavg_out_degree\x18\x02\x20\x01(\
-    \x01R\x0eavg_out_degree\x12&\n\x0emax_out_degree\x18\x03\x20\x01(\rR\x0e\
-    max_out_degree\x12\x1c\n\tnum_nodes\x18\x04\x20\x01(\rR\tnum_nodes\x12\"\
-    \n\x0cnum_channels\x18\x05\x20\x01(\rR\x0cnum_channels\x126\n\x16total_n\
-    etwork_capacity\x18\x06\x20\x01(\x03R\x16total_network_capacity\x12*\n\
-    \x10avg_channel_size\x18\x07\x20\x01(\x01R\x10avg_channel_size\x12*\n\
-    \x10min_channel_size\x18\x08\x20\x01(\x03R\x10min_channel_size\x12*\n\
-    \x10max_channel_size\x18\t\x20\x01(\x03R\x10max_channel_size\"\r\n\x0bSt\
-    opRequest\"\x0e\n\x0cStopResponse\"\x1b\n\x19GraphTopologySubscription\"\
-    \xcd\x01\n\x13GraphTopologyUpdate\x124\n\x0cnode_updates\x18\x01\x20\x03\
-    (\x0b2\x11.lnrpc.NodeUpdateR\x0bnodeUpdates\x12A\n\x0fchannel_updates\
-    \x18\x02\x20\x03(\x0b2\x18.lnrpc.ChannelEdgeUpdateR\x0echannelUpdates\
-    \x12=\n\x0cclosed_chans\x18\x03\x20\x03(\x0b2\x1a.lnrpc.ClosedChannelUpd\
-    ateR\x0bclosedChans\"\x8c\x01\n\nNodeUpdate\x12\x1c\n\taddresses\x18\x01\
-    \x20\x03(\tR\taddresses\x12!\n\x0cidentity_key\x18\x02\x20\x01(\tR\x0bid\
-    entityKey\x12'\n\x0fglobal_features\x18\x03\x20\x01(\x0cR\x0eglobalFeatu\
-    res\x12\x14\n\x05alias\x18\x04\x20\x01(\tR\x05alias\"\x8d\x02\n\x11Chann\
-    elEdgeUpdate\x12\x17\n\x07chan_id\x18\x01\x20\x01(\x04R\x06chanId\x122\n\
-    \nchan_point\x18\x02\x20\x01(\x0b2\x13.lnrpc.ChannelPointR\tchanPoint\
-    \x12\x1a\n\x08capacity\x18\x03\x20\x01(\x03R\x08capacity\x12;\n\x0erouti\
-    ng_policy\x18\x04\x20\x01(\x0b2\x14.lnrpc.RoutingPolicyR\rroutingPolicy\
-    \x12)\n\x10advertising_node\x18\x05\x20\x01(\tR\x0fadvertisingNode\x12'\
-    \n\x0fconnecting_node\x18\x06\x20\x01(\tR\x0econnectingNode\"\xa3\x01\n\
-    \x13ClosedChannelUpdate\x12\x17\n\x07chan_id\x18\x01\x20\x01(\x04R\x06ch\
-    anId\x12\x1a\n\x08capacity\x18\x02\x20\x01(\x03R\x08capacity\x12#\n\rclo\
-    sed_height\x18\x03\x20\x01(\rR\x0cclosedHeight\x122\n\nchan_point\x18\
-    \x04\x20\x01(\x0b2\x13.lnrpc.ChannelPointR\tchanPoint\"\xd3\x01\n\x07Hop\
-    Hint\x12\x18\n\x07node_id\x18\x01\x20\x01(\tR\x07node_id\x12\x18\n\x07ch\
-    an_id\x18\x02\x20\x01(\x04R\x07chan_id\x12$\n\rfee_base_msat\x18\x03\x20\
-    \x01(\rR\rfee_base_msat\x12@\n\x1bfee_proportional_millionths\x18\x04\
-    \x20\x01(\rR\x1bfee_proportional_millionths\x12,\n\x11cltv_expiry_delta\
-    \x18\x05\x20\x01(\rR\x11cltv_expiry_delta\"9\n\tRouteHint\x12,\n\thop_hi\
-    nts\x18\x01\x20\x03(\x0b2\x0e.lnrpc.HopHintR\thop_hints\"\xeb\x03\n\x07I\
-    nvoice\x12\x12\n\x04memo\x18\x01\x20\x01(\tR\x04memo\x12\x18\n\x07receip\
-    t\x18\x02\x20\x01(\x0cR\x07receipt\x12\x1e\n\nr_preimage\x18\x03\x20\x01\
-    (\x0cR\nr_preimage\x12\x16\n\x06r_hash\x18\x04\x20\x01(\x0cR\x06r_hash\
-    \x12\x14\n\x05value\x18\x05\x20\x01(\x03R\x05value\x12\x18\n\x07settled\
-    \x18\x06\x20\x01(\x08R\x07settled\x12$\n\rcreation_date\x18\x07\x20\x01(\
-    \x03R\rcreation_date\x12\x20\n\x0bsettle_date\x18\x08\x20\x01(\x03R\x0bs\
-    ettle_date\x12(\n\x0fpayment_request\x18\t\x20\x01(\tR\x0fpayment_reques\
-    t\x12*\n\x10description_hash\x18\n\x20\x01(\x0cR\x10description_hash\x12\
-    \x16\n\x06expiry\x18\x0b\x20\x01(\x03R\x06expiry\x12$\n\rfallback_addr\
-    \x18\x0c\x20\x01(\tR\rfallback_addr\x12\x20\n\x0bcltv_expiry\x18\r\x20\
-    \x01(\x04R\x0bcltv_expiry\x122\n\x0broute_hints\x18\x0e\x20\x03(\x0b2\
-    \x10.lnrpc.RouteHintR\x0broute_hints\x12\x18\n\x07private\x18\x0f\x20\
-    \x01(\x08R\x07private\"V\n\x12AddInvoiceResponse\x12\x16\n\x06r_hash\x18\
-    \x01\x20\x01(\x0cR\x06r_hash\x12(\n\x0fpayment_request\x18\x02\x20\x01(\
-    \tR\x0fpayment_request\"E\n\x0bPaymentHash\x12\x1e\n\nr_hash_str\x18\x01\
-    \x20\x01(\tR\nr_hash_str\x12\x16\n\x06r_hash\x18\x02\x20\x01(\x0cR\x06r_\
-    hash\"7\n\x12ListInvoiceRequest\x12!\n\x0cpending_only\x18\x01\x20\x01(\
-    \x08R\x0bpendingOnly\"A\n\x13ListInvoiceResponse\x12*\n\x08invoices\x18\
-    \x01\x20\x03(\x0b2\x0e.lnrpc.InvoiceR\x08invoices\"\x15\n\x13InvoiceSubs\
-    cription\"\xbb\x01\n\x07Payment\x12\"\n\x0cpayment_hash\x18\x01\x20\x01(\
-    \tR\x0cpayment_hash\x12\x14\n\x05value\x18\x02\x20\x01(\x03R\x05value\
-    \x12$\n\rcreation_date\x18\x03\x20\x01(\x03R\rcreation_date\x12\x12\n\
-    \x04path\x18\x04\x20\x03(\tR\x04path\x12\x10\n\x03fee\x18\x05\x20\x01(\
-    \x03R\x03fee\x12*\n\x10payment_preimage\x18\x06\x20\x01(\tR\x10payment_p\
-    reimage\"\x15\n\x13ListPaymentsRequest\"B\n\x14ListPaymentsResponse\x12*\
-    \n\x08payments\x18\x01\x20\x03(\x0b2\x0e.lnrpc.PaymentR\x08payments\"\
-    \x1a\n\x18DeleteAllPaymentsRequest\"\x1b\n\x19DeleteAllPaymentsResponse\
-    \"F\n\x11DebugLevelRequest\x12\x12\n\x04show\x18\x01\x20\x01(\x08R\x04sh\
-    ow\x12\x1d\n\nlevel_spec\x18\x02\x20\x01(\tR\tlevelSpec\"6\n\x12DebugLev\
-    elResponse\x12\x20\n\x0bsub_systems\x18\x01\x20\x01(\tR\x0bsub_systems\"\
-    '\n\x0cPayReqString\x12\x17\n\x07pay_req\x18\x01\x20\x01(\tR\x06payReq\"\
-    \xf2\x02\n\x06PayReq\x12\x20\n\x0bdestination\x18\x01\x20\x01(\tR\x0bdes\
-    tination\x12\"\n\x0cpayment_hash\x18\x02\x20\x01(\tR\x0cpayment_hash\x12\
-    \"\n\x0cnum_satoshis\x18\x03\x20\x01(\x03R\x0cnum_satoshis\x12\x1c\n\tti\
-    mestamp\x18\x04\x20\x01(\x03R\ttimestamp\x12\x16\n\x06expiry\x18\x05\x20\
-    \x01(\x03R\x06expiry\x12\x20\n\x0bdescription\x18\x06\x20\x01(\tR\x0bdes\
-    cription\x12*\n\x10description_hash\x18\x07\x20\x01(\tR\x10description_h\
-    ash\x12$\n\rfallback_addr\x18\x08\x20\x01(\tR\rfallback_addr\x12\x20\n\
-    \x0bcltv_expiry\x18\t\x20\x01(\x03R\x0bcltv_expiry\x122\n\x0broute_hints\
-    \x18\n\x20\x03(\x0b2\x10.lnrpc.RouteHintR\x0broute_hints\"\x12\n\x10FeeR\
-    eportRequest\"\x99\x01\n\x10ChannelFeeReport\x12!\n\nchan_point\x18\x01\
-    \x20\x01(\tR\rchannel_point\x12$\n\rbase_fee_msat\x18\x02\x20\x01(\x03R\
-    \rbase_fee_msat\x12\x20\n\x0bfee_per_mil\x18\x03\x20\x01(\x03R\x0bfee_pe\
-    r_mil\x12\x1a\n\x08fee_rate\x18\x04\x20\x01(\x01R\x08fee_rate\"\xbc\x01\
-    \n\x11FeeReportResponse\x12;\n\x0cchannel_fees\x18\x01\x20\x03(\x0b2\x17\
-    .lnrpc.ChannelFeeReportR\x0cchannel_fees\x12\x20\n\x0bday_fee_sum\x18\
-    \x02\x20\x01(\x04R\x0bday_fee_sum\x12\"\n\x0cweek_fee_sum\x18\x03\x20\
-    \x01(\x04R\x0cweek_fee_sum\x12$\n\rmonth_fee_sum\x18\x04\x20\x01(\x04R\r\
-    month_fee_sum\"\xdb\x01\n\x13PolicyUpdateRequest\x12\x18\n\x06global\x18\
-    \x01\x20\x01(\x08H\0R\x06global\x125\n\nchan_point\x18\x02\x20\x01(\x0b2\
-    \x13.lnrpc.ChannelPointH\0R\nchan_point\x12$\n\rbase_fee_msat\x18\x03\
-    \x20\x01(\x03R\rbase_fee_msat\x12\x1a\n\x08fee_rate\x18\x04\x20\x01(\x01\
-    R\x08fee_rate\x12(\n\x0ftime_lock_delta\x18\x05\x20\x01(\rR\x0ftime_lock\
-    _deltaB\x07\n\x05scope\"\x16\n\x14PolicyUpdateResponse\"\xa2\x01\n\x18Fo\
-    rwardingHistoryRequest\x12\x1e\n\nstart_time\x18\x01\x20\x01(\x04R\nstar\
-    t_time\x12\x1a\n\x08end_time\x18\x02\x20\x01(\x04R\x08end_time\x12\"\n\
-    \x0cindex_offset\x18\x03\x20\x01(\rR\x0cindex_offset\x12&\n\x0enum_max_e\
-    vents\x18\x04\x20\x01(\rR\x0enum_max_events\"\xb5\x01\n\x0fForwardingEve\
-    nt\x12\x1c\n\ttimestamp\x18\x01\x20\x01(\x04R\ttimestamp\x12\x1e\n\nchan\
-    _id_in\x18\x02\x20\x01(\x04R\nchan_id_in\x12\x20\n\x0bchan_id_out\x18\
-    \x04\x20\x01(\x04R\x0bchan_id_out\x12\x16\n\x06amt_in\x18\x05\x20\x01(\
-    \x04R\x06amt_in\x12\x18\n\x07amt_out\x18\x06\x20\x01(\x04R\x07amt_out\
-    \x12\x10\n\x03fee\x18\x07\x20\x01(\x04R\x03fee\"\x8f\x01\n\x19Forwarding\
-    HistoryResponse\x12D\n\x11forwarding_events\x18\x01\x20\x03(\x0b2\x16.ln\
-    rpc.ForwardingEventR\x11forwarding_events\x12,\n\x11last_offset_index\
-    \x18\x02\x20\x01(\rR\x11last_offset_index2\x91\x03\n\x0eWalletUnlocker\
-    \x12M\n\x07GenSeed\x12\x15.lnrpc.GenSeedRequest\x1a\x16.lnrpc.GenSeedRes\
-    ponse\"\x13\x82\xd3\xe4\x93\x02\r\x12\x0b/v1/genseed\x12\\\n\nInitWallet\
-    \x12\x18.lnrpc.InitWalletRequest\x1a\x19.lnrpc.InitWalletResponse\"\x19\
-    \x82\xd3\xe4\x93\x02\x13\"\x0e/v1/initwallet:\x01*\x12d\n\x0cUnlockWalle\
-    t\x12\x1a.lnrpc.UnlockWalletRequest\x1a\x1b.lnrpc.UnlockWalletResponse\"\
-    \x1b\x82\xd3\xe4\x93\x02\x15\"\x10/v1/unlockwallet:\x01*\x12l\n\x0eChang\
-    ePassword\x12\x1c.lnrpc.ChangePasswordRequest\x1a\x1d.lnrpc.ChangePasswo\
-    rdResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\"\x12/v1/changepassword:\x01*2\
-    \x80\x1e\n\tLightning\x12j\n\rWalletBalance\x12\x1b.lnrpc.WalletBalanceR\
-    equest\x1a\x1c.lnrpc.WalletBalanceResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\
-    \x12\x16/v1/balance/blockchain\x12k\n\x0eChannelBalance\x12\x1c.lnrpc.Ch\
-    annelBalanceRequest\x1a\x1d.lnrpc.ChannelBalanceResponse\"\x1c\x82\xd3\
-    \xe4\x93\x02\x16\x12\x14/v1/balance/channels\x12e\n\x0fGetTransactions\
-    \x12\x1d.lnrpc.GetTransactionsRequest\x1a\x19.lnrpc.TransactionDetails\"\
-    \x18\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/transactions\x12[\n\tSendCoins\
-    \x12\x17.lnrpc.SendCoinsRequest\x1a\x18.lnrpc.SendCoinsResponse\"\x1b\
-    \x82\xd3\xe4\x93\x02\x15\"\x10/v1/transactions:\x01*\x12L\n\x15Subscribe\
-    Transactions\x12\x1d.lnrpc.GetTransactionsRequest\x1a\x12.lnrpc.Transact\
-    ion0\x01\x12;\n\x08SendMany\x12\x16.lnrpc.SendManyRequest\x1a\x17.lnrpc.\
-    SendManyResponse\x12A\n\nNewAddress\x12\x18.lnrpc.NewAddressRequest\x1a\
-    \x19.lnrpc.NewAddressResponse\x12g\n\x11NewWitnessAddress\x12\x1f.lnrpc.\
-    NewWitnessAddressRequest\x1a\x19.lnrpc.NewAddressResponse\"\x16\x82\xd3\
-    \xe4\x93\x02\x10\x12\x0e/v1/newaddress\x12D\n\x0bSignMessage\x12\x19.lnr\
-    pc.SignMessageRequest\x1a\x1a.lnrpc.SignMessageResponse\x12J\n\rVerifyMe\
-    ssage\x12\x1b.lnrpc.VerifyMessageRequest\x1a\x1c.lnrpc.VerifyMessageResp\
-    onse\x12Z\n\x0bConnectPeer\x12\x19.lnrpc.ConnectPeerRequest\x1a\x1a.lnrp\
-    c.ConnectPeerResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\"\t/v1/peers:\x01*\
-    \x12j\n\x0eDisconnectPeer\x12\x1c.lnrpc.DisconnectPeerRequest\x1a\x1d.ln\
-    rpc.DisconnectPeerResponse\"\x1b\x82\xd3\xe4\x93\x02\x15*\x13/v1/peers/{\
-    pub_key}\x12Q\n\tListPeers\x12\x17.lnrpc.ListPeersRequest\x1a\x18.lnrpc.\
-    ListPeersResponse\"\x11\x82\xd3\xe4\x93\x02\x0b\x12\t/v1/peers\x12M\n\
-    \x07GetInfo\x12\x15.lnrpc.GetInfoRequest\x1a\x16.lnrpc.GetInfoResponse\"\
-    \x13\x82\xd3\xe4\x93\x02\r\x12\x0b/v1/getinfo\x12n\n\x0fPendingChannels\
-    \x12\x1d.lnrpc.PendingChannelsRequest\x1a\x1e.lnrpc.PendingChannelsRespo\
-    nse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/channels/pending\x12]\n\x0c\
-    ListChannels\x12\x1a.lnrpc.ListChannelsRequest\x1a\x1b.lnrpc.ListChannel\
-    sResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\x0c/v1/channels\x12j\n\x0eCl\
-    osedChannels\x12\x1c.lnrpc.ClosedChannelsRequest\x1a\x1d.lnrpc.ClosedCha\
-    nnelsResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/v1/channels/closed\
-    \x12Z\n\x0fOpenChannelSync\x12\x19.lnrpc.OpenChannelRequest\x1a\x13.lnrp\
-    c.ChannelPoint\"\x17\x82\xd3\xe4\x93\x02\x11\"\x0c/v1/channels:\x01*\x12\
-    C\n\x0bOpenChannel\x12\x19.lnrpc.OpenChannelRequest\x1a\x17.lnrpc.OpenSt\
-    atusUpdate0\x01\x12\x9a\x01\n\x0cCloseChannel\x12\x1a.lnrpc.CloseChannel\
-    Request\x1a\x18.lnrpc.CloseStatusUpdate\"R\x82\xd3\xe4\x93\x02L*J/v1/cha\
-    nnels/{channel_point.funding_txid_str}/{channel_point.output_index}0\x01\
-    \x12:\n\x0bSendPayment\x12\x12.lnrpc.SendRequest\x1a\x13.lnrpc.SendRespo\
-    nse(\x010\x01\x12`\n\x0fSendPaymentSync\x12\x12.lnrpc.SendRequest\x1a\
-    \x13.lnrpc.SendResponse\"$\x82\xd3\xe4\x93\x02\x1e\"\x19/v1/channels/tra\
-    nsactions:\x01*\x12A\n\x0bSendToRoute\x12\x19.lnrpc.SendToRouteRequest\
-    \x1a\x13.lnrpc.SendResponse(\x010\x01\x12m\n\x0fSendToRouteSync\x12\x19.\
-    lnrpc.SendToRouteRequest\x1a\x13.lnrpc.SendResponse\"*\x82\xd3\xe4\x93\
-    \x02$\"\x1f/v1/channels/transactions/route:\x01*\x12P\n\nAddInvoice\x12\
-    \x0e.lnrpc.Invoice\x1a\x19.lnrpc.AddInvoiceResponse\"\x17\x82\xd3\xe4\
-    \x93\x02\x11\"\x0c/v1/invoices:\x01*\x12[\n\x0cListInvoices\x12\x19.lnrp\
-    c.ListInvoiceRequest\x1a\x1a.lnrpc.ListInvoiceResponse\"\x14\x82\xd3\xe4\
-    \x93\x02\x0e\x12\x0c/v1/invoices\x12U\n\rLookupInvoice\x12\x12.lnrpc.Pay\
-    mentHash\x1a\x0e.lnrpc.Invoice\"\x20\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/\
-    invoice/{r_hash_str}\x12a\n\x11SubscribeInvoices\x12\x1a.lnrpc.InvoiceSu\
-    bscription\x1a\x0e.lnrpc.Invoice\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v\
-    1/invoices/subscribe0\x01\x12P\n\x0cDecodePayReq\x12\x13.lnrpc.PayReqStr\
-    ing\x1a\r.lnrpc.PayReq\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/payreq/{\
-    pay_req}\x12]\n\x0cListPayments\x12\x1a.lnrpc.ListPaymentsRequest\x1a\
-    \x1b.lnrpc.ListPaymentsResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\x0c/v1\
-    /payments\x12l\n\x11DeleteAllPayments\x12\x1f.lnrpc.DeleteAllPaymentsReq\
-    uest\x1a\x20.lnrpc.DeleteAllPaymentsResponse\"\x14\x82\xd3\xe4\x93\x02\
-    \x0e*\x0c/v1/payments\x12S\n\rDescribeGraph\x12\x1a.lnrpc.ChannelGraphRe\
-    quest\x1a\x13.lnrpc.ChannelGraph\"\x11\x82\xd3\xe4\x93\x02\x0b\x12\t/v1/\
-    graph\x12[\n\x0bGetChanInfo\x12\x16.lnrpc.ChanInfoRequest\x1a\x12.lnrpc.\
-    ChannelEdge\"\x20\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/graph/edge/{chan_id\
-    }\x12X\n\x0bGetNodeInfo\x12\x16.lnrpc.NodeInfoRequest\x1a\x0f.lnrpc.Node\
-    Info\"\x20\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/graph/node/{pub_key}\x12n\
-    \n\x0bQueryRoutes\x12\x19.lnrpc.QueryRoutesRequest\x1a\x1a.lnrpc.QueryRo\
-    utesResponse\"(\x82\xd3\xe4\x93\x02\"\x12\x20/v1/graph/routes/{pub_key}/\
-    {amt}\x12W\n\x0eGetNetworkInfo\x12\x19.lnrpc.NetworkInfoRequest\x1a\x12.\
-    lnrpc.NetworkInfo\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/v1/graph/info\
-    \x125\n\nStopDaemon\x12\x12.lnrpc.StopRequest\x1a\x13.lnrpc.StopResponse\
-    \x12W\n\x15SubscribeChannelGraph\x12\x20.lnrpc.GraphTopologySubscription\
-    \x1a\x1a.lnrpc.GraphTopologyUpdate0\x01\x12A\n\nDebugLevel\x12\x18.lnrpc\
-    .DebugLevelRequest\x1a\x19.lnrpc.DebugLevelResponse\x12P\n\tFeeReport\
-    \x12\x17.lnrpc.FeeReportRequest\x1a\x18.lnrpc.FeeReportResponse\"\x10\
-    \x82\xd3\xe4\x93\x02\n\x12\x08/v1/fees\x12i\n\x13UpdateChannelPolicy\x12\
-    \x1a.lnrpc.PolicyUpdateRequest\x1a\x1b.lnrpc.PolicyUpdateResponse\"\x19\
-    \x82\xd3\xe4\x93\x02\x13\"\x0e/v1/chanpolicy:\x01*\x12m\n\x11ForwardingH\
-    istory\x12\x1f.lnrpc.ForwardingHistoryRequest\x1a\x20.lnrpc.ForwardingHi\
-    storyResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\"\n/v1/switch:\x01*b\x06prot\
-    o3\
+    cy\x18\x08\x20\x01(\x0b2\x14.lnrpc.RoutingPolicyR\x0cnode2_policy\"G\n\
+    \x13ChannelGraphRequest\x120\n\x13include_unannounced\x18\x01\x20\x01(\
+    \x08R\x13include_unannounced\"d\n\x0cChannelGraph\x12*\n\x05nodes\x18\
+    \x01\x20\x03(\x0b2\x14.lnrpc.LightningNodeR\x05nodes\x12(\n\x05edges\x18\
+    \x02\x20\x03(\x0b2\x12.lnrpc.ChannelEdgeR\x05edges\"*\n\x0fChanInfoReque\
+    st\x12\x17\n\x07chan_id\x18\x01\x20\x01(\x04R\x06chanId\"\x14\n\x12Netwo\
+    rkInfoRequest\"\x83\x03\n\x0bNetworkInfo\x12&\n\x0egraph_diameter\x18\
+    \x01\x20\x01(\rR\x0egraph_diameter\x12&\n\x0eavg_out_degree\x18\x02\x20\
+    \x01(\x01R\x0eavg_out_degree\x12&\n\x0emax_out_degree\x18\x03\x20\x01(\r\
+    R\x0emax_out_degree\x12\x1c\n\tnum_nodes\x18\x04\x20\x01(\rR\tnum_nodes\
+    \x12\"\n\x0cnum_channels\x18\x05\x20\x01(\rR\x0cnum_channels\x126\n\x16t\
+    otal_network_capacity\x18\x06\x20\x01(\x03R\x16total_network_capacity\
+    \x12*\n\x10avg_channel_size\x18\x07\x20\x01(\x01R\x10avg_channel_size\
+    \x12*\n\x10min_channel_size\x18\x08\x20\x01(\x03R\x10min_channel_size\
+    \x12*\n\x10max_channel_size\x18\t\x20\x01(\x03R\x10max_channel_size\"\r\
+    \n\x0bStopRequest\"\x0e\n\x0cStopResponse\"\x1b\n\x19GraphTopologySubscr\
+    iption\"\xcd\x01\n\x13GraphTopologyUpdate\x124\n\x0cnode_updates\x18\x01\
+    \x20\x03(\x0b2\x11.lnrpc.NodeUpdateR\x0bnodeUpdates\x12A\n\x0fchannel_up\
+    dates\x18\x02\x20\x03(\x0b2\x18.lnrpc.ChannelEdgeUpdateR\x0echannelUpdat\
+    es\x12=\n\x0cclosed_chans\x18\x03\x20\x03(\x0b2\x1a.lnrpc.ClosedChannelU\
+    pdateR\x0bclosedChans\"\x8c\x01\n\nNodeUpdate\x12\x1c\n\taddresses\x18\
+    \x01\x20\x03(\tR\taddresses\x12!\n\x0cidentity_key\x18\x02\x20\x01(\tR\
+    \x0bidentityKey\x12'\n\x0fglobal_features\x18\x03\x20\x01(\x0cR\x0egloba\
+    lFeatures\x12\x14\n\x05alias\x18\x04\x20\x01(\tR\x05alias\"\x8d\x02\n\
+    \x11ChannelEdgeUpdate\x12\x17\n\x07chan_id\x18\x01\x20\x01(\x04R\x06chan\
+    Id\x122\n\nchan_point\x18\x02\x20\x01(\x0b2\x13.lnrpc.ChannelPointR\tcha\
+    nPoint\x12\x1a\n\x08capacity\x18\x03\x20\x01(\x03R\x08capacity\x12;\n\
+    \x0erouting_policy\x18\x04\x20\x01(\x0b2\x14.lnrpc.RoutingPolicyR\rrouti\
+    ngPolicy\x12)\n\x10advertising_node\x18\x05\x20\x01(\tR\x0fadvertisingNo\
+    de\x12'\n\x0fconnecting_node\x18\x06\x20\x01(\tR\x0econnectingNode\"\xa3\
+    \x01\n\x13ClosedChannelUpdate\x12\x17\n\x07chan_id\x18\x01\x20\x01(\x04R\
+    \x06chanId\x12\x1a\n\x08capacity\x18\x02\x20\x01(\x03R\x08capacity\x12#\
+    \n\rclosed_height\x18\x03\x20\x01(\rR\x0cclosedHeight\x122\n\nchan_point\
+    \x18\x04\x20\x01(\x0b2\x13.lnrpc.ChannelPointR\tchanPoint\"\xd3\x01\n\
+    \x07HopHint\x12\x18\n\x07node_id\x18\x01\x20\x01(\tR\x07node_id\x12\x18\
+    \n\x07chan_id\x18\x02\x20\x01(\x04R\x07chan_id\x12$\n\rfee_base_msat\x18\
+    \x03\x20\x01(\rR\rfee_base_msat\x12@\n\x1bfee_proportional_millionths\
+    \x18\x04\x20\x01(\rR\x1bfee_proportional_millionths\x12,\n\x11cltv_expir\
+    y_delta\x18\x05\x20\x01(\rR\x11cltv_expiry_delta\"9\n\tRouteHint\x12,\n\
+    \thop_hints\x18\x01\x20\x03(\x0b2\x0e.lnrpc.HopHintR\thop_hints\"\x97\
+    \x05\n\x07Invoice\x12\x12\n\x04memo\x18\x01\x20\x01(\tR\x04memo\x12\x18\
+    \n\x07receipt\x18\x02\x20\x01(\x0cR\x07receipt\x12\x1e\n\nr_preimage\x18\
+    \x03\x20\x01(\x0cR\nr_preimage\x12\x16\n\x06r_hash\x18\x04\x20\x01(\x0cR\
+    \x06r_hash\x12\x14\n\x05value\x18\x05\x20\x01(\x03R\x05value\x12\x18\n\
+    \x07settled\x18\x06\x20\x01(\x08R\x07settled\x12$\n\rcreation_date\x18\
+    \x07\x20\x01(\x03R\rcreation_date\x12\x20\n\x0bsettle_date\x18\x08\x20\
+    \x01(\x03R\x0bsettle_date\x12(\n\x0fpayment_request\x18\t\x20\x01(\tR\
+    \x0fpayment_request\x12*\n\x10description_hash\x18\n\x20\x01(\x0cR\x10de\
+    scription_hash\x12\x16\n\x06expiry\x18\x0b\x20\x01(\x03R\x06expiry\x12$\
+    \n\rfallback_addr\x18\x0c\x20\x01(\tR\rfallback_addr\x12\x20\n\x0bcltv_e\
+    xpiry\x18\r\x20\x01(\x04R\x0bcltv_expiry\x122\n\x0broute_hints\x18\x0e\
+    \x20\x03(\x0b2\x10.lnrpc.RouteHintR\x0broute_hints\x12\x18\n\x07private\
+    \x18\x0f\x20\x01(\x08R\x07private\x12\x1c\n\tadd_index\x18\x10\x20\x01(\
+    \x04R\tadd_index\x12\"\n\x0csettle_index\x18\x11\x20\x01(\x04R\x0csettle\
+    _index\x12\x1e\n\x08amt_paid\x18\x12\x20\x01(\x03R\x08amt_paidB\x02\x18\
+    \x01\x12\"\n\x0camt_paid_sat\x18\x13\x20\x01(\x03R\x0camt_paid_sat\x12$\
+    \n\ramt_paid_msat\x18\x14\x20\x01(\x03R\ramt_paid_msat\"t\n\x12AddInvoic\
+    eResponse\x12\x16\n\x06r_hash\x18\x01\x20\x01(\x0cR\x06r_hash\x12(\n\x0f\
+    payment_request\x18\x02\x20\x01(\tR\x0fpayment_request\x12\x1c\n\tadd_in\
+    dex\x18\x10\x20\x01(\x04R\tadd_index\"E\n\x0bPaymentHash\x12\x1e\n\nr_ha\
+    sh_str\x18\x01\x20\x01(\tR\nr_hash_str\x12\x16\n\x06r_hash\x18\x02\x20\
+    \x01(\x0cR\x06r_hash\"\xa4\x01\n\x12ListInvoiceRequest\x12\"\n\x0cpendin\
+    g_only\x18\x01\x20\x01(\x08R\x0cpending_only\x12\"\n\x0cindex_offset\x18\
+    \x04\x20\x01(\x04R\x0cindex_offset\x12*\n\x10num_max_invoices\x18\x05\
+    \x20\x01(\x04R\x10num_max_invoices\x12\x1a\n\x08reversed\x18\x06\x20\x01\
+    (\x08R\x08reversed\"\x9f\x01\n\x13ListInvoiceResponse\x12*\n\x08invoices\
+    \x18\x01\x20\x03(\x0b2\x0e.lnrpc.InvoiceR\x08invoices\x12,\n\x11last_ind\
+    ex_offset\x18\x02\x20\x01(\x04R\x11last_index_offset\x12.\n\x12first_ind\
+    ex_offset\x18\x03\x20\x01(\x04R\x12first_index_offset\"W\n\x13InvoiceSub\
+    scription\x12\x1c\n\tadd_index\x18\x01\x20\x01(\x04R\tadd_index\x12\"\n\
+    \x0csettle_index\x18\x02\x20\x01(\x04R\x0csettle_index\"\xfd\x01\n\x07Pa\
+    yment\x12\"\n\x0cpayment_hash\x18\x01\x20\x01(\tR\x0cpayment_hash\x12\
+    \x18\n\x05value\x18\x02\x20\x01(\x03R\x05valueB\x02\x18\x01\x12$\n\rcrea\
+    tion_date\x18\x03\x20\x01(\x03R\rcreation_date\x12\x12\n\x04path\x18\x04\
+    \x20\x03(\tR\x04path\x12\x10\n\x03fee\x18\x05\x20\x01(\x03R\x03fee\x12*\
+    \n\x10payment_preimage\x18\x06\x20\x01(\tR\x10payment_preimage\x12\x1c\n\
+    \tvalue_sat\x18\x07\x20\x01(\x03R\tvalue_sat\x12\x1e\n\nvalue_msat\x18\
+    \x08\x20\x01(\x03R\nvalue_msat\"\x15\n\x13ListPaymentsRequest\"B\n\x14Li\
+    stPaymentsResponse\x12*\n\x08payments\x18\x01\x20\x03(\x0b2\x0e.lnrpc.Pa\
+    ymentR\x08payments\"\x1a\n\x18DeleteAllPaymentsRequest\"\x1b\n\x19Delete\
+    AllPaymentsResponse\"Q\n\x15AbandonChannelRequest\x128\n\rchannel_point\
+    \x18\x01\x20\x01(\x0b2\x13.lnrpc.ChannelPointR\x0cchannelPoint\"\x18\n\
+    \x16AbandonChannelResponse\"F\n\x11DebugLevelRequest\x12\x12\n\x04show\
+    \x18\x01\x20\x01(\x08R\x04show\x12\x1d\n\nlevel_spec\x18\x02\x20\x01(\tR\
+    \tlevelSpec\"6\n\x12DebugLevelResponse\x12\x20\n\x0bsub_systems\x18\x01\
+    \x20\x01(\tR\x0bsub_systems\"'\n\x0cPayReqString\x12\x17\n\x07pay_req\
+    \x18\x01\x20\x01(\tR\x06payReq\"\xf2\x02\n\x06PayReq\x12\x20\n\x0bdestin\
+    ation\x18\x01\x20\x01(\tR\x0bdestination\x12\"\n\x0cpayment_hash\x18\x02\
+    \x20\x01(\tR\x0cpayment_hash\x12\"\n\x0cnum_satoshis\x18\x03\x20\x01(\
+    \x03R\x0cnum_satoshis\x12\x1c\n\ttimestamp\x18\x04\x20\x01(\x03R\ttimest\
+    amp\x12\x16\n\x06expiry\x18\x05\x20\x01(\x03R\x06expiry\x12\x20\n\x0bdes\
+    cription\x18\x06\x20\x01(\tR\x0bdescription\x12*\n\x10description_hash\
+    \x18\x07\x20\x01(\tR\x10description_hash\x12$\n\rfallback_addr\x18\x08\
+    \x20\x01(\tR\rfallback_addr\x12\x20\n\x0bcltv_expiry\x18\t\x20\x01(\x03R\
+    \x0bcltv_expiry\x122\n\x0broute_hints\x18\n\x20\x03(\x0b2\x10.lnrpc.Rout\
+    eHintR\x0broute_hints\"\x12\n\x10FeeReportRequest\"\x99\x01\n\x10Channel\
+    FeeReport\x12!\n\nchan_point\x18\x01\x20\x01(\tR\rchannel_point\x12$\n\r\
+    base_fee_msat\x18\x02\x20\x01(\x03R\rbase_fee_msat\x12\x20\n\x0bfee_per_\
+    mil\x18\x03\x20\x01(\x03R\x0bfee_per_mil\x12\x1a\n\x08fee_rate\x18\x04\
+    \x20\x01(\x01R\x08fee_rate\"\xbc\x01\n\x11FeeReportResponse\x12;\n\x0cch\
+    annel_fees\x18\x01\x20\x03(\x0b2\x17.lnrpc.ChannelFeeReportR\x0cchannel_\
+    fees\x12\x20\n\x0bday_fee_sum\x18\x02\x20\x01(\x04R\x0bday_fee_sum\x12\"\
+    \n\x0cweek_fee_sum\x18\x03\x20\x01(\x04R\x0cweek_fee_sum\x12$\n\rmonth_f\
+    ee_sum\x18\x04\x20\x01(\x04R\rmonth_fee_sum\"\xdb\x01\n\x13PolicyUpdateR\
+    equest\x12\x18\n\x06global\x18\x01\x20\x01(\x08H\0R\x06global\x125\n\nch\
+    an_point\x18\x02\x20\x01(\x0b2\x13.lnrpc.ChannelPointH\0R\nchan_point\
+    \x12$\n\rbase_fee_msat\x18\x03\x20\x01(\x03R\rbase_fee_msat\x12\x1a\n\
+    \x08fee_rate\x18\x04\x20\x01(\x01R\x08fee_rate\x12(\n\x0ftime_lock_delta\
+    \x18\x05\x20\x01(\rR\x0ftime_lock_deltaB\x07\n\x05scope\"\x16\n\x14Polic\
+    yUpdateResponse\"\xa2\x01\n\x18ForwardingHistoryRequest\x12\x1e\n\nstart\
+    _time\x18\x01\x20\x01(\x04R\nstart_time\x12\x1a\n\x08end_time\x18\x02\
+    \x20\x01(\x04R\x08end_time\x12\"\n\x0cindex_offset\x18\x03\x20\x01(\rR\
+    \x0cindex_offset\x12&\n\x0enum_max_events\x18\x04\x20\x01(\rR\x0enum_max\
+    _events\"\xb5\x01\n\x0fForwardingEvent\x12\x1c\n\ttimestamp\x18\x01\x20\
+    \x01(\x04R\ttimestamp\x12\x1e\n\nchan_id_in\x18\x02\x20\x01(\x04R\nchan_\
+    id_in\x12\x20\n\x0bchan_id_out\x18\x04\x20\x01(\x04R\x0bchan_id_out\x12\
+    \x16\n\x06amt_in\x18\x05\x20\x01(\x04R\x06amt_in\x12\x18\n\x07amt_out\
+    \x18\x06\x20\x01(\x04R\x07amt_out\x12\x10\n\x03fee\x18\x07\x20\x01(\x04R\
+    \x03fee\"\x8f\x01\n\x19ForwardingHistoryResponse\x12D\n\x11forwarding_ev\
+    ents\x18\x01\x20\x03(\x0b2\x16.lnrpc.ForwardingEventR\x11forwarding_even\
+    ts\x12,\n\x11last_offset_index\x18\x02\x20\x01(\rR\x11last_offset_index2\
+    \x91\x03\n\x0eWalletUnlocker\x12M\n\x07GenSeed\x12\x15.lnrpc.GenSeedRequ\
+    est\x1a\x16.lnrpc.GenSeedResponse\"\x13\x82\xd3\xe4\x93\x02\r\x12\x0b/v1\
+    /genseed\x12\\\n\nInitWallet\x12\x18.lnrpc.InitWalletRequest\x1a\x19.lnr\
+    pc.InitWalletResponse\"\x19\x82\xd3\xe4\x93\x02\x13\"\x0e/v1/initwallet:\
+    \x01*\x12d\n\x0cUnlockWallet\x12\x1a.lnrpc.UnlockWalletRequest\x1a\x1b.l\
+    nrpc.UnlockWalletResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\"\x10/v1/unlockw\
+    allet:\x01*\x12l\n\x0eChangePassword\x12\x1c.lnrpc.ChangePasswordRequest\
+    \x1a\x1d.lnrpc.ChangePasswordResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\"\
+    \x12/v1/changepassword:\x01*2\xdb\x1e\n\tLightning\x12j\n\rWalletBalance\
+    \x12\x1b.lnrpc.WalletBalanceRequest\x1a\x1c.lnrpc.WalletBalanceResponse\
+    \"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/balance/blockchain\x12k\n\x0eC\
+    hannelBalance\x12\x1c.lnrpc.ChannelBalanceRequest\x1a\x1d.lnrpc.ChannelB\
+    alanceResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/balance/channels\
+    \x12e\n\x0fGetTransactions\x12\x1d.lnrpc.GetTransactionsRequest\x1a\x19.\
+    lnrpc.TransactionDetails\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/transa\
+    ctions\x12[\n\tSendCoins\x12\x17.lnrpc.SendCoinsRequest\x1a\x18.lnrpc.Se\
+    ndCoinsResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\"\x10/v1/transactions:\x01\
+    *\x12L\n\x15SubscribeTransactions\x12\x1d.lnrpc.GetTransactionsRequest\
+    \x1a\x12.lnrpc.Transaction0\x01\x12;\n\x08SendMany\x12\x16.lnrpc.SendMan\
+    yRequest\x1a\x17.lnrpc.SendManyResponse\x12Y\n\nNewAddress\x12\x18.lnrpc\
+    .NewAddressRequest\x1a\x19.lnrpc.NewAddressResponse\"\x16\x82\xd3\xe4\
+    \x93\x02\x10\x12\x0e/v1/newaddress\x12D\n\x0bSignMessage\x12\x19.lnrpc.S\
+    ignMessageRequest\x1a\x1a.lnrpc.SignMessageResponse\x12J\n\rVerifyMessag\
+    e\x12\x1b.lnrpc.VerifyMessageRequest\x1a\x1c.lnrpc.VerifyMessageResponse\
+    \x12Z\n\x0bConnectPeer\x12\x19.lnrpc.ConnectPeerRequest\x1a\x1a.lnrpc.Co\
+    nnectPeerResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\"\t/v1/peers:\x01*\x12j\
+    \n\x0eDisconnectPeer\x12\x1c.lnrpc.DisconnectPeerRequest\x1a\x1d.lnrpc.D\
+    isconnectPeerResponse\"\x1b\x82\xd3\xe4\x93\x02\x15*\x13/v1/peers/{pub_k\
+    ey}\x12Q\n\tListPeers\x12\x17.lnrpc.ListPeersRequest\x1a\x18.lnrpc.ListP\
+    eersResponse\"\x11\x82\xd3\xe4\x93\x02\x0b\x12\t/v1/peers\x12M\n\x07GetI\
+    nfo\x12\x15.lnrpc.GetInfoRequest\x1a\x16.lnrpc.GetInfoResponse\"\x13\x82\
+    \xd3\xe4\x93\x02\r\x12\x0b/v1/getinfo\x12n\n\x0fPendingChannels\x12\x1d.\
+    lnrpc.PendingChannelsRequest\x1a\x1e.lnrpc.PendingChannelsResponse\"\x1c\
+    \x82\xd3\xe4\x93\x02\x16\x12\x14/v1/channels/pending\x12]\n\x0cListChann\
+    els\x12\x1a.lnrpc.ListChannelsRequest\x1a\x1b.lnrpc.ListChannelsResponse\
+    \"\x14\x82\xd3\xe4\x93\x02\x0e\x12\x0c/v1/channels\x12j\n\x0eClosedChann\
+    els\x12\x1c.lnrpc.ClosedChannelsRequest\x1a\x1d.lnrpc.ClosedChannelsResp\
+    onse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/v1/channels/closed\x12Z\n\x0f\
+    OpenChannelSync\x12\x19.lnrpc.OpenChannelRequest\x1a\x13.lnrpc.ChannelPo\
+    int\"\x17\x82\xd3\xe4\x93\x02\x11\"\x0c/v1/channels:\x01*\x12C\n\x0bOpen\
+    Channel\x12\x19.lnrpc.OpenChannelRequest\x1a\x17.lnrpc.OpenStatusUpdate0\
+    \x01\x12\x9a\x01\n\x0cCloseChannel\x12\x1a.lnrpc.CloseChannelRequest\x1a\
+    \x18.lnrpc.CloseStatusUpdate\"R\x82\xd3\xe4\x93\x02L*J/v1/channels/{chan\
+    nel_point.funding_txid_str}/{channel_point.output_index}0\x01\x12\xa9\
+    \x01\n\x0eAbandonChannel\x12\x1c.lnrpc.AbandonChannelRequest\x1a\x1d.lnr\
+    pc.AbandonChannelResponse\"Z\x82\xd3\xe4\x93\x02T*R/v1/channels/abandon/\
+    {channel_point.funding_txid_str}/{channel_point.output_index}\x12:\n\x0b\
+    SendPayment\x12\x12.lnrpc.SendRequest\x1a\x13.lnrpc.SendResponse(\x010\
+    \x01\x12`\n\x0fSendPaymentSync\x12\x12.lnrpc.SendRequest\x1a\x13.lnrpc.S\
+    endResponse\"$\x82\xd3\xe4\x93\x02\x1e\"\x19/v1/channels/transactions:\
+    \x01*\x12A\n\x0bSendToRoute\x12\x19.lnrpc.SendToRouteRequest\x1a\x13.lnr\
+    pc.SendResponse(\x010\x01\x12m\n\x0fSendToRouteSync\x12\x19.lnrpc.SendTo\
+    RouteRequest\x1a\x13.lnrpc.SendResponse\"*\x82\xd3\xe4\x93\x02$\"\x1f/v1\
+    /channels/transactions/route:\x01*\x12P\n\nAddInvoice\x12\x0e.lnrpc.Invo\
+    ice\x1a\x19.lnrpc.AddInvoiceResponse\"\x17\x82\xd3\xe4\x93\x02\x11\"\x0c\
+    /v1/invoices:\x01*\x12[\n\x0cListInvoices\x12\x19.lnrpc.ListInvoiceReque\
+    st\x1a\x1a.lnrpc.ListInvoiceResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\
+    \x0c/v1/invoices\x12U\n\rLookupInvoice\x12\x12.lnrpc.PaymentHash\x1a\x0e\
+    .lnrpc.Invoice\"\x20\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/invoice/{r_hash_\
+    str}\x12a\n\x11SubscribeInvoices\x12\x1a.lnrpc.InvoiceSubscription\x1a\
+    \x0e.lnrpc.Invoice\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/invoices/sub\
+    scribe0\x01\x12P\n\x0cDecodePayReq\x12\x13.lnrpc.PayReqString\x1a\r.lnrp\
+    c.PayReq\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/payreq/{pay_req}\x12]\
+    \n\x0cListPayments\x12\x1a.lnrpc.ListPaymentsRequest\x1a\x1b.lnrpc.ListP\
+    aymentsResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\x0c/v1/payments\x12l\n\
+    \x11DeleteAllPayments\x12\x1f.lnrpc.DeleteAllPaymentsRequest\x1a\x20.lnr\
+    pc.DeleteAllPaymentsResponse\"\x14\x82\xd3\xe4\x93\x02\x0e*\x0c/v1/payme\
+    nts\x12S\n\rDescribeGraph\x12\x1a.lnrpc.ChannelGraphRequest\x1a\x13.lnrp\
+    c.ChannelGraph\"\x11\x82\xd3\xe4\x93\x02\x0b\x12\t/v1/graph\x12[\n\x0bGe\
+    tChanInfo\x12\x16.lnrpc.ChanInfoRequest\x1a\x12.lnrpc.ChannelEdge\"\x20\
+    \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/graph/edge/{chan_id}\x12X\n\x0bGetNo\
+    deInfo\x12\x16.lnrpc.NodeInfoRequest\x1a\x0f.lnrpc.NodeInfo\"\x20\x82\
+    \xd3\xe4\x93\x02\x1a\x12\x18/v1/graph/node/{pub_key}\x12n\n\x0bQueryRout\
+    es\x12\x19.lnrpc.QueryRoutesRequest\x1a\x1a.lnrpc.QueryRoutesResponse\"(\
+    \x82\xd3\xe4\x93\x02\"\x12\x20/v1/graph/routes/{pub_key}/{amt}\x12W\n\
+    \x0eGetNetworkInfo\x12\x19.lnrpc.NetworkInfoRequest\x1a\x12.lnrpc.Networ\
+    kInfo\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/v1/graph/info\x125\n\nStopDa\
+    emon\x12\x12.lnrpc.StopRequest\x1a\x13.lnrpc.StopResponse\x12W\n\x15Subs\
+    cribeChannelGraph\x12\x20.lnrpc.GraphTopologySubscription\x1a\x1a.lnrpc.\
+    GraphTopologyUpdate0\x01\x12A\n\nDebugLevel\x12\x18.lnrpc.DebugLevelRequ\
+    est\x1a\x19.lnrpc.DebugLevelResponse\x12P\n\tFeeReport\x12\x17.lnrpc.Fee\
+    ReportRequest\x1a\x18.lnrpc.FeeReportResponse\"\x10\x82\xd3\xe4\x93\x02\
+    \n\x12\x08/v1/fees\x12i\n\x13UpdateChannelPolicy\x12\x1a.lnrpc.PolicyUpd\
+    ateRequest\x1a\x1b.lnrpc.PolicyUpdateResponse\"\x19\x82\xd3\xe4\x93\x02\
+    \x13\"\x0e/v1/chanpolicy:\x01*\x12m\n\x11ForwardingHistory\x12\x1f.lnrpc\
+    .ForwardingHistoryRequest\x1a\x20.lnrpc.ForwardingHistoryResponse\"\x15\
+    \x82\xd3\xe4\x93\x02\x0f\"\n/v1/switch:\x01*b\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

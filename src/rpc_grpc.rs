@@ -182,8 +182,6 @@ pub trait Lightning {
 
     fn new_address(&self, o: ::grpc::RequestOptions, p: super::rpc::NewAddressRequest) -> ::grpc::SingleResponse<super::rpc::NewAddressResponse>;
 
-    fn new_witness_address(&self, o: ::grpc::RequestOptions, p: super::rpc::NewWitnessAddressRequest) -> ::grpc::SingleResponse<super::rpc::NewAddressResponse>;
-
     fn sign_message(&self, o: ::grpc::RequestOptions, p: super::rpc::SignMessageRequest) -> ::grpc::SingleResponse<super::rpc::SignMessageResponse>;
 
     fn verify_message(&self, o: ::grpc::RequestOptions, p: super::rpc::VerifyMessageRequest) -> ::grpc::SingleResponse<super::rpc::VerifyMessageResponse>;
@@ -207,6 +205,8 @@ pub trait Lightning {
     fn open_channel(&self, o: ::grpc::RequestOptions, p: super::rpc::OpenChannelRequest) -> ::grpc::StreamingResponse<super::rpc::OpenStatusUpdate>;
 
     fn close_channel(&self, o: ::grpc::RequestOptions, p: super::rpc::CloseChannelRequest) -> ::grpc::StreamingResponse<super::rpc::CloseStatusUpdate>;
+
+    fn abandon_channel(&self, o: ::grpc::RequestOptions, p: super::rpc::AbandonChannelRequest) -> ::grpc::SingleResponse<super::rpc::AbandonChannelResponse>;
 
     fn send_payment(&self, o: ::grpc::RequestOptions, p: ::grpc::StreamingRequest<super::rpc::SendRequest>) -> ::grpc::StreamingResponse<super::rpc::SendResponse>;
 
@@ -264,7 +264,6 @@ pub struct LightningClient {
     method_SubscribeTransactions: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::GetTransactionsRequest, super::rpc::Transaction>>,
     method_SendMany: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::SendManyRequest, super::rpc::SendManyResponse>>,
     method_NewAddress: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::NewAddressRequest, super::rpc::NewAddressResponse>>,
-    method_NewWitnessAddress: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::NewWitnessAddressRequest, super::rpc::NewAddressResponse>>,
     method_SignMessage: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::SignMessageRequest, super::rpc::SignMessageResponse>>,
     method_VerifyMessage: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::VerifyMessageRequest, super::rpc::VerifyMessageResponse>>,
     method_ConnectPeer: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ConnectPeerRequest, super::rpc::ConnectPeerResponse>>,
@@ -277,6 +276,7 @@ pub struct LightningClient {
     method_OpenChannelSync: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::OpenChannelRequest, super::rpc::ChannelPoint>>,
     method_OpenChannel: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::OpenChannelRequest, super::rpc::OpenStatusUpdate>>,
     method_CloseChannel: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::CloseChannelRequest, super::rpc::CloseStatusUpdate>>,
+    method_AbandonChannel: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::AbandonChannelRequest, super::rpc::AbandonChannelResponse>>,
     method_SendPayment: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::SendRequest, super::rpc::SendResponse>>,
     method_SendPaymentSync: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::SendRequest, super::rpc::SendResponse>>,
     method_SendToRoute: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::SendToRouteRequest, super::rpc::SendResponse>>,
@@ -343,12 +343,6 @@ impl LightningClient {
             }),
             method_NewAddress: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
                 name: "/lnrpc.Lightning/NewAddress".to_string(),
-                streaming: ::grpc::rt::GrpcStreaming::Unary,
-                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
-                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
-            }),
-            method_NewWitnessAddress: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
-                name: "/lnrpc.Lightning/NewWitnessAddress".to_string(),
                 streaming: ::grpc::rt::GrpcStreaming::Unary,
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
@@ -422,6 +416,12 @@ impl LightningClient {
             method_CloseChannel: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
                 name: "/lnrpc.Lightning/CloseChannel".to_string(),
                 streaming: ::grpc::rt::GrpcStreaming::ServerStreaming,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_AbandonChannel: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/AbandonChannel".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
             }),
@@ -601,10 +601,6 @@ impl Lightning for LightningClient {
         self.grpc_client.call_unary(o, p, self.method_NewAddress.clone())
     }
 
-    fn new_witness_address(&self, o: ::grpc::RequestOptions, p: super::rpc::NewWitnessAddressRequest) -> ::grpc::SingleResponse<super::rpc::NewAddressResponse> {
-        self.grpc_client.call_unary(o, p, self.method_NewWitnessAddress.clone())
-    }
-
     fn sign_message(&self, o: ::grpc::RequestOptions, p: super::rpc::SignMessageRequest) -> ::grpc::SingleResponse<super::rpc::SignMessageResponse> {
         self.grpc_client.call_unary(o, p, self.method_SignMessage.clone())
     }
@@ -651,6 +647,10 @@ impl Lightning for LightningClient {
 
     fn close_channel(&self, o: ::grpc::RequestOptions, p: super::rpc::CloseChannelRequest) -> ::grpc::StreamingResponse<super::rpc::CloseStatusUpdate> {
         self.grpc_client.call_server_streaming(o, p, self.method_CloseChannel.clone())
+    }
+
+    fn abandon_channel(&self, o: ::grpc::RequestOptions, p: super::rpc::AbandonChannelRequest) -> ::grpc::SingleResponse<super::rpc::AbandonChannelResponse> {
+        self.grpc_client.call_unary(o, p, self.method_AbandonChannel.clone())
     }
 
     fn send_payment(&self, o: ::grpc::RequestOptions, p: ::grpc::StreamingRequest<super::rpc::SendRequest>) -> ::grpc::StreamingResponse<super::rpc::SendResponse> {
@@ -838,18 +838,6 @@ impl LightningServer {
                 ),
                 ::grpc::rt::ServerMethod::new(
                     ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
-                        name: "/lnrpc.Lightning/NewWitnessAddress".to_string(),
-                        streaming: ::grpc::rt::GrpcStreaming::Unary,
-                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
-                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
-                    }),
-                    {
-                        let handler_copy = handler_arc.clone();
-                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.new_witness_address(o, p))
-                    },
-                ),
-                ::grpc::rt::ServerMethod::new(
-                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
                         name: "/lnrpc.Lightning/SignMessage".to_string(),
                         streaming: ::grpc::rt::GrpcStreaming::Unary,
                         req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
@@ -990,6 +978,18 @@ impl LightningServer {
                     {
                         let handler_copy = handler_arc.clone();
                         ::grpc::rt::MethodHandlerServerStreaming::new(move |o, p| handler_copy.close_channel(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/AbandonChannel".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.abandon_channel(o, p))
                     },
                 ),
                 ::grpc::rt::ServerMethod::new(
