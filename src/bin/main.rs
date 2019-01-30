@@ -1,5 +1,4 @@
-extern crate grpc;
-extern crate lnd_rust;
+#![forbid(unsafe_code)]
 
 use lnd_rust::rpc_grpc::LightningClient;
 use lnd_rust::rpc_grpc::Lightning;
@@ -11,7 +10,8 @@ use lnd_rust::rpc;
 use grpc::RequestOptions;
 
 fn main() {
-    use std::net::SocketAddr;
+    use std::{net::SocketAddr, sync::Arc};
+    use grpc::ClientStub;
 
     println!("lnd-rust main");
 
@@ -49,7 +49,7 @@ fn main() {
             .unwrap();
         let c = grpc::Client::new_expl(&socket_addr, host.as_str(), tls, conf)
             .unwrap();
-        LightningClient::with_client(c)
+        LightningClient::with_client(Arc::new(c))
     };
 
     let metadata = |macaroon_data: &MacaroonData|

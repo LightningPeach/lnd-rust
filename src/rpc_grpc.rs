@@ -34,15 +34,15 @@ pub trait WalletUnlocker {
 // client
 
 pub struct WalletUnlockerClient {
-    grpc_client: ::grpc::Client,
+    grpc_client: ::std::sync::Arc<::grpc::Client>,
     method_GenSeed: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::GenSeedRequest, super::rpc::GenSeedResponse>>,
     method_InitWallet: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::InitWalletRequest, super::rpc::InitWalletResponse>>,
     method_UnlockWallet: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::UnlockWalletRequest, super::rpc::UnlockWalletResponse>>,
     method_ChangePassword: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ChangePasswordRequest, super::rpc::ChangePasswordResponse>>,
 }
 
-impl WalletUnlockerClient {
-    pub fn with_client(grpc_client: ::grpc::Client) -> Self {
+impl ::grpc::ClientStub for WalletUnlockerClient {
+    fn with_client(grpc_client: ::std::sync::Arc<::grpc::Client>) -> Self {
         WalletUnlockerClient {
             grpc_client: grpc_client,
             method_GenSeed: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
@@ -70,17 +70,6 @@ impl WalletUnlockerClient {
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
             }),
         }
-    }
-
-    pub fn new_plain(host: &str, port: u16, conf: ::grpc::ClientConf) -> ::grpc::Result<Self> {
-        ::grpc::Client::new_plain(host, port, conf).map(|c| {
-            WalletUnlockerClient::with_client(c)
-        })
-    }
-    pub fn new_tls<C : ::tls_api::TlsConnector>(host: &str, port: u16, conf: ::grpc::ClientConf) -> ::grpc::Result<Self> {
-        ::grpc::Client::new_tls::<C>(host, port, conf).map(|c| {
-            WalletUnlockerClient::with_client(c)
-        })
     }
 }
 
@@ -176,6 +165,8 @@ pub trait Lightning {
 
     fn send_coins(&self, o: ::grpc::RequestOptions, p: super::rpc::SendCoinsRequest) -> ::grpc::SingleResponse<super::rpc::SendCoinsResponse>;
 
+    fn list_unspent(&self, o: ::grpc::RequestOptions, p: super::rpc::ListUnspentRequest) -> ::grpc::SingleResponse<super::rpc::ListUnspentResponse>;
+
     fn subscribe_transactions(&self, o: ::grpc::RequestOptions, p: super::rpc::GetTransactionsRequest) -> ::grpc::StreamingResponse<super::rpc::Transaction>;
 
     fn send_many(&self, o: ::grpc::RequestOptions, p: super::rpc::SendManyRequest) -> ::grpc::SingleResponse<super::rpc::SendManyResponse>;
@@ -256,11 +247,12 @@ pub trait Lightning {
 // client
 
 pub struct LightningClient {
-    grpc_client: ::grpc::Client,
+    grpc_client: ::std::sync::Arc<::grpc::Client>,
     method_WalletBalance: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::WalletBalanceRequest, super::rpc::WalletBalanceResponse>>,
     method_ChannelBalance: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ChannelBalanceRequest, super::rpc::ChannelBalanceResponse>>,
     method_GetTransactions: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::GetTransactionsRequest, super::rpc::TransactionDetails>>,
     method_SendCoins: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::SendCoinsRequest, super::rpc::SendCoinsResponse>>,
+    method_ListUnspent: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ListUnspentRequest, super::rpc::ListUnspentResponse>>,
     method_SubscribeTransactions: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::GetTransactionsRequest, super::rpc::Transaction>>,
     method_SendMany: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::SendManyRequest, super::rpc::SendManyResponse>>,
     method_NewAddress: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::NewAddressRequest, super::rpc::NewAddressResponse>>,
@@ -301,8 +293,8 @@ pub struct LightningClient {
     method_ForwardingHistory: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ForwardingHistoryRequest, super::rpc::ForwardingHistoryResponse>>,
 }
 
-impl LightningClient {
-    pub fn with_client(grpc_client: ::grpc::Client) -> Self {
+impl ::grpc::ClientStub for LightningClient {
+    fn with_client(grpc_client: ::std::sync::Arc<::grpc::Client>) -> Self {
         LightningClient {
             grpc_client: grpc_client,
             method_WalletBalance: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
@@ -325,6 +317,12 @@ impl LightningClient {
             }),
             method_SendCoins: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
                 name: "/lnrpc.Lightning/SendCoins".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_ListUnspent: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/ListUnspent".to_string(),
                 streaming: ::grpc::rt::GrpcStreaming::Unary,
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
@@ -559,17 +557,6 @@ impl LightningClient {
             }),
         }
     }
-
-    pub fn new_plain(host: &str, port: u16, conf: ::grpc::ClientConf) -> ::grpc::Result<Self> {
-        ::grpc::Client::new_plain(host, port, conf).map(|c| {
-            LightningClient::with_client(c)
-        })
-    }
-    pub fn new_tls<C : ::tls_api::TlsConnector>(host: &str, port: u16, conf: ::grpc::ClientConf) -> ::grpc::Result<Self> {
-        ::grpc::Client::new_tls::<C>(host, port, conf).map(|c| {
-            LightningClient::with_client(c)
-        })
-    }
 }
 
 impl Lightning for LightningClient {
@@ -587,6 +574,10 @@ impl Lightning for LightningClient {
 
     fn send_coins(&self, o: ::grpc::RequestOptions, p: super::rpc::SendCoinsRequest) -> ::grpc::SingleResponse<super::rpc::SendCoinsResponse> {
         self.grpc_client.call_unary(o, p, self.method_SendCoins.clone())
+    }
+
+    fn list_unspent(&self, o: ::grpc::RequestOptions, p: super::rpc::ListUnspentRequest) -> ::grpc::SingleResponse<super::rpc::ListUnspentResponse> {
+        self.grpc_client.call_unary(o, p, self.method_ListUnspent.clone())
     }
 
     fn subscribe_transactions(&self, o: ::grpc::RequestOptions, p: super::rpc::GetTransactionsRequest) -> ::grpc::StreamingResponse<super::rpc::Transaction> {
@@ -798,6 +789,18 @@ impl LightningServer {
                     {
                         let handler_copy = handler_arc.clone();
                         ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.send_coins(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/ListUnspent".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.list_unspent(o, p))
                     },
                 ),
                 ::grpc::rt::ServerMethod::new(
