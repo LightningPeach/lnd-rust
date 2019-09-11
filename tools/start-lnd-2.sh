@@ -16,7 +16,6 @@ lnd \
     --externalip=localhost:11011 \
     --debuglevel=info \
     --nobootstrap \
-    --noencryptwallet \
     --bitcoin.active \
     --bitcoin.node=bitcoind \
     --bitcoin.regtest \
@@ -25,4 +24,4 @@ lnd \
     --bitcoind.rpcuser=user \
     --bitcoind.rpcpass=password \
     --bitcoind.zmqpubrawblock=tcp://127.0.0.1:18501 \
-    --bitcoind.zmqpubrawtx=tcp://127.0.0.1:18501
+    --bitcoind.zmqpubrawtx=tcp://127.0.0.1:18502

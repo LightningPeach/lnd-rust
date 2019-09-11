@@ -1,6 +1,6 @@
 [package]
 name = "lnd-rust"
-version = "0.4.0"
+version = "0.5.0"
 authors = ["LightningPeach <contact@lightningpeach.com>"]
 description = "Rust binding to the Lightning Network Daemon"
 readme = "README.md"
@@ -9,7 +9,7 @@ repository = "https://github.com/LightningPeach/lnd-rust"
 edition = "2018"
 
 [dependencies]
-protobuf = "2.3"
+protobuf = "2.8"
 futures = "0.1"
 futures-cpupool = "0.1"
 httpbis = "0.7"

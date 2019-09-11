@@ -2,9 +2,6 @@ use std::path::Path;
 use std::process::Command;
 use std::sync::Arc;
 use std::io::Result;
-
-use tls_api;
-use tls_api_native_tls::TlsConnector;
 use httpbis::ClientTlsOption;
 
 /// Represents bytes of the certificate
@@ -35,14 +32,12 @@ impl TLSCertificate {
     }
 
     /// Creates the tls using this certificate
-    pub fn into_tls(self, host: &str) -> tls_api::Result<ClientTlsOption<TlsConnector>> {
-        use self::ClientTlsOption::*;
-        use self::tls_api::TlsConnectorBuilder;
+    pub fn into_tls(self, host: &str) -> tls_api::Result<ClientTlsOption<tls_api_native_tls::TlsConnector>> {
+        use tls_api::TlsConnectorBuilder as _;
 
-        let mut builder = <TlsConnector as tls_api::TlsConnector>::builder()?;
+        let mut builder = <tls_api_native_tls::TlsConnector as tls_api::TlsConnector>::builder()?;
         builder.add_root_certificate(self.raw)?;
-        builder
-            .build()
-            .map(|connector| Tls(host.to_owned(), Arc::new(connector)))
+        let connector = builder.build()?;
+        Ok(ClientTlsOption::Tls(host.to_owned(), Arc::new(connector)))
     }
 }

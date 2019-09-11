@@ -3,7 +3,7 @@
 
 // https://github.com/Manishearth/rust-clippy/issues/702
 #![allow(unknown_lints)]
-#![allow(clippy)]
+#![allow(clippy::all)]
 
 #![cfg_attr(rustfmt, rustfmt_skip)]
 
@@ -163,6 +163,8 @@ pub trait Lightning {
 
     fn get_transactions(&self, o: ::grpc::RequestOptions, p: super::rpc::GetTransactionsRequest) -> ::grpc::SingleResponse<super::rpc::TransactionDetails>;
 
+    fn estimate_fee(&self, o: ::grpc::RequestOptions, p: super::rpc::EstimateFeeRequest) -> ::grpc::SingleResponse<super::rpc::EstimateFeeResponse>;
+
     fn send_coins(&self, o: ::grpc::RequestOptions, p: super::rpc::SendCoinsRequest) -> ::grpc::SingleResponse<super::rpc::SendCoinsResponse>;
 
     fn list_unspent(&self, o: ::grpc::RequestOptions, p: super::rpc::ListUnspentRequest) -> ::grpc::SingleResponse<super::rpc::ListUnspentResponse>;
@@ -188,6 +190,8 @@ pub trait Lightning {
     fn pending_channels(&self, o: ::grpc::RequestOptions, p: super::rpc::PendingChannelsRequest) -> ::grpc::SingleResponse<super::rpc::PendingChannelsResponse>;
 
     fn list_channels(&self, o: ::grpc::RequestOptions, p: super::rpc::ListChannelsRequest) -> ::grpc::SingleResponse<super::rpc::ListChannelsResponse>;
+
+    fn subscribe_channel_events(&self, o: ::grpc::RequestOptions, p: super::rpc::ChannelEventSubscription) -> ::grpc::StreamingResponse<super::rpc::ChannelEventUpdate>;
 
     fn closed_channels(&self, o: ::grpc::RequestOptions, p: super::rpc::ClosedChannelsRequest) -> ::grpc::SingleResponse<super::rpc::ClosedChannelsResponse>;
 
@@ -242,6 +246,16 @@ pub trait Lightning {
     fn update_channel_policy(&self, o: ::grpc::RequestOptions, p: super::rpc::PolicyUpdateRequest) -> ::grpc::SingleResponse<super::rpc::PolicyUpdateResponse>;
 
     fn forwarding_history(&self, o: ::grpc::RequestOptions, p: super::rpc::ForwardingHistoryRequest) -> ::grpc::SingleResponse<super::rpc::ForwardingHistoryResponse>;
+
+    fn export_channel_backup(&self, o: ::grpc::RequestOptions, p: super::rpc::ExportChannelBackupRequest) -> ::grpc::SingleResponse<super::rpc::ChannelBackup>;
+
+    fn export_all_channel_backups(&self, o: ::grpc::RequestOptions, p: super::rpc::ChanBackupExportRequest) -> ::grpc::SingleResponse<super::rpc::ChanBackupSnapshot>;
+
+    fn verify_chan_backup(&self, o: ::grpc::RequestOptions, p: super::rpc::ChanBackupSnapshot) -> ::grpc::SingleResponse<super::rpc::VerifyChanBackupResponse>;
+
+    fn restore_channel_backups(&self, o: ::grpc::RequestOptions, p: super::rpc::RestoreChanBackupRequest) -> ::grpc::SingleResponse<super::rpc::RestoreBackupResponse>;
+
+    fn subscribe_channel_backups(&self, o: ::grpc::RequestOptions, p: super::rpc::ChannelBackupSubscription) -> ::grpc::StreamingResponse<super::rpc::ChanBackupSnapshot>;
 }
 
 // client
@@ -251,6 +265,7 @@ pub struct LightningClient {
     method_WalletBalance: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::WalletBalanceRequest, super::rpc::WalletBalanceResponse>>,
     method_ChannelBalance: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ChannelBalanceRequest, super::rpc::ChannelBalanceResponse>>,
     method_GetTransactions: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::GetTransactionsRequest, super::rpc::TransactionDetails>>,
+    method_EstimateFee: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::EstimateFeeRequest, super::rpc::EstimateFeeResponse>>,
     method_SendCoins: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::SendCoinsRequest, super::rpc::SendCoinsResponse>>,
     method_ListUnspent: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ListUnspentRequest, super::rpc::ListUnspentResponse>>,
     method_SubscribeTransactions: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::GetTransactionsRequest, super::rpc::Transaction>>,
@@ -264,6 +279,7 @@ pub struct LightningClient {
     method_GetInfo: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::GetInfoRequest, super::rpc::GetInfoResponse>>,
     method_PendingChannels: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::PendingChannelsRequest, super::rpc::PendingChannelsResponse>>,
     method_ListChannels: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ListChannelsRequest, super::rpc::ListChannelsResponse>>,
+    method_SubscribeChannelEvents: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ChannelEventSubscription, super::rpc::ChannelEventUpdate>>,
     method_ClosedChannels: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ClosedChannelsRequest, super::rpc::ClosedChannelsResponse>>,
     method_OpenChannelSync: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::OpenChannelRequest, super::rpc::ChannelPoint>>,
     method_OpenChannel: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::OpenChannelRequest, super::rpc::OpenStatusUpdate>>,
@@ -291,6 +307,11 @@ pub struct LightningClient {
     method_FeeReport: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::FeeReportRequest, super::rpc::FeeReportResponse>>,
     method_UpdateChannelPolicy: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::PolicyUpdateRequest, super::rpc::PolicyUpdateResponse>>,
     method_ForwardingHistory: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ForwardingHistoryRequest, super::rpc::ForwardingHistoryResponse>>,
+    method_ExportChannelBackup: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ExportChannelBackupRequest, super::rpc::ChannelBackup>>,
+    method_ExportAllChannelBackups: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ChanBackupExportRequest, super::rpc::ChanBackupSnapshot>>,
+    method_VerifyChanBackup: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ChanBackupSnapshot, super::rpc::VerifyChanBackupResponse>>,
+    method_RestoreChannelBackups: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::RestoreChanBackupRequest, super::rpc::RestoreBackupResponse>>,
+    method_SubscribeChannelBackups: ::std::sync::Arc<::grpc::rt::MethodDescriptor<super::rpc::ChannelBackupSubscription, super::rpc::ChanBackupSnapshot>>,
 }
 
 impl ::grpc::ClientStub for LightningClient {
@@ -311,6 +332,12 @@ impl ::grpc::ClientStub for LightningClient {
             }),
             method_GetTransactions: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
                 name: "/lnrpc.Lightning/GetTransactions".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_EstimateFee: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/EstimateFee".to_string(),
                 streaming: ::grpc::rt::GrpcStreaming::Unary,
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
@@ -390,6 +417,12 @@ impl ::grpc::ClientStub for LightningClient {
             method_ListChannels: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
                 name: "/lnrpc.Lightning/ListChannels".to_string(),
                 streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_SubscribeChannelEvents: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/SubscribeChannelEvents".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::ServerStreaming,
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
             }),
@@ -555,6 +588,36 @@ impl ::grpc::ClientStub for LightningClient {
                 req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
                 resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
             }),
+            method_ExportChannelBackup: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/ExportChannelBackup".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_ExportAllChannelBackups: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/ExportAllChannelBackups".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_VerifyChanBackup: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/VerifyChanBackup".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_RestoreChannelBackups: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/RestoreChannelBackups".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::Unary,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
+            method_SubscribeChannelBackups: ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                name: "/lnrpc.Lightning/SubscribeChannelBackups".to_string(),
+                streaming: ::grpc::rt::GrpcStreaming::ServerStreaming,
+                req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+            }),
         }
     }
 }
@@ -570,6 +633,10 @@ impl Lightning for LightningClient {
 
     fn get_transactions(&self, o: ::grpc::RequestOptions, p: super::rpc::GetTransactionsRequest) -> ::grpc::SingleResponse<super::rpc::TransactionDetails> {
         self.grpc_client.call_unary(o, p, self.method_GetTransactions.clone())
+    }
+
+    fn estimate_fee(&self, o: ::grpc::RequestOptions, p: super::rpc::EstimateFeeRequest) -> ::grpc::SingleResponse<super::rpc::EstimateFeeResponse> {
+        self.grpc_client.call_unary(o, p, self.method_EstimateFee.clone())
     }
 
     fn send_coins(&self, o: ::grpc::RequestOptions, p: super::rpc::SendCoinsRequest) -> ::grpc::SingleResponse<super::rpc::SendCoinsResponse> {
@@ -622,6 +689,10 @@ impl Lightning for LightningClient {
 
     fn list_channels(&self, o: ::grpc::RequestOptions, p: super::rpc::ListChannelsRequest) -> ::grpc::SingleResponse<super::rpc::ListChannelsResponse> {
         self.grpc_client.call_unary(o, p, self.method_ListChannels.clone())
+    }
+
+    fn subscribe_channel_events(&self, o: ::grpc::RequestOptions, p: super::rpc::ChannelEventSubscription) -> ::grpc::StreamingResponse<super::rpc::ChannelEventUpdate> {
+        self.grpc_client.call_server_streaming(o, p, self.method_SubscribeChannelEvents.clone())
     }
 
     fn closed_channels(&self, o: ::grpc::RequestOptions, p: super::rpc::ClosedChannelsRequest) -> ::grpc::SingleResponse<super::rpc::ClosedChannelsResponse> {
@@ -731,6 +802,26 @@ impl Lightning for LightningClient {
     fn forwarding_history(&self, o: ::grpc::RequestOptions, p: super::rpc::ForwardingHistoryRequest) -> ::grpc::SingleResponse<super::rpc::ForwardingHistoryResponse> {
         self.grpc_client.call_unary(o, p, self.method_ForwardingHistory.clone())
     }
+
+    fn export_channel_backup(&self, o: ::grpc::RequestOptions, p: super::rpc::ExportChannelBackupRequest) -> ::grpc::SingleResponse<super::rpc::ChannelBackup> {
+        self.grpc_client.call_unary(o, p, self.method_ExportChannelBackup.clone())
+    }
+
+    fn export_all_channel_backups(&self, o: ::grpc::RequestOptions, p: super::rpc::ChanBackupExportRequest) -> ::grpc::SingleResponse<super::rpc::ChanBackupSnapshot> {
+        self.grpc_client.call_unary(o, p, self.method_ExportAllChannelBackups.clone())
+    }
+
+    fn verify_chan_backup(&self, o: ::grpc::RequestOptions, p: super::rpc::ChanBackupSnapshot) -> ::grpc::SingleResponse<super::rpc::VerifyChanBackupResponse> {
+        self.grpc_client.call_unary(o, p, self.method_VerifyChanBackup.clone())
+    }
+
+    fn restore_channel_backups(&self, o: ::grpc::RequestOptions, p: super::rpc::RestoreChanBackupRequest) -> ::grpc::SingleResponse<super::rpc::RestoreBackupResponse> {
+        self.grpc_client.call_unary(o, p, self.method_RestoreChannelBackups.clone())
+    }
+
+    fn subscribe_channel_backups(&self, o: ::grpc::RequestOptions, p: super::rpc::ChannelBackupSubscription) -> ::grpc::StreamingResponse<super::rpc::ChanBackupSnapshot> {
+        self.grpc_client.call_server_streaming(o, p, self.method_SubscribeChannelBackups.clone())
+    }
 }
 
 // server
@@ -777,6 +868,18 @@ impl LightningServer {
                     {
                         let handler_copy = handler_arc.clone();
                         ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.get_transactions(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/EstimateFee".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.estimate_fee(o, p))
                     },
                 ),
                 ::grpc::rt::ServerMethod::new(
@@ -933,6 +1036,18 @@ impl LightningServer {
                     {
                         let handler_copy = handler_arc.clone();
                         ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.list_channels(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/SubscribeChannelEvents".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::ServerStreaming,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerServerStreaming::new(move |o, p| handler_copy.subscribe_channel_events(o, p))
                     },
                 ),
                 ::grpc::rt::ServerMethod::new(
@@ -1257,6 +1372,66 @@ impl LightningServer {
                     {
                         let handler_copy = handler_arc.clone();
                         ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.forwarding_history(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/ExportChannelBackup".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.export_channel_backup(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/ExportAllChannelBackups".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.export_all_channel_backups(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/VerifyChanBackup".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.verify_chan_backup(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/RestoreChannelBackups".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerUnary::new(move |o, p| handler_copy.restore_channel_backups(o, p))
+                    },
+                ),
+                ::grpc::rt::ServerMethod::new(
+                    ::std::sync::Arc::new(::grpc::rt::MethodDescriptor {
+                        name: "/lnrpc.Lightning/SubscribeChannelBackups".to_string(),
+                        streaming: ::grpc::rt::GrpcStreaming::ServerStreaming,
+                        req_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                        resp_marshaller: Box::new(::grpc::protobuf::MarshallerProtobuf),
+                    }),
+                    {
+                        let handler_copy = handler_arc.clone();
+                        ::grpc::rt::MethodHandlerServerStreaming::new(move |o, p| handler_copy.subscribe_channel_backups(o, p))
                     },
                 ),
             ],
